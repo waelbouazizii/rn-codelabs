@@ -11,7 +11,7 @@ If this file conflicts with `CLAUDE.md`, `CLAUDE.md` wins and the conflict is fl
 
 ## 1. Verified facts about the lab stack
 
-Nothing has been verified on a lab PC or a student phone yet. Until a fact moves here with a date, treat every item of `rn-conventions.md` section 14 and section 5 of this file as unverified, and keep the wording of the pages neutral about it (no exact Expo Go screen text, no exact CLI prompt text).
+Nothing has been verified on a lab PC or a student phone yet. The bullets below marked "Verified", with a date, were checked from the command line only (project creation, reset-project, tsc), not on a device. Until a fact appears here with a date, treat every item of `rn-conventions.md` section 14 and section 5 of this file as unverified, and keep the wording of the pages neutral about it (no exact Expo Go screen text, no exact CLI prompt text).
 
 - Verified 9 October 2026 (create-expo-app 5.0.0, expo 57.0.27): reset-project asks y/n, moves the starter to example/ (y) or deletes it (n), then creates src/app/index.tsx and _layout.tsx; tsconfig maps @/* to ./src/*; typedRoutes and reactCompiler are enabled in app.json; create-expo-app does not run git init inside an existing repository.
 
