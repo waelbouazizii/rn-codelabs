@@ -13,6 +13,8 @@ If this file conflicts with `CLAUDE.md`, `CLAUDE.md` wins and the conflict is fl
 
 Nothing has been verified on a lab PC or a student phone yet. Until a fact moves here with a date, treat every item of `rn-conventions.md` section 14 and section 5 of this file as unverified, and keep the wording of the pages neutral about it (no exact Expo Go screen text, no exact CLI prompt text).
 
+- Verified 9 October 2026 (create-expo-app 5.0.0, expo 57.0.27): reset-project asks y/n, moves the starter to example/ (y) or deletes it (n), then creates src/app/index.tsx and _layout.tsx; tsconfig maps @/* to ./src/*; typedRoutes and reactCompiler are enabled in app.json; create-expo-app does not run git init inside an existing repository.
+
 Facts taken from `rn-conventions.md` (October 2026, documentation only):
 
 - Expo SDK 57 (React Native 0.86, React 19.2), New Architecture only. Projects are created with `npx create-expo-app@latest <folder> --template default@sdk-57`.
@@ -144,7 +146,6 @@ Facts taken from `rn-conventions.md` (October 2026, documentation only):
 - The SDK of the store Expo Go on Android and iPhone in the week of each session; `--template default@sdk-57` still valid.
 - Whether Expo Go on Android now also requires the Expo login.
 - LAN mode on the C2I Wi-Fi with the Windows Firewall set to Private network; `--tunnel` fallback speed with a full class.
-- The exact output of `npm run reset-project` in the SDK 57 template (folder names `app-example`, `src/app`).
 - `getReactNativePersistence` typing (TS2305) with `npx tsc --noEmit` and the chosen workaround.
 - MQTT.js import and `wss://` connection from Expo Go on Android and iOS; broker WebSocket port and path.
 - Wokwi ESP32 sketch reaching the broker from `Wokwi-GUEST`.

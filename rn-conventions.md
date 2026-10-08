@@ -40,7 +40,7 @@ npx expo login
 ```bash
 npx create-expo-app@latest s1-profile-contacts --template default@sdk-57
 cd s1-profile-contacts
-npm run reset-project        # blank src/app, starter moved to app-example
+npm run reset-project        # answer n: blank src/app (y keeps the starter in example/)
 npx expo start               # scan QR with Expo Go (iOS: Camera app)
 npx expo start -c            # clear Metro cache
 npx expo start --tunnel      # fallback if LAN blocked
