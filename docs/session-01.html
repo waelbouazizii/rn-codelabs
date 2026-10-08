@@ -1,0 +1,2725 @@
+<!DOCTYPE html>
+<!--
+  Codelab skeleton template - Développement multiplateforme avec React Native (Expo), IAM2
+
+  DO NOT edit the skeleton markup, the navigation JavaScript, the quiz CSS and
+  JavaScript, or the pinned asset versions below when authoring a session.
+  Copy this file to docs/session-XX.html and only touch:
+    - <title>, the session title in the sidebar and the header label
+    - the sidebar entries (section headings data-nav-section and step links)
+    - the <section class="step-panel" ...> blocks (edit, add, remove)
+  See CLAUDE.md and session-guidelines.md for the full rules.
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 01 - TypeScript, React et Expo Router - IAM2 React Native</title>
+
+<!-- Tailwind Play CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Roboto -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6.4.0 (pinned) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Prism 1.29.0 (pinned): core theme, language components load on demand via autoloader -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Roboto', 'sans-serif'],
+        },
+        colors: {
+          sidebar: {
+            DEFAULT: '#1f2430',
+            hover: '#2a3040',
+          },
+          brand: {
+            DEFAULT: '#ff3d2e',
+            dark: '#e6291b',
+          },
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Roboto', sans-serif; }
+
+  /* Sidebar */
+  #sidebar {
+    transition: transform 0.25s ease-in-out;
+  }
+  #sidebar::-webkit-scrollbar { width: 6px; }
+  #sidebar::-webkit-scrollbar-thumb { background: #3a4052; border-radius: 4px; }
+
+  .step-link { position: relative; }
+  .step-link.is-active {
+    background-color: rgba(255, 61, 46, 0.15);
+    border-left: 3px solid #ff3d2e;
+    color: #ffffff;
+  }
+  .step-link .step-marker {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+  }
+  .step-link.is-completed .step-marker .marker-number { display: none; }
+  .step-link.is-completed .step-marker .marker-check { display: flex; }
+  .step-link .step-marker .marker-check { display: none; }
+
+  /* Progress bar */
+  #progress-track {
+    height: 4px;
+    background: #e5e7eb;
+  }
+  #progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #ff3d2e, #ff8a3d);
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.is-active { display: block; }
+
+  /* Content cards */
+  .md-card {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e5e7eb;
+  }
+
+  /* Code blocks + copy button */
+  .code-block-wrapper { position: relative; }
+  .code-block-wrapper pre[class*="language-"] {
+    margin: 0;
+    border-radius: 0.5rem;
+    max-height: 32rem;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.375rem;
+    background: rgba(255,255,255,0.1);
+    color: #d4d4d4;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
+  /* Mobile sidebar */
+  @media (max-width: 767px) {
+    #sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 40;
+      transform: translateX(-100%);
+      width: 85vw;
+      max-width: 20rem;
+    }
+    #sidebar.is-open { transform: translateX(0); }
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 30;
+    }
+    #sidebar-overlay.is-open { display: block; }
+  }
+
+  /* Quiz */
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    cursor: pointer;
+  }
+  .quiz-option:hover:not(:disabled) { background: #f9fafb; }
+  .quiz-option:focus-visible { outline: 2px solid #ff3d2e; outline-offset: 2px; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-option.is-correct { border-color: #16a34a; background: #f0fdf4; }
+  .quiz-option.is-wrong { border-color: #e11d48; background: #fff1f2; }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Mobile overlay -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="bg-sidebar text-gray-300 w-72 flex-shrink-0 flex flex-col overflow-y-auto">
+    <div class="px-5 py-5 border-b border-white/10">
+      <p class="text-xs uppercase tracking-wide text-gray-400">IAM2 - React Native</p>
+      <h1 class="text-white font-medium text-base mt-1">Développement multiplateforme avec React Native (Expo)</h1>
+      <p class="text-xs text-gray-400 mt-1" id="sidebar-session-title">Session 01 - TypeScript, React et Expo Router</p>
+    </div>
+    <nav class="flex-1 py-2" aria-label="Étapes du codelab">
+      <ul id="step-nav-list">
+        <li data-nav-section="cours" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Cours (90 min)</li>
+        <li>
+          <a href="#step-1" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-1">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">1</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Prérequis &amp; objectifs</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-2" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-2">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">2</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Expo Go, Metro et architecture en couches</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-3" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-3">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">3</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — TypeScript pour développeurs Kotlin et Dart</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-4" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-4">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">4</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Composants, JSX, props et état</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-5" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-5">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">5</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — useEffect et règles des hooks</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-6" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-6">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">6</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Expo Router : les fichiers sont des routes</span>
+          </a>
+        </li>
+        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (90 min)</li>
+        <li>
+          <a href="#step-7" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-7">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">7</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 1 — Créer s1-profile-contacts et l&#x27;afficher sur le téléphone</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-8" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-8">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">8</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 2 — Créer les onglets Profil et Contacts</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-9" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-9">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">9</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 3 — Typer les contacts et les afficher avec FlatList</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-10" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-10">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">10</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 4 — Extraire le composant ContactRow</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-11" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-11">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">11</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 5 — Ouvrir la fiche avec contact/[id].tsx</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-12" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-12">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">12</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 6 — Gérer les favoris avec useState et useEffect</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-13" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-13">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">13</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Défi — recherche dans les contacts</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-14" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-14">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">14</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Checklist d&#x27;évaluation</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-15" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-15">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">15</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Livrable — commit et tag s1-submit</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="px-5 py-4 border-t border-white/10 text-xs text-gray-500">
+      <a href="index.html" class="hover:text-gray-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au sommaire</a>
+    </div>
+  </aside>
+
+  <!-- Main column -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-4">
+      <button id="sidebar-toggle" class="md:hidden text-gray-600 hover:text-gray-900" aria-label="Ouvrir le menu des étapes">
+        <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+      </button>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs text-gray-500">Session 01 - IAM2 React Native</p>
+        <h2 id="current-step-title" class="font-medium text-gray-900 truncate">Prérequis &amp; objectifs</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="prev-step" class="px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape précédente">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Précédent</span>
+        </button>
+        <button id="next-step" class="px-3 py-2 rounded-md bg-brand text-white hover:bg-brand-dark text-sm flex items-center gap-2" aria-label="Étape suivante">
+          <span class="hidden sm:inline">Suivant</span>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress bar -->
+    <div id="progress-track" class="w-full">
+      <div id="progress-bar"></div>
+    </div>
+
+    <!-- Content -->
+    <main id="content" class="flex-1 overflow-y-auto">
+      <div class="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6">
+
+        <!-- Step 1 -->
+        <section id="step-1" class="step-panel is-active" data-title="Prérequis &amp; objectifs">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Vous connaissez Kotlin avec Jetpack Compose et Dart avec Flutter. Cette séance transpose ce que vous savez vers TypeScript et React, puis construit Profile &amp; Contacts : une application à deux onglets, une liste de contacts typés et une fiche de détail, testée sur votre téléphone avec Expo Go.</p>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <div class="text-sm text-gray-800"><p class="font-medium">Avant la séance</p><p class="mt-1">Ouvrez Expo Go sur votre téléphone, installé depuis le store, et lisez la version de SDK qu'il prend en charge. Elle doit correspondre au SDK utilisé sur cette page : SDK 57, et à l'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code> de l'Étape 1. Sur iPhone, seule la version de l'App Store fonctionne : en cas d'écart, attendez la mise à jour de la page au lieu d'installer une autre version d'Expo Go. Vérifiez aussi que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> et Expo Go affichent le même compte Expo.</p></div>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-bullseye text-brand" aria-hidden="true"></i>
+              À la fin de la séance, vous savez
+            </h3>
+            <ol class="list-decimal pl-6 space-y-2 text-gray-700 mb-4">
+              <li>utiliser l'essentiel de TypeScript : types d'objets, unions, génériques dans les signatures, chaînage optionnel, contrôle strict de null et undefined ;</li>
+              <li>expliquer le modèle de React : un composant est une fonction de ses props et de son état, un changement d'état déclenche un nouveau rendu, les données descendent ;</li>
+              <li>utiliser JSX, les props, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect</code> (dépendances, nettoyage) et les règles des hooks, en les reliant à Compose et à Flutter ;</li>
+              <li>expliquer la différence entre Expo Go et un development build, et pourquoi certaines bibliothèques ne fonctionnent pas dans Expo Go ;</li>
+              <li>décrire le routage par fichiers d'Expo Router : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">_layout.tsx</code>, groupe <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">(tabs)</code>, route dynamique <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[id].tsx</code>.</li>
+            </ol>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Prérequis
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Séance 00 terminée : Node.js 24 ou 22, Git, VS Code, Expo Go, compte Expo connecté sur le PC et le téléphone.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Votre dépôt <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code> est cloné sur le PC.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le PC et le téléphone sont sur le même réseau Wi-Fi.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Aucun nouveau paquet à installer pour cette séance.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-clock text-brand" aria-hidden="true"></i>
+              Déroulement
+            </h3>
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Partie</th>
+                    <th scope="col" class="px-3 py-2">Durée</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Cours</th>
+                    <td class="px-3 py-2 align-top">90 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Pause et changement de salle</th>
+                    <td class="px-3 py-2 align-top">10 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Atelier : étapes guidées</th>
+                    <td class="px-3 py-2 align-top">65 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Défi</th>
+                    <td class="px-3 py-2 align-top">15 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Livrable</th>
+                    <td class="px-3 py-2 align-top">10 min</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2 -->
+        <section id="step-2" class="step-panel" data-title="Cours — Expo Go, Metro et architecture en couches">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-layer-group text-brand" aria-hidden="true"></i>
+              Où se place cette séance
+            </h3>
+            <p class="text-sm text-gray-500 mb-3">Durée : 12 min.</p>
+            <figure class="mb-4">
+            <div class="flex flex-col md:flex-row md:items-stretch gap-3">
+              <div class="flex-1 rounded border-2 border-brand p-3 bg-white">
+                <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap">Écran <span class="text-xs font-medium bg-brand text-white rounded px-2 py-0.5">Séance 01</span></p>
+                <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code></p>
+                <p class="text-sm text-gray-600 mt-1">affiche l'interface et réagit aux gestes</p>
+              </div>
+              <div class="flex items-center justify-center text-gray-400"><i class="fa-solid fa-arrow-right hidden md:block" aria-hidden="true"></i><i class="fa-solid fa-arrow-down md:hidden" aria-hidden="true"></i></div>
+              <div class="flex-1 rounded border border-gray-300 p-3 bg-white">
+                <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap">Hook</p>
+                <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features</code></p>
+                <p class="text-sm text-gray-600 mt-1">prépare les données pour l'écran</p>
+              </div>
+              <div class="flex items-center justify-center text-gray-400"><i class="fa-solid fa-arrow-right hidden md:block" aria-hidden="true"></i><i class="fa-solid fa-arrow-down md:hidden" aria-hidden="true"></i></div>
+              <div class="flex-1 rounded border border-gray-300 p-3 bg-white">
+                <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap">Dépôt ou service</p>
+                <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib, src/db</code></p>
+                <p class="text-sm text-gray-600 mt-1">parle à la source de données</p>
+              </div>
+              <div class="flex items-center justify-center text-gray-400"><i class="fa-solid fa-arrow-right hidden md:block" aria-hidden="true"></i><i class="fa-solid fa-arrow-down md:hidden" aria-hidden="true"></i></div>
+              <div class="flex-1 rounded border border-gray-300 p-3 bg-white">
+                <p class="font-medium text-gray-900">Source de données</p>
+                <ul class="text-sm text-gray-600 mt-1 space-y-1">
+                  <li class="inline-flex items-center gap-2 rounded border-2 border-brand px-2 py-0.5">Mémoire (S1) <span class="text-xs font-medium bg-brand text-white rounded px-2 py-0.5">Séance 01</span></li>
+                  <li>SQLite (S2)</li>
+                  <li>API REST (S3)</li>
+                  <li>Firestore (S4)</li>
+                  <li>MQTT (S6)</li>
+                </ul>
+              </div>
+            </div>
+              <figcaption class="text-sm text-gray-600 mt-2">Figure 1.1 — En séance 01, l'écran lit directement des données codées en dur ; les couches intermédiaires arrivent à partir de la séance 02.</figcaption>
+            </figure>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-mobile-screen text-brand" aria-hidden="true"></i>
+              Expo Go et Metro
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Une application React Native a deux parties : votre JavaScript, et du code natif (Kotlin, Swift) qui dessine les vues et donne accès à l'appareil. Expo Go est une application déjà compilée qui contient la partie native d'Expo SDK 57. Votre PC ne compile rien : Metro assemble votre JavaScript et Expo Go le télécharge par le Wi-Fi.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Conséquence : dans Expo Go, vous pouvez changer tout le JavaScript, mais vous ne pouvez pas ajouter de code natif. Une bibliothèque qui apporte son propre code natif demande un development build, c'est-à-dire votre propre application native compilée. Ce cours reste entièrement dans Expo Go ; les development builds sont présentés en séance 07, en théorie seulement.</p>
+            <figure class="mb-4">
+            <div class="flex flex-col md:flex-row md:items-stretch gap-3">
+              <div class="flex-1 rounded border border-gray-300 p-3 bg-white">
+                <p class="font-medium text-gray-900">PC</p>
+                <ul class="text-sm text-gray-600 mt-1 space-y-1">
+                  <li>VS Code : vous modifiez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code></li>
+                  <li>Metro (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>) : assemble le JavaScript</li>
+                </ul>
+              </div>
+              <div class="flex flex-col items-center justify-center text-center text-sm text-gray-700 px-2 md:w-48">
+                <i class="fa-solid fa-wifi text-brand text-lg" aria-hidden="true"></i>
+                <p class="mt-1"><i class="fa-solid fa-arrow-right-arrow-left text-gray-400" aria-hidden="true"></i> Wi-Fi : bundle JavaScript, puis mises à jour Fast Refresh</p>
+              </div>
+              <div class="flex-1 rounded border border-gray-300 p-3 bg-white">
+                <p class="font-medium text-gray-900">Téléphone</p>
+                <ul class="text-sm text-gray-600 mt-1 space-y-1">
+                  <li>Expo Go : moteur JavaScript</li>
+                  <li>Modules natifs du SDK 57, déjà compilés (liste fixe)</li>
+                </ul>
+              </div>
+            </div>
+              <figcaption class="text-sm text-gray-600 mt-2">Figure 1.2 — Seul le JavaScript voyage du PC au téléphone ; la partie native d'Expo Go est fixe.</figcaption>
+            </figure>
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Notion</th>
+                    <th scope="col" class="px-3 py-2">Projet Kotlin (Compose)</th>
+                    <th scope="col" class="px-3 py-2">Flutter</th>
+                    <th scope="col" class="px-3 py-2">React Native avec Expo Go</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Ce qui est compilé à chaque lancement</th>
+                    <td class="px-3 py-2 align-top">APK complet avec Gradle</td>
+                    <td class="px-3 py-2 align-top">application native avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">flutter run</code></td>
+                    <td class="px-3 py-2 align-top">rien : seul le JavaScript est assemblé par Metro</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Mise à jour pendant le développement</th>
+                    <td class="px-3 py-2 align-top">Live Edit</td>
+                    <td class="px-3 py-2 align-top">Hot Reload</td>
+                    <td class="px-3 py-2 align-top">Fast Refresh</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Ajouter une bibliothèque avec du code natif</th>
+                    <td class="px-3 py-2 align-top">possible</td>
+                    <td class="px-3 py-2 align-top">possible</td>
+                    <td class="px-3 py-2 align-top">impossible dans Expo Go (development build nécessaire)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Dépendance au SDK : la liste des modules natifs d'Expo Go change avec chaque SDK. Cette page est écrite pour le SDK 57.</p>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+              Quiz éclair
+            </h3>
+            <div class="quiz-question mb-6" id="quiz-s01-q01" data-answer="c">
+              <p class="font-medium text-gray-900 mb-3">Vous ajoutez avec npm une bibliothèque qui contient son propre code natif Kotlin et Swift, absent d'Expo Go. Que se passe-t-il quand votre écran appelle cette bibliothèque dans Expo Go ?</p>
+              <div class="space-y-2" role="group" aria-label="Réponses à la question 1">
+                <button type="button" class="quiz-option" data-option="a">Expo Go compile le code natif au premier lancement, qui est seulement plus lent.</button>
+                <button type="button" class="quiz-option" data-option="b">npm installe automatiquement une version équivalente écrite en JavaScript.</button>
+                <button type="button" class="quiz-option" data-option="c">L'import JavaScript réussit, mais le module natif est introuvable à l'exécution et l'appel échoue.</button>
+              </div>
+              <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+              <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Expo Go est déjà compilé : il ne peut exécuter que les modules natifs qu'il contient. npm ne télécharge que des fichiers ; rien ne recompile la partie native. Pour une telle bibliothèque, il faut un development build.</p>
+            </div>
+            <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 3 -->
+        <section id="step-3" class="step-panel" data-title="Cours — TypeScript pour développeurs Kotlin et Dart">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-right-left text-brand" aria-hidden="true"></i>
+              Ce qui change par rapport à Kotlin et Dart
+            </h3>
+            <p class="text-sm text-gray-500 mb-3">Durée : 20 min.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">TypeScript est du JavaScript avec des types vérifiés avant l'exécution. Deux différences comptent pour vous. Le typage est structurel : deux types qui ont les mêmes champs sont compatibles, même sans lien d'héritage. Et les types disparaissent à l'exécution : Metro les retire sans les vérifier.</p>
+            <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Une erreur de type n'empêche pas l'application de s'afficher dans Expo Go. Seule la commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> vérifie les types. Elle doit passer sans erreur avant chaque commit, et elle fait partie de la note.</p>
+            </div>
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Notion</th>
+                    <th scope="col" class="px-3 py-2">Kotlin</th>
+                    <th scope="col" class="px-3 py-2">Dart</th>
+                    <th scope="col" class="px-3 py-2">TypeScript</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Forme d'un objet</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">data class Contact(val id: String)</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">class Contact { final String id; }</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">type Contact = { id: string }</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Valeur absente</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">String?</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">String?</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">string | undefined</code>, ou champ <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">email?: string</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Accès sûr</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contact?.email</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contact?.email</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contact?.email</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Valeur par défaut</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">email ?: "aucun"</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">email ?? 'aucun'</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">email ?? 'aucun'</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Choix fermé de valeurs</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">enum class Role { STUDENT, TEACHER }</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">enum Role { student, teacher }</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">type Role = 'student' | 'teacher'</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Liste typée</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">List&lt;Contact&gt;</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">List&lt;Contact&gt;</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Contact[]</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Fonction générique</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">fun &lt;T&gt; first(xs: List&lt;T&gt;): T?</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">T? first&lt;T&gt;(List&lt;T&gt; xs)</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">function first&lt;T&gt;(xs: T[]): T | undefined</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Référence non réassignable</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">val</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">final</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">const</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-gray-700 leading-relaxed"><span class="font-medium">type ou interface ?</span> Les deux décrivent la forme d'un objet. Une interface peut être étendue et fusionnée ; un type peut aussi décrire une union. Dans ce cours, nous écrivons <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">type</code> partout, y compris <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">type Props</code> pour les props d'un composant.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code annoté
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Exemple à lire (TypeScript) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-ts">type ContactRole = 'student' | 'teacher' | 'staff';
+
+type Contact = {
+  id: string;
+  name: string;
+  role: ContactRole;
+  email?: string;
+};
+
+const contacts: Contact[] = [
+  { id: '1', name: 'Amira', role: 'student' },
+  { id: '2', name: 'Karim', role: 'teacher', email: 'karim@example.com' },
+];
+
+// Generic function: works for any type that has a string id.
+function findById&lt;T extends { id: string }&gt;(items: T[], id: string): T | undefined {
+  return items.find((item) =&gt; item.id === id);
+}
+
+// found has the type Contact | undefined: strict null checks force a test.
+const found = findById(contacts, '3');
+
+// Optional chaining stops at the first undefined, ?? gives the default value.
+const emailLength: number = found?.email?.length ?? 0;
+
+// The union is closed: tsc reports an error if a case is missing.
+function roleLabel(role: ContactRole): string {
+  switch (role) {
+    case 'student':
+      return 'Étudiant';
+    case 'teacher':
+      return 'Enseignant';
+    case 'staff':
+      return 'Administration';
+  }
+}
+
+console.log(emailLength, roleLabel('staff'));</code></pre>
+            </div>
+            <p class="text-sm font-medium text-gray-900 mb-2">À lire dans ce code :</p>
+            <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
+              <li>L'union <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">'student' | 'teacher' | 'staff'</code> joue le rôle d'une <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">enum class</code> : toute autre chaîne est refusée par tsc.</li>
+              <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">email?: string</code> signifie <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">string | undefined</code>. Il n'existe pas de null implicite.</li>
+              <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">find</code> renvoie <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">T | undefined</code> : il faut tester le résultat avant de l'utiliser, comme un type nullable en Kotlin.</li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+              Quiz éclair
+            </h3>
+            <div class="quiz-question mb-6" id="quiz-s01-q02" data-answer="a">
+              <p class="font-medium text-gray-900 mb-3">En mode strict, que répond <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> pour ces deux lignes ?</p>
+              <div class="mb-3"><code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-nowrap overflow-x-auto">const found = contacts.find((c) =&gt; c.id === '3');<br>console.log(found.name);</code></div>
+              <div class="space-y-2" role="group" aria-label="Réponses à la question 2">
+                <button type="button" class="quiz-option" data-option="a">Une erreur sur la deuxième ligne : found est peut-être undefined.</button>
+                <button type="button" class="quiz-option" data-option="b">Aucune erreur : find renvoie toujours un Contact, l'exception n'arrive qu'à l'exécution.</button>
+                <button type="button" class="quiz-option" data-option="c">Aucune erreur : found.name vaut null quand le contact est absent, comme un accès sûr en Kotlin.</button>
+              </div>
+              <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+              <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>find renvoie Contact | undefined. Le contrôle strict refuse l'accès direct ; il faut un test (if (found)) ou un accès sûr (found?.name). L'accès sûr n'est jamais automatique.</p>
+            </div>
+            <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 4 -->
+        <section id="step-4" class="step-panel" data-title="Cours — Composants, JSX, props et état">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-cubes text-brand" aria-hidden="true"></i>
+              Un composant est une fonction
+            </h3>
+            <p class="text-sm text-gray-500 mb-3">Durée : 23 min.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Un composant React est une fonction TypeScript qui reçoit des props et renvoie du JSX. React rappelle cette fonction à chaque fois que son état ou ses props changent : c'est le rendu, l'équivalent d'une recomposition en Compose ou d'un appel à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">build()</code> en Flutter.</p>
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Notion</th>
+                    <th scope="col" class="px-3 py-2">Jetpack Compose</th>
+                    <th scope="col" class="px-3 py-2">Flutter</th>
+                    <th scope="col" class="px-3 py-2">React Native</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Composant</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@Composable fun ContactRow(contact: Contact)</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">class ContactRow extends StatelessWidget</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">function ContactRow({ contact }: Props)</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Paramètres</th>
+                    <td class="px-3 py-2 align-top">paramètres de la fonction</td>
+                    <td class="px-3 py-2 align-top">champs du constructeur</td>
+                    <td class="px-3 py-2 align-top">props décrites par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">type Props</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">État local</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">remember { mutableStateOf(0) }</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setState(() =&gt; count++)</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">const [count, setCount] = useState(0)</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Nouveau rendu</th>
+                    <td class="px-3 py-2 align-top">recomposition</td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">build()</code></td>
+                    <td class="px-3 py-2 align-top">la fonction composant est rappelée</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Remonter un événement</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onClick: () -&gt; Unit</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">VoidCallback onTap</code></td>
+                    <td class="px-3 py-2 align-top">prop <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onPress: () =&gt; void</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Mise en page</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Column</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Row</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Column</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Row</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">View</code> avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">flexDirection</code> (colonne par défaut)</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Liste longue</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">LazyColumn</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ListView.builder</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code> (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">data</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">renderItem</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">keyExtractor</code>)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-sm font-medium text-gray-900 mb-2">Règles du JSX :</p>
+            <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
+              <li>Un composant renvoie un seul élément racine.</li>
+              <li>Les accolades insèrent une expression TypeScript : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{contact.name}</code>.</li>
+              <li>Tout texte est dans un composant <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Text</code> ; une chaîne placée directement dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">View</code> provoque une erreur.</li>
+              <li>Un nom de composant commence par une majuscule ; les styles sont des objets créés avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">StyleSheet.create</code>.</li>
+              <li>Une condition s'écrit avec l'opérateur ternaire ; il n'y a pas de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">if</code> dans le JSX.</li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-rotate text-brand" aria-hidden="true"></i>
+              Le cycle de rendu
+            </h3>
+            <figure class="mb-4">
+            <div class="overflow-x-auto">
+              <svg role="img" aria-labelledby="s01-render-title s01-render-desc" viewBox="0 0 720 260" width="720" height="260" class="w-full h-auto min-w-[640px]" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, sans-serif">
+                <title id="s01-render-title">Cycle de rendu d'un composant React</title>
+                <desc id="s01-render-desc">Un événement onPress appelle setCount, qui demande un rendu ; React rappelle la fonction composant, l'interface affiche la nouvelle valeur de count, puis le cycle recommence au prochain événement.</desc>
+                <defs>
+                  <marker id="s01-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 z" fill="#1f2430"/>
+                  </marker>
+                </defs>
+                <rect x="20" y="50" width="150" height="80" rx="10" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+                <text x="95" y="84" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2430">1. Événement</text>
+                <text x="95" y="106" text-anchor="middle" font-size="12" fill="#374151">onPress</text>
+                <rect x="200" y="50" width="150" height="80" rx="10" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+                <text x="275" y="84" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2430">2. Appel de setCount</text>
+                <text x="275" y="106" text-anchor="middle" font-size="12" fill="#374151">demande un rendu</text>
+                <rect x="380" y="50" width="150" height="80" rx="10" fill="#ffffff" stroke="#1f2430" stroke-width="4"/>
+                <text x="455" y="84" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2430">3. Nouveau rendu</text>
+                <text x="455" y="106" text-anchor="middle" font-size="12" fill="#374151">la fonction est rappelée</text>
+                <rect x="560" y="50" width="150" height="80" rx="10" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+                <text x="635" y="84" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2430">4. Interface à jour</text>
+                <text x="635" y="106" text-anchor="middle" font-size="12" fill="#374151">count a la nouvelle valeur</text>
+                <text x="455" y="36" text-anchor="middle" font-size="12" font-style="italic" fill="#1f2430">l'état ne change qu'ici</text>
+                <line x1="170" y1="90" x2="197" y2="90" stroke="#1f2430" stroke-width="1.5" marker-end="url(#s01-arrow)"/>
+                <line x1="350" y1="90" x2="377" y2="90" stroke="#1f2430" stroke-width="1.5" marker-end="url(#s01-arrow)"/>
+                <line x1="530" y1="90" x2="557" y2="90" stroke="#1f2430" stroke-width="1.5" marker-end="url(#s01-arrow)"/>
+                <path d="M635,130 L635,190 L95,190 L95,134" fill="none" stroke="#1f2430" stroke-width="1.5" marker-end="url(#s01-arrow)"/>
+                <text x="365" y="212" text-anchor="middle" font-size="12" fill="#374151">au prochain événement</text>
+              </svg>
+            </div>
+              <figcaption class="text-sm text-gray-600 mt-2">Figure 1.3 — setCount ne modifie pas la variable du rendu en cours : il demande un nouveau rendu, où count aura la nouvelle valeur.</figcaption>
+            </figure>
+            <p class="text-gray-700 leading-relaxed"><span class="font-medium">Flux de données à sens unique.</span> Les props descendent du parent vers l'enfant et sont en lecture seule. Pour modifier une donnée du parent, l'enfant appelle une fonction reçue en prop. C'est le même principe que le state hoisting en Compose.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code annoté
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Exemple à lire (TypeScript) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
+
+type Props = {
+  label: string;
+  step?: number;
+};
+
+export function Counter({ label, step = 1 }: Props) {
+  const [count, setCount] = useState&lt;number&gt;(0);
+
+  const handlePress = () =&gt; {
+    setCount(count + step);
+    // count still holds the value of the current render here.
+    console.log(count);
+  };
+
+  return (
+    &lt;View&gt;
+      &lt;Text&gt;
+        {label} : {count}
+      &lt;/Text&gt;
+      &lt;Pressable onPress={handlePress}&gt;
+        &lt;Text&gt;Ajouter {step}&lt;/Text&gt;
+      &lt;/Pressable&gt;
+    &lt;/View&gt;
+  );
+}</code></pre>
+            </div>
+            <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+              <div class="text-sm text-gray-800"><p class="font-medium">Idée fausse fréquente</p><p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setCount</code> ne fonctionne pas comme une affectation. Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">handlePress</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">console.log(count)</code> affiche l'ancienne valeur. Quand la nouvelle valeur dépend de l'ancienne, passez une fonction : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setCount((value) =&gt; value + step)</code>.</p></div>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+              Quiz éclair
+            </h3>
+            <div class="quiz-question mb-6" id="quiz-s01-q03" data-answer="b">
+              <p class="font-medium text-gray-900 mb-3">count vaut 0. Un gestionnaire onPress exécute deux fois de suite setCount(count + 1). Après le rendu suivant, que vaut count ?</p>
+              <div class="space-y-2" role="group" aria-label="Réponses à la question 3">
+                <button type="button" class="quiz-option" data-option="a">2, car chaque appel ajoute 1.</button>
+                <button type="button" class="quiz-option" data-option="b">1, car les deux appels lisent le même count du rendu en cours.</button>
+                <button type="button" class="quiz-option" data-option="c">0, car React ignore les mises à jour répétées dans un même gestionnaire.</button>
+              </div>
+              <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+              <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Pendant ce rendu, count vaut 0 pour les deux appels : chacun demande la valeur 1. Avec la forme fonctionnelle setCount((value) =&gt; value + 1), appelée deux fois, le résultat serait 2.</p>
+            </div>
+            <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 5 -->
+        <section id="step-5" class="step-panel" data-title="Cours — useEffect et règles des hooks">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-plug text-brand" aria-hidden="true"></i>
+              Synchroniser avec l'extérieur
+            </h3>
+            <p class="text-sm text-gray-500 mb-3">Durée : 18 min.</p>
+            <p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect</code> exécute du code après le rendu, pour synchroniser le composant avec quelque chose d'extérieur à React : un minuteur, un abonnement, plus tard une base de données ou un broker. Ce n'est pas un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onCreate</code> : l'effet peut s'exécuter plusieurs fois, et il n'est pas fait pour calculer une valeur à afficher ni pour réagir à un appui.</p>
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Notion</th>
+                    <th scope="col" class="px-3 py-2">Jetpack Compose</th>
+                    <th scope="col" class="px-3 py-2">Flutter</th>
+                    <th scope="col" class="px-3 py-2">React Native</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Lancer après l'affichage</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">LaunchedEffect(key) { start() }</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initState()</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect(() =&gt; { start(); }, [key])</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Relancer quand une valeur change</th>
+                    <td class="px-3 py-2 align-top">la clé de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">LaunchedEffect</code> change</td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">didUpdateWidget()</code></td>
+                    <td class="px-3 py-2 align-top">une valeur du tableau de dépendances change</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Nettoyer</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">DisposableEffect(key) { onDispose { stop() } }</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">dispose()</code></td>
+                    <td class="px-3 py-2 align-top">la fonction renvoyée par l'effet</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Une seule fois</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">LaunchedEffect(Unit)</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initState()</code></td>
+                    <td class="px-3 py-2 align-top">tableau de dépendances vide <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[]</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-sm font-medium text-gray-900 mb-2">Aide-mémoire, à consulter pendant les étapes :</p>
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Deuxième argument</th>
+                    <th scope="col" class="px-3 py-2">L'effet s'exécute</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">absent</th>
+                    <td class="px-3 py-2 align-top">après chaque rendu</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[]</code></th>
+                    <td class="px-3 py-2 align-top">après le premier rendu seulement ; nettoyage quand le composant disparaît</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[a, b]</code></th>
+                    <td class="px-3 py-2 align-top">après le premier rendu, puis après chaque rendu où <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">a</code> ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">b</code> a changé ; le nettoyage de l'ancien effet passe avant le nouvel effet</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <figure class="mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="rounded border border-gray-300 p-3 bg-white">
+                <p class="font-medium text-gray-900">Rendu 1 (contactId = 1)</p>
+                <ol class="list-decimal pl-5 text-sm text-gray-700 mt-1 space-y-1">
+                  <li>effet(1) démarre</li>
+                </ol>
+              </div>
+              <div class="rounded border border-gray-300 p-3 bg-white">
+                <p class="font-medium text-gray-900">Rendu 2 (contactId = 2)</p>
+                <ol class="list-decimal pl-5 text-sm text-gray-700 mt-1 space-y-1">
+                  <li>nettoyage(1)</li>
+                  <li>effet(2) démarre</li>
+                </ol>
+              </div>
+              <div class="rounded border border-gray-300 p-3 bg-white">
+                <p class="font-medium text-gray-900">L'écran disparaît</p>
+                <ol class="list-decimal pl-5 text-sm text-gray-700 mt-1 space-y-1">
+                  <li>nettoyage(2)</li>
+                </ol>
+              </div>
+            </div>
+              <figcaption class="text-sm text-gray-600 mt-2">Figure 1.4 — Le nettoyage de l'effet précédent s'exécute toujours avant l'effet suivant, et une dernière fois quand le composant disparaît.</figcaption>
+            </figure>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code annoté
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Exemple à lire (TypeScript) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { useEffect, useState } from 'react';
+import { Text } from 'react-native';
+
+type Props = {
+  contactId: string;
+};
+
+export function OnlineTimer({ contactId }: Props) {
+  const [seconds, setSeconds] = useState&lt;number&gt;(0);
+
+  useEffect(() =&gt; {
+    console.log(`start timer for ${contactId}`);
+    const timer = setInterval(() =&gt; {
+      setSeconds((value) =&gt; value + 1);
+    }, 1000);
+
+    // Cleanup: runs before the next effect and when the component disappears.
+    return () =&gt; {
+      console.log(`stop timer for ${contactId}`);
+      clearInterval(timer);
+    };
+  }, [contactId]);
+
+  return &lt;Text&gt;En ligne depuis {seconds} s&lt;/Text&gt;;
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-scale-balanced text-brand" aria-hidden="true"></i>
+              Règles des hooks
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">React reconnaît chaque hook par son ordre d'appel, comme Compose reconnaît un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">remember</code> par sa position dans la fonction. Deux règles en découlent.</p>
+            <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
+              <li>Appeler les hooks au premier niveau du composant : jamais dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">if</code>, une boucle, ni après un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">return</code> anticipé.</li>
+              <li>Appeler les hooks uniquement dans un composant ou dans une fonction dont le nom commence par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">use</code>.</li>
+            </ul>
+            <p class="text-sm font-medium text-gray-900 mb-2 flex items-center gap-2"><i class="fa-solid fa-ban text-rose-500" aria-hidden="true"></i> Interdit :</p>
+            <div class="mb-4"><code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-nowrap overflow-x-auto">if (contact) {<br>&nbsp;&nbsp;const [isFavorite, setIsFavorite] = useState(false);<br>}</code></div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Un hook appelé après un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">return</code> anticipé peut provoquer l'écran rouge <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Rendered more hooks than during the previous render.</code> : le nombre de hooks a changé entre deux rendus. Placez tous les hooks avant le premier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">return</code>.</p>
+            </div>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Dépendance au SDK : le modèle du SDK 57 active React Compiler, qui mémorise les calculs à votre place. N'écrivez ni <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useMemo</code> ni <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useCallback</code> dans ce cours.</p>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+              Quiz éclair
+            </h3>
+            <div class="quiz-question mb-6" id="quiz-s01-q04" data-answer="c">
+              <p class="font-medium text-gray-900 mb-3">Un composant contient useEffect(() =&gt; { console.log('effect'); }) sans tableau de dépendances. L'écran s'ouvre, puis l'utilisateur appuie trois fois sur un bouton qui modifie l'état du composant. Combien de fois « effect » s'affiche-t-il au total ?</p>
+              <div class="space-y-2" role="group" aria-label="Réponses à la question 4">
+                <button type="button" class="quiz-option" data-option="a">1 fois : sans dépendances, l'effet ne s'exécute qu'à l'ouverture.</button>
+                <button type="button" class="quiz-option" data-option="b">3 fois : une fois par appui, mais pas à l'ouverture.</button>
+                <button type="button" class="quiz-option" data-option="c">4 fois : après le premier rendu, puis après chacun des trois rendus suivants.</button>
+              </div>
+              <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+              <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Sans deuxième argument, l'effet s'exécute après chaque rendu. Pour une seule exécution, il faut un tableau vide [] ; pour dépendre d'une valeur, il faut la lister dans le tableau.</p>
+            </div>
+            <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 6 -->
+        <section id="step-6" class="step-panel" data-title="Cours — Expo Router : les fichiers sont des routes">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-sitemap text-brand" aria-hidden="true"></i>
+              Un fichier, une route
+            </h3>
+            <p class="text-sm text-gray-500 mb-3">Durée : 12 min.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Avec Expo Router, vous ne déclarez pas les routes dans un fichier central : chaque fichier de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> est un écran, et son chemin donne son URL. Un fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">_layout.tsx</code> décrit le conteneur de navigation de son dossier (pile ou onglets). Un dossier entre parenthèses regroupe des écrans sans apparaître dans l'URL. Un nom entre crochets est un paramètre.</p>
+            <p class="text-sm font-medium text-gray-900 mb-2">Aide-mémoire, à consulter pendant les étapes :</p>
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Fichier</th>
+                    <th scope="col" class="px-3 py-2">URL</th>
+                    <th scope="col" class="px-3 py-2">Rôle</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code></th>
+                    <td class="px-3 py-2 align-top">aucune</td>
+                    <td class="px-3 py-2 align-top">pile racine (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Stack</code>)</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/_layout.tsx</code></th>
+                    <td class="px-3 py-2 align-top">aucune</td>
+                    <td class="px-3 py-2 align-top">barre d'onglets (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Tabs</code>)</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code></th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/</code></td>
+                    <td class="px-3 py-2 align-top">onglet Profil</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code></th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/contacts</code></td>
+                    <td class="px-3 py-2 align-top">onglet Contacts</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/contact/[id].tsx</code></th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/contact/3</code></td>
+                    <td class="px-3 py-2 align-top">fiche d'un contact, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">id</code> vaut <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">"3"</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <figure class="mb-4">
+            <div class="rounded border-2 border-gray-700 p-3 bg-gray-50">
+              <p class="font-medium text-gray-900 mb-2">Stack (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code>)</p>
+              <div class="flex flex-col md:flex-row gap-3">
+                <div class="flex-1 rounded border border-gray-400 p-3 bg-white">
+                  <p class="font-medium text-gray-900 mb-2">Tabs (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/_layout.tsx</code>)</p>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700">Profil : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">index.tsx</code></div>
+                    <div class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700">Contacts : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contacts.tsx</code></div>
+                  </div>
+                </div>
+                <div class="flex-1 rounded border border-gray-400 p-3 bg-white">
+                  <p class="font-medium text-gray-900 mb-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contact/[id].tsx</code></p>
+                  <p class="text-sm text-gray-700">empilé par-dessus les onglets, bouton retour automatique</p>
+                </div>
+              </div>
+            </div>
+              <figcaption class="text-sm text-gray-600 mt-2">Figure 1.5 — Les onglets sont un écran de la pile racine ; la fiche contact s'empile au-dessus d'eux.</figcaption>
+            </figure>
+            <div class="overflow-x-auto mb-4">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Notion</th>
+                    <th scope="col" class="px-3 py-2">Jetpack Compose</th>
+                    <th scope="col" class="px-3 py-2">Flutter</th>
+                    <th scope="col" class="px-3 py-2">React Native (Expo Router)</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Déclarer une route</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">composable("contact/{id}")</code> dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">NavHost</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">GoRoute(path: '/contact/:id')</code></td>
+                    <td class="px-3 py-2 align-top">le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/contact/[id].tsx</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Naviguer</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">navController.navigate("contact/3")</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">context.push('/contact/3')</code></td>
+                    <td class="px-3 py-2 align-top">composant <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Link</code> avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">href</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Lire le paramètre</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">backStackEntry.arguments?.getString("id")</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">state.pathParameters['id']</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useLocalSearchParams&lt;{ id: string }&gt;()</code></td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium align-top">Onglets</th>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">NavigationBar</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">NavHost</code></td>
+                    <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">StatefulShellRoute</code></td>
+                    <td class="px-3 py-2 align-top">dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">(tabs)</code> et composant <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Tabs</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Un paramètre de route vient d'une URL : c'est toujours une chaîne. C'est pour cela que l'identifiant d'un contact est de type <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">string</code> dans l'atelier.</p>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Dépendance au SDK : cette page décrit Expo Router tel qu'il est livré avec le SDK 57. Le SDK 58 remanie le cœur du routeur ; les imports seront revérifiés à ce moment-là.</p>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+              Quiz éclair
+            </h3>
+            <div class="quiz-question mb-6" id="quiz-s01-q05" data-answer="b">
+              <p class="font-medium text-gray-900 mb-3">Vous créez le fichier src/app/(tabs)/settings.tsx avec un composant exporté par défaut. Quelle URL ouvre cet écran ?</p>
+              <div class="space-y-2" role="group" aria-label="Réponses à la question 5">
+                <button type="button" class="quiz-option" data-option="a">/(tabs)/settings, car l'URL reprend chaque dossier.</button>
+                <button type="button" class="quiz-option" data-option="b">/settings, car un groupe entre parenthèses n'apparaît pas dans l'URL.</button>
+                <button type="button" class="quiz-option" data-option="c">Aucune tant que la route n'est pas déclarée dans un fichier de routes central.</button>
+              </div>
+              <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+              <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Le fichier est la déclaration de la route. Les parenthèses servent seulement à regrouper des écrans sous un même _layout.tsx ; elles ne font pas partie de l'URL.</p>
+            </div>
+            <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 7 -->
+        <section id="step-7" class="step-panel" data-title="Étape 1 — Créer s1-profile-contacts et l&#x27;afficher sur le téléphone">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Créer l'application de la séance dans votre dépôt, la réinitialiser et afficher un premier écran typé sur le téléphone.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un terminal dans le dossier de votre dépôt cloné à la séance 00 (par exemple <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">C:\dev\iam2-rn-prenom-nom</code>). La dernière commande demande s'il faut conserver les fichiers de démarrage : répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>, puis Entrée, pour les supprimer.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx create-expo-app@latest s1-profile-contacts --template default@sdk-57
+cd s1-profile-contacts
+code .
+npm run reset-project</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Si vous avez répondu autrement, un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> existe à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code> : supprimez-le dans l'explorateur de VS Code. Ses fichiers ne compilent plus et feraient échouer la vérification des types.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Remplacez le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> par le code de la carte suivante, avec votre prénom et votre nom, enregistrez, puis lancez le serveur et scannez le QR code (Android : depuis Expo Go ; iPhone : avec l'application Appareil photo).</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx expo start</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Seulement si le QR code ne se connecte pas : mode tunnel. Arrêtez d'abord le serveur avec Ctrl+C — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx expo start --tunnel</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un second terminal dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code> pour la vérification des types. Vous le réutiliserez à chaque étape.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+
+type Student = {
+  firstName: string;
+  lastName: string;
+  group: string;
+};
+
+// Replace with your own first name and last name.
+const student: Student = {
+  firstName: 'Prénom',
+  lastName: 'Nom',
+  group: 'IAM2',
+};
+
+export default function Index() {
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;
+        {student.firstName} {student.lastName}
+      &lt;/Text&gt;
+      &lt;Text style={styles.subtitle}&gt;{student.group} - s1-profile-contacts&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#ffffff',
+  },
+  title: { fontSize: 24, fontWeight: '700', color: '#1f2430' },
+  subtitle: { fontSize: 16, color: '#6b7280' },
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Le téléphone affiche votre prénom et votre nom, puis la ligne IAM2 - s1-profile-contacts. La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans afficher d'erreur.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, Expo Go affiche votre prénom et votre nom.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Après avoir modifié <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">group</code> en <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">'IAM2 - Groupe 1'</code> et enregistré, le téléphone affiche le nouveau texte sans relancer l'application.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche aucune erreur.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> n'existe pas à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code>.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Chaque séance part d'une application neuve créée avec le modèle du SDK 57, pour que le projet et Expo Go utilisent exactement le même SDK. Le script <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> retire l'application de démonstration et laisse un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> minimal.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Supprimez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firstName</code> dans l'objet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">student</code> puis lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> : tsc affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">error TS2741: Property 'firstName' is missing in type '{ lastName: string; group: string; }' but required in type 'Student'.</code> alors que le téléphone affiche quand même l'écran. Metro ne vérifie pas les types : c'est le rôle de tsc. Remettez la ligne ensuite.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 8 -->
+        <section id="step-8" class="step-panel" data-title="Étape 2 — Créer les onglets Profil et Contacts">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Remplacer l'écran unique par deux onglets, Profil et Contacts, décrits par des fichiers dans un groupe (tabs).</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Tous les fichiers se créent dans l'explorateur de VS Code. Dans le champ de création de fichier, saisissez le chemin complet (par exemple <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/_layout.tsx</code>) : VS Code crée les dossiers manquants, parenthèses comprises.</p>
+            <ol class="list-decimal pl-6 space-y-2 text-gray-700 mb-4">
+              <li>Supprimez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> : deux fichiers ne peuvent pas répondre à la même URL <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/</code>.</li>
+              <li>Remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code>.</li>
+              <li>Créez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/_layout.tsx</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code>.</li>
+            </ol>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> (remplacé) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { Stack } from 'expo-router';
+
+export default function RootLayout() {
+  return (
+    &lt;Stack&gt;
+      &lt;Stack.Screen name="(tabs)" options={{ headerShown: false }} /&gt;
+    &lt;/Stack&gt;
+  );
+}</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/_layout.tsx</code> (nouveau) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { Tabs } from 'expo-router';
+
+export default function TabsLayout() {
+  return (
+    &lt;Tabs
+      screenOptions={{
+        tabBarIcon: () =&gt; null,
+        tabBarLabelStyle: { fontSize: 14 },
+      }}
+    &gt;
+      &lt;Tabs.Screen name="index" options={{ title: 'Profil' }} /&gt;
+      &lt;Tabs.Screen name="contacts" options={{ title: 'Contacts' }} /&gt;
+    &lt;/Tabs&gt;
+  );
+}</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code> (nouveau) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+
+type Track = 'IAM1' | 'IAM2';
+
+type Profile = {
+  firstName: string;
+  lastName: string;
+  track: Track;
+  email?: string;
+};
+
+// Replace with your own first name and last name.
+const profile: Profile = {
+  firstName: 'Prénom',
+  lastName: 'Nom',
+  track: 'IAM2',
+};
+
+export default function ProfileScreen() {
+  const initials = `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`.toUpperCase();
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;View style={styles.avatar}&gt;
+        &lt;Text style={styles.avatarText}&gt;{initials}&lt;/Text&gt;
+      &lt;/View&gt;
+      &lt;Text style={styles.name}&gt;
+        {profile.firstName} {profile.lastName}
+      &lt;/Text&gt;
+      &lt;Text style={styles.line}&gt;Parcours : {profile.track}&lt;/Text&gt;
+      &lt;Text style={styles.line}&gt;E-mail : {profile.email ?? 'non renseigné'}&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    padding: 24,
+    backgroundColor: '#ffffff',
+  },
+  avatar: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1f2430',
+    marginBottom: 8,
+  },
+  avatarText: { fontSize: 36, fontWeight: '700', color: '#ffffff' },
+  name: { fontSize: 24, fontWeight: '700', color: '#1f2430' },
+  line: { fontSize: 16, color: '#374151' },
+});</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code> (nouveau, provisoire) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+
+export default function ContactsScreen() {
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.text}&gt;Aucun contact pour le moment.&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' },
+  text: { fontSize: 16, color: '#6b7280' },
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Une barre d'onglets en bas de l'écran propose Profil et Contacts. L'onglet Profil affiche vos initiales dans un cercle, votre nom, le parcours IAM2 et « E-mail : non renseigné ».</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, un appui sur Contacts affiche « Aucun contact pour le moment. », un appui sur Profil revient au profil.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Après avoir ajouté <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">email: 'vous@example.com'</code> dans l'objet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">profile</code> et enregistré, la ligne E-mail affiche cette adresse.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche aucune erreur.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">(tabs)</code> regroupe les deux écrans sous un même <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">_layout.tsx</code> sans ajouter de segment à l'URL. Le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">_layout.tsx</code> joue le rôle du <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">NavHost</code> ou du <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ShellRoute</code> : il décide comment ses écrans enfants sont présentés. Le champ <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">email?: string</code> oblige à prévoir le cas absent, ici avec l'opérateur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">??</code>.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Une chaîne placée directement dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">View</code> affiche l'écran rouge <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Text strings must be rendered within a &lt;Text&gt; component.</code> : entourez tout texte d'un composant <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Text</code>. Si Expo Go affiche une erreur de route après la création des onglets, vérifiez que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> a bien été supprimé et que chaque fichier d'écran exporte son composant avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">export default</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 9 -->
+        <section id="step-9" class="step-panel" data-title="Étape 3 — Typer les contacts et les afficher avec FlatList">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Décrire un contact avec un type, créer huit contacts codés en dur dans src/features, et les afficher avec FlatList.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé. Avant de créer les fichiers, ouvrez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tsconfig.json</code> à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code> et vérifiez que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">compilerOptions</code> contient l'alias suivant, qui fait pointer <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@/</code> vers le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src</code>. S'il pointe ailleurs, corrigez la ligne, enregistrez, puis arrêtez et relancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+            <p class="text-sm text-gray-600 mb-2">Lignes attendues dans compilerOptions de tsconfig.json :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le JSON">Copier</button>
+              <pre><code class="language-json">"paths": {
+  "@/*": ["./src/*"]
+}</code></pre>
+            </div>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Dépendance au SDK : cet alias est fourni par le modèle du SDK 57. Si votre fichier contient d'autres alias en plus de celui-ci, conservez-les.</p>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/contacts/contacts.ts</code> (nouveau) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-ts">export type ContactRole = 'student' | 'teacher' | 'staff';
+
+export type Contact = {
+  id: string;
+  name: string;
+  role: ContactRole;
+  phone: string;
+  email?: string;
+};
+
+export const ROLE_LABELS: Record&lt;ContactRole, string&gt; = {
+  student: 'Étudiant',
+  teacher: 'Enseignant',
+  staff: 'Administration',
+};
+
+export const CONTACTS: Contact[] = [
+  { id: '1', name: 'Amira Ben Salah', role: 'student', phone: '+216 00 000 001', email: 'amira.bensalah@example.com' },
+  { id: '2', name: 'Karim Trabelsi', role: 'teacher', phone: '+216 00 000 002', email: 'karim.trabelsi@example.com' },
+  { id: '3', name: 'Sarra Gharbi', role: 'student', phone: '+216 00 000 003' },
+  { id: '4', name: 'Youssef Hammami', role: 'student', phone: '+216 00 000 004', email: 'youssef.hammami@example.com' },
+  { id: '5', name: 'Ines Jaziri', role: 'staff', phone: '+216 00 000 005', email: 'ines.jaziri@example.com' },
+  { id: '6', name: 'Mehdi Chaabane', role: 'student', phone: '+216 00 000 006' },
+  { id: '7', name: 'Nour Mansouri', role: 'teacher', phone: '+216 00 000 007', email: 'nour.mansouri@example.com' },
+  { id: '8', name: 'Omar Zidi', role: 'student', phone: '+216 00 000 008', email: 'omar.zidi@example.com' },
+];
+
+export function getContactById(id: string): Contact | undefined {
+  return CONTACTS.find((contact) =&gt; contact.id === id);
+}</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code> (remplacé) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { FlatList, StyleSheet, Text, View } from 'react-native';
+
+import { CONTACTS, ROLE_LABELS } from '@/features/contacts/contacts';
+
+function Separator() {
+  return &lt;View style={styles.separator} /&gt;;
+}
+
+export default function ContactsScreen() {
+  return (
+    &lt;FlatList
+      style={styles.list}
+      data={CONTACTS}
+      keyExtractor={(contact) =&gt; contact.id}
+      renderItem={({ item }) =&gt; (
+        &lt;View style={styles.row}&gt;
+          &lt;Text style={styles.name}&gt;{item.name}&lt;/Text&gt;
+          &lt;Text style={styles.role}&gt;{ROLE_LABELS[item.role]}&lt;/Text&gt;
+        &lt;/View&gt;
+      )}
+      ItemSeparatorComponent={Separator}
+      ListEmptyComponent={&lt;Text style={styles.empty}&gt;Aucun contact.&lt;/Text&gt;}
+    /&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  list: { flex: 1, backgroundColor: '#ffffff' },
+  row: { paddingHorizontal: 16, paddingVertical: 12 },
+  name: { fontSize: 16, fontWeight: '600', color: '#1f2430' },
+  role: { fontSize: 14, color: '#6b7280', marginTop: 2 },
+  separator: { height: 1, backgroundColor: '#e5e7eb', marginLeft: 16 },
+  empty: { padding: 24, textAlign: 'center', color: '#6b7280' },
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">L'onglet Contacts affiche huit lignes séparées par un trait : le nom en gras, puis le rôle en français (Étudiant, Enseignant ou Administration).</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, la liste affiche huit contacts, d'Amira Ben Salah à Omar Zidi, et défile.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Après avoir ajouté un neuvième contact avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">role: 'student'</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">CONTACTS</code> et enregistré, il apparaît en bas de la liste.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Si vous écrivez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">role: 'guest'</code> pour ce contact, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> signale une erreur ; remettez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">'student'</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche aucune erreur.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code> ne crée que les lignes visibles, comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">LazyColumn</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ListView.builder</code>. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">keyExtractor</code> donne à React une identité stable pour chaque ligne, comme le paramètre <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">key</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">items()</code> en Compose. Le type <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Record&lt;ContactRole, string&gt;</code> oblige <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ROLE_LABELS</code> à fournir un libellé pour chaque rôle : ajoutez un rôle à l'union et tsc signale le libellé manquant.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si Metro affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve "@/features/contacts/contacts" from "src/app/(tabs)/contacts.tsx"</code>, le fichier n'est pas à cet emplacement ou l'alias <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@/</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tsconfig.json</code> ne pointe pas vers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src</code>. La même cause donne avec tsc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">error TS2307: Cannot find module '@/features/contacts/contacts' or its corresponding type declarations.</code></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 10 -->
+        <section id="step-10" class="step-panel" data-title="Étape 4 — Extraire le composant ContactRow">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Déplacer l'affichage d'une ligne dans un composant réutilisable ContactRow, avec des props typées.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé. Créez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/ContactRow.tsx</code>, puis modifiez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code>.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/ContactRow.tsx</code> (nouveau) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+
+import { ROLE_LABELS, type Contact } from '@/features/contacts/contacts';
+
+type Props = {
+  contact: Contact;
+};
+
+export function ContactRow({ contact }: Props) {
+  const initial = contact.name.charAt(0).toUpperCase();
+
+  return (
+    &lt;View style={styles.row}&gt;
+      &lt;View style={styles.avatar}&gt;
+        &lt;Text style={styles.avatarText}&gt;{initial}&lt;/Text&gt;
+      &lt;/View&gt;
+      &lt;View style={styles.texts}&gt;
+        &lt;Text style={styles.name}&gt;{contact.name}&lt;/Text&gt;
+        &lt;Text style={styles.role}&gt;{ROLE_LABELS[contact.role]}&lt;/Text&gt;
+      &lt;/View&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 10 },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1f2430',
+  },
+  avatarText: { fontSize: 16, fontWeight: '700', color: '#ffffff' },
+  texts: { flex: 1 },
+  name: { fontSize: 16, fontWeight: '600', color: '#1f2430' },
+  role: { fontSize: 14, color: '#6b7280', marginTop: 2 },
+});</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code>, trois modifications. D'abord, les deux lignes d'import en haut du fichier deviennent les trois lignes suivantes :</p>
+            <p class="text-sm text-gray-600 mb-2">Haut du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code> (imports remplacés) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { FlatList, StyleSheet, Text, View } from 'react-native';
+
+import { ContactRow } from '@/components/ContactRow';
+import { CONTACTS } from '@/features/contacts/contacts';</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Ensuite, la prop <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">renderItem</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code>, qui occupait six lignes, devient une seule ligne :</p>
+            <p class="text-sm text-gray-600 mb-2">Prop <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">renderItem</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code> (remplacée) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">      renderItem={({ item }) =&gt; &lt;ContactRow contact={item} /&gt;}</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Enfin, dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">StyleSheet.create</code>, supprimez les entrées <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">row</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">name</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">role</code>, et passez le <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">marginLeft</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">separator</code> de 16 à 68, pour que le trait commence après le cercle de l'initiale.</p>
+            <details class="mb-4">
+              <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir le fichier complet à ce stade</summary>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code> (complet) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { FlatList, StyleSheet, Text, View } from 'react-native';
+
+import { ContactRow } from '@/components/ContactRow';
+import { CONTACTS } from '@/features/contacts/contacts';
+
+function Separator() {
+  return &lt;View style={styles.separator} /&gt;;
+}
+
+export default function ContactsScreen() {
+  return (
+    &lt;FlatList
+      style={styles.list}
+      data={CONTACTS}
+      keyExtractor={(contact) =&gt; contact.id}
+      renderItem={({ item }) =&gt; &lt;ContactRow contact={item} /&gt;}
+      ItemSeparatorComponent={Separator}
+      ListEmptyComponent={&lt;Text style={styles.empty}&gt;Aucun contact.&lt;/Text&gt;}
+    /&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  list: { flex: 1, backgroundColor: '#ffffff' },
+  separator: { height: 1, backgroundColor: '#e5e7eb', marginLeft: 68 },
+  empty: { padding: 24, textAlign: 'center', color: '#6b7280' },
+});</code></pre>
+            </div>
+            </details>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Chaque ligne affiche maintenant un cercle avec l'initiale du contact, puis son nom et son rôle.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, les huit lignes affichent une initiale dans un cercle sombre.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche aucune erreur.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>En écrivant temporairement <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;ContactRow /&gt;</code> sans prop dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contacts.tsx</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> signale la prop manquante ; remettez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contact={item}</code>.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ContactRow</code> est une fonction pure de ses props, comme un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@Composable</code> sans état ou un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">StatelessWidget</code>. Le type <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Props</code> est son contrat : l'écran qui l'utilise ne peut ni oublier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contact</code> ni lui passer autre chose qu'un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Contact</code>. Les composants réutilisables vont dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code> avec un export nommé ; seuls les fichiers de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> utilisent <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">export default</code>.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Une prop oubliée donne avec tsc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">error TS2741: Property 'contact' is missing in type '{}' but required in type 'Props'.</code> Un composant importé avec des accolades alors qu'il est exporté par défaut, ou l'inverse, vaut <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">undefined</code> à l'exécution et provoque un écran rouge : vérifiez que l'import <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{ ContactRow }</code> correspond à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">export function ContactRow</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 11 -->
+        <section id="step-11" class="step-panel" data-title="Étape 5 — Ouvrir la fiche avec contact/[id].tsx">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 13 min. Rendre chaque ligne cliquable et afficher la fiche du contact dans une route dynamique qui lit l'identifiant dans l'URL.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé, et il doit le rester : c'est lui qui génère les types des routes utilisés par tsc. Créez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/contact/[id].tsx</code> dans l'explorateur de VS Code (les crochets font partie du nom), puis modifiez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/ContactRow.tsx</code>.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/contact/[id].tsx</code> (nouveau) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { Stack, useLocalSearchParams } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { getContactById, ROLE_LABELS } from '@/features/contacts/contacts';
+
+export default function ContactDetailScreen() {
+  const { id } = useLocalSearchParams&lt;{ id: string }&gt;();
+  const contact = getContactById(id);
+
+  if (!contact) {
+    return (
+      &lt;View style={styles.container}&gt;
+        &lt;Stack.Screen options={{ title: 'Contact introuvable' }} /&gt;
+        &lt;Text style={styles.name}&gt;Contact introuvable&lt;/Text&gt;
+        &lt;Text style={styles.line}&gt;Identifiant demandé : {id}&lt;/Text&gt;
+      &lt;/View&gt;
+    );
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Stack.Screen options={{ title: contact.name }} /&gt;
+      &lt;Text style={styles.name}&gt;{contact.name}&lt;/Text&gt;
+      &lt;Text style={styles.line}&gt;Rôle : {ROLE_LABELS[contact.role]}&lt;/Text&gt;
+      &lt;Text style={styles.line}&gt;Téléphone : {contact.phone}&lt;/Text&gt;
+      &lt;Text style={styles.line}&gt;E-mail : {contact.email ?? 'non renseigné'}&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, gap: 8, padding: 24, backgroundColor: '#ffffff' },
+  name: { fontSize: 24, fontWeight: '700', color: '#1f2430', marginBottom: 8 },
+  line: { fontSize: 16, color: '#374151' },
+});</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code>, ajoutez une ligne dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Stack</code>, juste après l'écran <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">(tabs)</code> :</p>
+            <p class="text-sm text-gray-600 mb-2">Ligne ajoutée dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">      &lt;Stack.Screen name="contact/[id]" options={{ title: 'Contact', headerBackTitle: 'Retour' }} /&gt;</code></pre>
+            </div>
+            <details class="mb-4">
+              <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir le fichier complet à ce stade</summary>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> (complet) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { Stack } from 'expo-router';
+
+export default function RootLayout() {
+  return (
+    &lt;Stack&gt;
+      &lt;Stack.Screen name="(tabs)" options={{ headerShown: false }} /&gt;
+      &lt;Stack.Screen name="contact/[id]" options={{ title: 'Contact', headerBackTitle: 'Retour' }} /&gt;
+    &lt;/Stack&gt;
+  );
+}</code></pre>
+            </div>
+            </details>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/ContactRow.tsx</code> (restructuré : la ligne devient un lien) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { Link } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { ROLE_LABELS, type Contact } from '@/features/contacts/contacts';
+
+type Props = {
+  contact: Contact;
+};
+
+export function ContactRow({ contact }: Props) {
+  const initial = contact.name.charAt(0).toUpperCase();
+
+  return (
+    &lt;Link href={{ pathname: '/contact/[id]', params: { id: contact.id } }} asChild&gt;
+      &lt;Pressable style={styles.row}&gt;
+        &lt;View style={styles.avatar}&gt;
+          &lt;Text style={styles.avatarText}&gt;{initial}&lt;/Text&gt;
+        &lt;/View&gt;
+        &lt;View style={styles.texts}&gt;
+          &lt;Text style={styles.name}&gt;{contact.name}&lt;/Text&gt;
+          &lt;Text style={styles.role}&gt;{ROLE_LABELS[contact.role]}&lt;/Text&gt;
+        &lt;/View&gt;
+      &lt;/Pressable&gt;
+    &lt;/Link&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 10 },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1f2430',
+  },
+  avatarText: { fontSize: 16, fontWeight: '700', color: '#ffffff' },
+  texts: { flex: 1 },
+  name: { fontSize: 16, fontWeight: '600', color: '#1f2430' },
+  role: { fontSize: 14, color: '#6b7280', marginTop: 2 },
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Un appui sur un contact ouvre sa fiche par-dessus les onglets : le titre de l'écran est le nom du contact, suivi de son rôle, de son téléphone et de son e-mail. Le bouton retour ramène à la liste.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, un appui sur Karim Trabelsi ouvre une fiche intitulée Karim Trabelsi avec le rôle Enseignant.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La fiche de Sarra Gharbi affiche « E-mail : non renseigné ».</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le bouton retour ramène à l'onglet Contacts, à la même position de défilement.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>En remplaçant temporairement <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">params: { id: contact.id }</code> par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">params: { id: '99' }</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ContactRow</code>, la fiche affiche « Contact introuvable » ; remettez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contact.id</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche aucune erreur.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[id].tsx</code> est une route à paramètre, comme une route <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contact/{id}</code> dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">NavHost</code> ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/contact/:id</code> avec GoRouter. Seul l'identifiant voyage dans l'URL ; l'écran retrouve le contact avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getContactById</code>. Comme la fonction renvoie <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Contact | undefined</code>, TypeScript impose de traiter le cas introuvable avant d'afficher la fiche.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Sans le test <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">if (!contact)</code>, tsc affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">error TS18048: 'contact' is possibly 'undefined'.</code> Si tsc refuse la valeur de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">href</code> alors que le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[id].tsx</code> existe, les types des routes ne sont pas à jour : vérifiez que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> est lancé, puis relancez tsc. Les hooks (ici <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useLocalSearchParams</code>) s'appellent toujours avant le premier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">return</code>.</p>
+            </div>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Dépendance au SDK : la vérification de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">href</code> par TypeScript vient des routes typées, activées dans le modèle du SDK 57.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 12 -->
+        <section id="step-12" class="step-panel" data-title="Étape 6 — Gérer les favoris avec useState et useEffect">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 12 min. Ajouter un bouton favori sur chaque ligne. L'état vit dans l'écran Contacts, qui le transmet à ContactRow par des props ; un effet journalise chaque changement.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé. Gardez le Terminal 1 visible : l'effet y écrit une ligne à chaque changement des favoris. Remplacez les deux fichiers de la carte suivante.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/ContactRow.tsx</code> (restructuré : deux zones cliquables côte à côte) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { Link } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { ROLE_LABELS, type Contact } from '@/features/contacts/contacts';
+
+type Props = {
+  contact: Contact;
+  isFavorite: boolean;
+  onToggleFavorite: () =&gt; void;
+};
+
+export function ContactRow({ contact, isFavorite, onToggleFavorite }: Props) {
+  const initial = contact.name.charAt(0).toUpperCase();
+
+  return (
+    &lt;View style={styles.row}&gt;
+      &lt;Link href={{ pathname: '/contact/[id]', params: { id: contact.id } }} asChild&gt;
+        &lt;Pressable style={styles.main}&gt;
+          &lt;View style={styles.avatar}&gt;
+            &lt;Text style={styles.avatarText}&gt;{initial}&lt;/Text&gt;
+          &lt;/View&gt;
+          &lt;View style={styles.texts}&gt;
+            &lt;Text style={styles.name}&gt;{contact.name}&lt;/Text&gt;
+            &lt;Text style={styles.role}&gt;{ROLE_LABELS[contact.role]}&lt;/Text&gt;
+          &lt;/View&gt;
+        &lt;/Pressable&gt;
+      &lt;/Link&gt;
+      &lt;Pressable
+        style={[styles.favorite, isFavorite &amp;&amp; styles.favoriteActive]}
+        onPress={onToggleFavorite}
+        accessibilityRole="button"
+        accessibilityState={{ selected: isFavorite }}
+      &gt;
+        &lt;Text style={[styles.favoriteText, isFavorite &amp;&amp; styles.favoriteTextActive]}&gt;
+          {isFavorite ? 'Favori' : 'Ajouter'}
+        &lt;/Text&gt;
+      &lt;/Pressable&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 10 },
+  main: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1f2430',
+  },
+  avatarText: { fontSize: 16, fontWeight: '700', color: '#ffffff' },
+  texts: { flex: 1 },
+  name: { fontSize: 16, fontWeight: '600', color: '#1f2430' },
+  role: { fontSize: 14, color: '#6b7280', marginTop: 2 },
+  favorite: {
+    minWidth: 76,
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#9ca3af',
+  },
+  favoriteActive: { backgroundColor: '#1f2430', borderColor: '#1f2430' },
+  favoriteText: { fontSize: 13, fontWeight: '600', color: '#1f2430' },
+  favoriteTextActive: { color: '#ffffff' },
+});</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/contacts.tsx</code> (restructuré : l'écran possède l'état) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+
+import { ContactRow } from '@/components/ContactRow';
+import { CONTACTS } from '@/features/contacts/contacts';
+
+function Separator() {
+  return &lt;View style={styles.separator} /&gt;;
+}
+
+export default function ContactsScreen() {
+  const [favoriteIds, setFavoriteIds] = useState&lt;string[]&gt;([]);
+
+  useEffect(() =&gt; {
+    console.log(`Favorites: ${favoriteIds.length}`);
+  }, [favoriteIds]);
+
+  const toggleFavorite = (id: string) =&gt; {
+    setFavoriteIds((current) =&gt;
+      current.includes(id) ? current.filter((value) =&gt; value !== id) : [...current, id],
+    );
+  };
+
+  return (
+    &lt;FlatList
+      style={styles.list}
+      data={CONTACTS}
+      extraData={favoriteIds}
+      keyExtractor={(contact) =&gt; contact.id}
+      renderItem={({ item }) =&gt; (
+        &lt;ContactRow
+          contact={item}
+          isFavorite={favoriteIds.includes(item.id)}
+          onToggleFavorite={() =&gt; toggleFavorite(item.id)}
+        /&gt;
+      )}
+      ItemSeparatorComponent={Separator}
+      ListHeaderComponent={
+        &lt;Text style={styles.header}&gt;
+          Favoris : {favoriteIds.length} sur {CONTACTS.length}
+        &lt;/Text&gt;
+      }
+      ListEmptyComponent={&lt;Text style={styles.empty}&gt;Aucun contact.&lt;/Text&gt;}
+    /&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  list: { flex: 1, backgroundColor: '#ffffff' },
+  header: { paddingHorizontal: 16, paddingVertical: 12, fontSize: 14, fontWeight: '600', color: '#374151' },
+  separator: { height: 1, backgroundColor: '#e5e7eb', marginLeft: 68 },
+  empty: { padding: 24, textAlign: 'center', color: '#6b7280' },
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Chaque ligne se termine par un bouton « Ajouter ». Un appui le transforme en « Favori » sur fond sombre et l'en-tête de la liste affiche « Favoris : 1 sur 8 ». Le Terminal 1 écrit une ligne contenant <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Favorites: 1</code>.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, après un appui sur le bouton de trois contacts, l'en-tête affiche « Favoris : 3 sur 8 ».</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un second appui sur l'un d'eux remet « Ajouter » et l'en-tête affiche « Favoris : 2 sur 8 ».</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur le nom d'un contact ouvre toujours sa fiche ; au retour, les favoris sont conservés.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le Terminal 1 a écrit une ligne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Favorites</code> à l'ouverture de l'écran (valeur 0), puis une par changement.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche aucune erreur.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> L'état est placé dans le parent qui en a besoin pour le compteur, et descend vers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ContactRow</code> par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">isFavorite</code> ; l'enfant remonte l'intention par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onToggleFavorite</code>. C'est le state hoisting de Compose. Le tableau n'est jamais modifié sur place : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">filter</code> et la syntaxe <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[...current, id]</code> créent un nouveau tableau, et c'est ce changement de référence que React détecte. L'effet s'exécute après le rendu, à l'ouverture puis à chaque nouvelle valeur de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">favoriteIds</code>.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">current.push(id)</code>, le tableau garde la même référence : React ne voit aucun changement et l'écran ne se met pas à jour, sans message d'erreur. Sans la prop <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">extraData</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code> ne redessine pas les lignes quand seuls les favoris changent. Si vous fermez puis rouvrez l'application, les favoris sont perdus : l'état vit en mémoire. La persistance arrive en séance 02, le partage entre écrans en séance 03.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 13 -->
+        <section id="step-13" class="step-panel" data-title="Défi — recherche dans les contacts">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 15 min, sans guidage. Ajouter au-dessus de la liste un champ de recherche qui filtre les contacts par leur nom, à chaque caractère saisi.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Cahier des charges
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un champ de saisie avec le texte indicatif « Rechercher un contact » est affiché au-dessus de la liste.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La liste n'affiche que les contacts dont le nom contient le texte saisi, sans tenir compte des majuscules.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Quand aucun nom ne correspond, la liste affiche « Aucun contact. ».</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Les boutons de favoris fonctionnent pendant la recherche et le compteur continue de compter tous les favoris, pas seulement ceux affichés.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche aucune erreur.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-compass text-brand" aria-hidden="true"></i>
+              Indices
+            </h3>
+            <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
+              <li>Le composant <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TextInput</code> de react-native est contrôlé par deux props : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">value</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onChangeText</code>. C'est l'équivalent d'un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TextField</code> dont la valeur vient d'un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">mutableStateOf</code>.</li>
+              <li>Un seul nouvel état suffit : le texte saisi. La liste filtrée se calcule pendant le rendu à partir de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">CONTACTS</code> et de ce texte ; ne la stockez pas dans un second état et n'utilisez pas <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect</code> pour la calculer.</li>
+              <li>Les méthodes <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">toLowerCase</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">includes</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">filter</code> suffisent.</li>
+              <li>Le champ peut être placé au-dessus de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code> dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">View</code> parent avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">flex: 1</code>, ou dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ListHeaderComponent</code> ; comparez le comportement du clavier dans les deux cas.</li>
+            </ul>
+            <p class="text-gray-700 leading-relaxed"><span class="font-medium">Pour aller plus loin.</span> Ignorez aussi les accents avec la méthode <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">normalize</code>, pour que « ines » trouve un nom écrit avec un accent.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Une valeur qui se déduit de l'état existant n'est pas un état : elle se recalcule à chaque rendu, comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">derivedStateOf</code> en Compose ou un getter dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">State</code> Flutter. Moins il y a d'états, moins il y a d'incohérences possibles.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Stocker la liste filtrée dans un second <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code> oblige à la resynchroniser à chaque frappe et à chaque changement de favoris ; un oubli suffit pour afficher une liste périmée.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 14 -->
+        <section id="step-14" class="step-panel" data-title="Checklist d&#x27;évaluation">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-check text-brand" aria-hidden="true"></i>
+              Checklist d'évaluation
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Cochez chaque point sur votre téléphone avant de passer au livrable. Ces points reprennent le barème des ateliers (sur 10).</p>
+            <p class="text-sm font-medium text-gray-900 mt-4 mb-2">Fonctionnement dans Expo Go</p>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>L'application s'ouvre dans Expo Go sans écran rouge.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Les onglets Profil et Contacts sont accessibles ; le profil affiche votre prénom et votre nom.</span></li>
+            </ul>
+            <p class="text-sm font-medium text-gray-900 mt-4 mb-2">Fonctionnalités</p>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La liste affiche au moins huit contacts avec initiale, nom et rôle.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur un contact ouvre sa fiche ; le titre est son nom ; le retour ramène à la liste.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un identifiant inconnu affiche « Contact introuvable ».</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le bouton de favori bascule entre « Ajouter » et « Favori » ; l'en-tête compte les favoris.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Défi : le champ de recherche filtre la liste par nom.</span></li>
+            </ul>
+            <p class="text-sm font-medium text-gray-900 mt-4 mb-2">TypeScript</p>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche aucune erreur.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le code ne contient ni <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">any</code> ni <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@ts-ignore</code>.</span></li>
+            </ul>
+            <p class="text-sm font-medium text-gray-900 mt-4 mb-2">Structure</p>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Les écrans sont dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ContactRow</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code>, les données dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/contacts</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> n'existe pas.</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Step 15 -->
+        <section id="step-15" class="step-panel" data-title="Livrable — commit et tag s1-submit">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Remettre l'application : un README avec une capture d'écran du téléphone et la sortie d'expo-doctor, un commit, et le tag <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-submit</code> poussé sur GitHub. Date limite : jeudi 23:59 après la séance. C'est le tag qui est noté.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Le serveur du Terminal 1 peut rester lancé. Dans le Terminal 2 (dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code>), lancez les deux vérifications et gardez la sortie de la seconde.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx tsc --noEmit
+npx expo-doctor@latest</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Seulement si expo-doctor signale des versions de paquets incompatibles avec le SDK — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx expo install --fix</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Sur le téléphone, faites une capture d'écran de l'onglet Contacts avec au moins un favori. Copiez l'image sur le PC dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts/screenshots/s1-phone.png</code>. Remplacez ensuite le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code> (dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code>) par le modèle de la carte suivante, complétez-le et enregistrez.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Enregistrez et publiez, puis posez le tag.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">git add .
+git commit -m "Add s1-profile-contacts"
+git push
+git tag s1-submit
+git push origin s1-submit</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-file-lines text-brand" aria-hidden="true"></i>
+              README.md
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts/README.md</code> :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le README">Copier</button>
+              <pre><code class="language-markup"># s1-profile-contacts
+
+Séance 01 - Profile &amp; Contacts (IAM2, React Native avec Expo)
+
+## Auteur
+
+Prénom Nom
+
+## Ce qui est réalisé
+
+- Onglets Profil et Contacts avec Expo Router
+- Liste de contacts typés avec FlatList et le composant ContactRow
+- Fiche de détail contact/[id]
+- Favoris avec useState
+- Défi (recherche) : fait ou non fait
+
+## Capture d'écran
+
+![Onglet Contacts sur le téléphone](screenshots/s1-phone.png)
+
+## Environnement
+
+- Expo SDK : 57
+- Téléphone : modèle et version du système
+- Expo Go : version affichée dans l'application
+
+## Sortie de npx expo-doctor@latest
+
+Collez ici la sortie complète de la commande, dans un bloc de code.</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Résultat et vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur github.com, le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code> s'ouvre et affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">package.json</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le README affiche la capture d'écran du téléphone et la sortie d'expo-doctor.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La page des tags du dépôt liste <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-submit</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, l'application du commit remis s'ouvre toujours dans Expo Go.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le correcteur clone votre dépôt au tag <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-submit</code>, lance <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm install</code> puis <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>, et scanne le QR code. Tout ce qui n'est pas dans le commit du tag n'existe pas pour lui. Le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node_modules</code> n'est pas versionné : il est recréé par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm install</code>.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Un tag posé avant le dernier commit ne contient pas vos dernières modifications. Si vous corrigez après coup, refaites un commit, puis déplacez le tag avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git tag -f s1-submit</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git push -f origin s1-submit</code>, avant la date limite.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Prism core + autoloader (pinned 1.29.0) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script>
+  Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+</script>
+
+<!-- Navigation JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.step-panel'));
+  var stepIds = panels.map(function (p) { return p.id; });
+  var sidebarLinks = Array.prototype.slice.call(document.querySelectorAll('.step-link'));
+  var titleEl = document.getElementById('current-step-title');
+  var prevBtn = document.getElementById('prev-step');
+  var nextBtn = document.getElementById('next-step');
+  var progressBar = document.getElementById('progress-bar');
+  var sidebar = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebar-overlay');
+  var sidebarToggle = document.getElementById('sidebar-toggle');
+
+  var storageKey = 'codelab-progress:' + window.location.pathname;
+
+  function loadCompleted() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCompleted(list) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(list));
+    } catch (e) {
+      /* localStorage unavailable: navigation still works without persistence */
+    }
+  }
+
+  var completed = loadCompleted();
+
+  function indexOfStep(id) {
+    var idx = stepIds.indexOf(id);
+    return idx === -1 ? 0 : idx;
+  }
+
+  function markCompleted(idx) {
+    var id = stepIds[idx];
+    if (completed.indexOf(id) === -1) {
+      completed.push(id);
+      saveCompleted(completed);
+    }
+  }
+
+  function updateSidebarState(activeId) {
+    sidebarLinks.forEach(function (link) {
+      var id = link.getAttribute('data-step');
+      link.classList.toggle('is-active', id === activeId);
+      link.classList.toggle('is-completed', completed.indexOf(id) !== -1 && id !== activeId);
+    });
+  }
+
+  function closeMobileSidebar() {
+    if (sidebar) sidebar.classList.remove('is-open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('is-open');
+  }
+
+  function showStep(idx, options) {
+    options = options || {};
+    if (idx < 0) idx = 0;
+    if (idx > panels.length - 1) idx = panels.length - 1;
+
+    var id = stepIds[idx];
+
+    panels.forEach(function (panel, i) {
+      panel.classList.toggle('is-active', i === idx);
+    });
+
+    if (titleEl) {
+      titleEl.textContent = panels[idx].getAttribute('data-title') || panels[idx].id;
+    }
+
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.disabled = idx === panels.length - 1;
+
+    if (progressBar) {
+      var pct = ((idx + 1) / panels.length) * 100;
+      progressBar.style.width = pct + '%';
+    }
+
+    if (idx > 0) {
+      for (var i = 0; i < idx; i++) {
+        markCompleted(i);
+      }
+    }
+
+    updateSidebarState(id);
+
+    if (!options.skipHash) {
+      if (history.replaceState) {
+        history.replaceState(null, '', '#' + id);
+      } else {
+        window.location.hash = id;
+      }
+    }
+
+    document.getElementById('content').scrollTop = 0;
+    closeMobileSidebar();
+  }
+
+  function currentIndex() {
+    var hash = window.location.hash.replace('#', '');
+    return indexOfStep(hash);
+  }
+
+  // Sidebar links: native anchor navigation updates location.hash, which
+  // fires 'hashchange'; we just react to that in one place.
+  window.addEventListener('hashchange', function () {
+    showStep(currentIndex(), { skipHash: true });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      showStep(currentIndex() - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      showStep(currentIndex() + 1);
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+    if (e.key === 'ArrowLeft') {
+      showStep(currentIndex() - 1);
+    } else if (e.key === 'ArrowRight') {
+      showStep(currentIndex() + 1);
+    }
+  });
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function () {
+      sidebar.classList.add('is-open');
+      sidebarOverlay.classList.add('is-open');
+    });
+  }
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeMobileSidebar);
+  }
+
+  // Copy-to-clipboard for every code block.
+  Array.prototype.slice.call(document.querySelectorAll('.copy-btn')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var wrapper = btn.closest('.code-block-wrapper');
+      var codeEl = wrapper ? wrapper.querySelector('code') : null;
+      if (!codeEl) return;
+
+      var text = codeEl.textContent;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copie';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {
+          fallbackCopy(text);
+          done();
+        });
+      } else {
+        fallbackCopy(text);
+        done();
+      }
+    });
+  });
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    document.body.removeChild(ta);
+  }
+
+  // Initial render.
+  showStep(currentIndex(), { skipHash: true });
+  if (window.location.hash) {
+    // Normalize the hash (e.g. redirect #foo -> #step-1 if invalid).
+    history.replaceState(null, '', '#' + stepIds[currentIndex()]);
+  }
+
+  if (window.Prism) {
+    Prism.highlightAll();
+  }
+})();
+</script>
+
+<!-- Quiz JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var questions = Array.prototype.slice.call(document.querySelectorAll('.quiz-question'));
+  if (!questions.length) return;
+
+  var storageKey = 'codelab-quiz:' + window.location.pathname;
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(state));
+    } catch (e) {
+      /* localStorage unavailable: the quiz still works without persistence */
+    }
+  }
+
+  var state = loadState();
+
+  function updateScores() {
+    var firstTry = 0;
+    questions.forEach(function (question) {
+      var entry = state[question.id];
+      if (entry && entry.done && entry.tries === 1) firstTry++;
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (el) {
+      el.textContent = firstTry + ' / ' + questions.length;
+    });
+  }
+
+  questions.forEach(function (question) {
+    var options = Array.prototype.slice.call(question.querySelectorAll('.quiz-option'));
+    var feedback = question.querySelector('.quiz-feedback');
+    var explain = question.querySelector('.quiz-explain');
+    var answer = question.getAttribute('data-answer');
+
+    function showFeedback(text) {
+      if (!feedback) return;
+      feedback.textContent = text;
+      feedback.hidden = false;
+    }
+
+    function finish() {
+      options.forEach(function (option) {
+        option.disabled = true;
+        if (option.getAttribute('data-option') === answer) {
+          option.classList.add('is-correct');
+        }
+      });
+      if (explain) explain.hidden = false;
+    }
+
+    if (state[question.id] && state[question.id].done) {
+      finish();
+      showFeedback('Bonne réponse.');
+    }
+
+    options.forEach(function (option) {
+      option.addEventListener('click', function () {
+        var entry = state[question.id] || { tries: 0, done: false };
+        if (entry.done) return;
+
+        entry.tries += 1;
+
+        if (option.getAttribute('data-option') === answer) {
+          entry.done = true;
+          showFeedback(entry.tries === 1 ? 'Bonne réponse du premier coup.' : 'Bonne réponse.');
+          finish();
+        } else {
+          option.classList.add('is-wrong');
+          option.disabled = true;
+          showFeedback('Pas encore. Relisez la question et réessayez.');
+        }
+
+        state[question.id] = entry;
+        saveState(state);
+        updateScores();
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-reset]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state = {};
+      saveState(state);
+      window.location.reload();
+    });
+  });
+
+  updateScores();
+})();
+</script>
+
+</body>
+</html>
