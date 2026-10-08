@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<!--
+  Codelab skeleton template - Développement multiplateforme avec React Native (Expo), IAM2
+
+  DO NOT edit the skeleton markup, the navigation JavaScript, the quiz CSS and
+  JavaScript, or the pinned asset versions below when authoring a session.
+  Copy this file to docs/session-XX.html and only touch:
+    - <title>, the session title in the sidebar and the header label
+    - the sidebar entries (section headings data-nav-section and step links)
+    - the <section class="step-panel" ...> blocks (edit, add, remove)
+  See CLAUDE.md and session-guidelines.md for the full rules.
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session XX - Titre de la session - IAM2 React Native</title>
+
+<!-- Tailwind Play CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Roboto -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6.4.0 (pinned) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Prism 1.29.0 (pinned): core theme, language components load on demand via autoloader -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Roboto', 'sans-serif'],
+        },
+        colors: {
+          sidebar: {
+            DEFAULT: '#1f2430',
+            hover: '#2a3040',
+          },
+          brand: {
+            DEFAULT: '#ff3d2e',
+            dark: '#e6291b',
+          },
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Roboto', sans-serif; }
+
+  /* Sidebar */
+  #sidebar {
+    transition: transform 0.25s ease-in-out;
+  }
+  #sidebar::-webkit-scrollbar { width: 6px; }
+  #sidebar::-webkit-scrollbar-thumb { background: #3a4052; border-radius: 4px; }
+
+  .step-link { position: relative; }
+  .step-link.is-active {
+    background-color: rgba(255, 61, 46, 0.15);
+    border-left: 3px solid #ff3d2e;
+    color: #ffffff;
+  }
+  .step-link .step-marker {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+  }
+  .step-link.is-completed .step-marker .marker-number { display: none; }
+  .step-link.is-completed .step-marker .marker-check { display: flex; }
+  .step-link .step-marker .marker-check { display: none; }
+
+  /* Progress bar */
+  #progress-track {
+    height: 4px;
+    background: #e5e7eb;
+  }
+  #progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #ff3d2e, #ff8a3d);
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.is-active { display: block; }
+
+  /* Content cards */
+  .md-card {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e5e7eb;
+  }
+
+  /* Code blocks + copy button */
+  .code-block-wrapper { position: relative; }
+  .code-block-wrapper pre[class*="language-"] {
+    margin: 0;
+    border-radius: 0.5rem;
+    max-height: 32rem;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.375rem;
+    background: rgba(255,255,255,0.1);
+    color: #d4d4d4;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
+  /* Mobile sidebar */
+  @media (max-width: 767px) {
+    #sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 40;
+      transform: translateX(-100%);
+      width: 85vw;
+      max-width: 20rem;
+    }
+    #sidebar.is-open { transform: translateX(0); }
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 30;
+    }
+    #sidebar-overlay.is-open { display: block; }
+  }
+
+  /* Quiz */
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    cursor: pointer;
+  }
+  .quiz-option:hover:not(:disabled) { background: #f9fafb; }
+  .quiz-option:focus-visible { outline: 2px solid #ff3d2e; outline-offset: 2px; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-option.is-correct { border-color: #16a34a; background: #f0fdf4; }
+  .quiz-option.is-wrong { border-color: #e11d48; background: #fff1f2; }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Mobile overlay -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="bg-sidebar text-gray-300 w-72 flex-shrink-0 flex flex-col overflow-y-auto">
+    <div class="px-5 py-5 border-b border-white/10">
+      <p class="text-xs uppercase tracking-wide text-gray-400">IAM2 - React Native</p>
+      <h1 class="text-white font-medium text-base mt-1">Développement multiplateforme avec React Native (Expo)</h1>
+      <p class="text-xs text-gray-400 mt-1" id="sidebar-session-title">Session XX - Titre de la session</p>
+    </div>
+    <nav class="flex-1 py-2" aria-label="Étapes du codelab">
+      <ul id="step-nav-list">
+        <li data-nav-section="cours" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Cours (90 min)</li>
+        <li>
+          <a href="#step-1" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-1">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">1</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Titre de la notion</span>
+          </a>
+        </li>
+        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (90 min)</li>
+        <li>
+          <a href="#step-2" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-2">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">2</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 1 — Titre de l'étape</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="px-5 py-4 border-t border-white/10 text-xs text-gray-500">
+      <a href="index.html" class="hover:text-gray-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au sommaire</a>
+    </div>
+  </aside>
+
+  <!-- Main column -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-4">
+      <button id="sidebar-toggle" class="md:hidden text-gray-600 hover:text-gray-900" aria-label="Ouvrir le menu des étapes">
+        <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+      </button>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs text-gray-500">Session XX - IAM2 React Native</p>
+        <h2 id="current-step-title" class="font-medium text-gray-900 truncate">Cours — Titre de la notion</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="prev-step" class="px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape précédente">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Précédent</span>
+        </button>
+        <button id="next-step" class="px-3 py-2 rounded-md bg-brand text-white hover:bg-brand-dark text-sm flex items-center gap-2" aria-label="Étape suivante">
+          <span class="hidden sm:inline">Suivant</span>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress bar -->
+    <div id="progress-track" class="w-full">
+      <div id="progress-bar"></div>
+    </div>
+
+    <!-- Content -->
+    <main id="content" class="flex-1 overflow-y-auto">
+      <div class="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6">
+
+        <!-- Step 1: course panel (sidebar section "Cours") -->
+        <section id="step-1" class="step-panel is-active" data-title="Cours — Titre de la notion">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Ceci est un modèle de codelab. Un panneau de cours présente une notion,
+              la compare avec Jetpack Compose et Flutter, puis la vérifie par un quiz.
+              Remplacez ce contenu par celui de la vraie session avant publication.
+            </p>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <div class="text-sm text-gray-800">
+                <p class="font-medium">Avant la séance</p>
+                <p class="mt-1">Ouvrez Expo Go sur votre téléphone et lisez la version de SDK qu'il prend en charge. Elle doit correspondre au SDK utilisé sur cette page (SDK 57). Sur iPhone, seule la version de l'App Store fonctionne : en cas d'écart, attendez la mise à jour de la page au lieu d'installer une autre version d'Expo Go.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-table text-brand" aria-hidden="true"></i>
+              Compose, Flutter et React Native
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Notion</th>
+                    <th scope="col" class="px-3 py-2">Jetpack Compose</th>
+                    <th scope="col" class="px-3 py-2">Flutter</th>
+                    <th scope="col" class="px-3 py-2">React Native</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium">État local</th>
+                    <td class="px-3 py-2"><code>remember { mutableStateOf(0) }</code></td>
+                    <td class="px-3 py-2"><code>setState(() =&gt; count++)</code></td>
+                    <td class="px-3 py-2"><code>const [count, setCount] = useState(0)</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+              Quiz éclair
+            </h3>
+            <div class="quiz-question mb-6" id="quiz-sXX-q01" data-answer="b">
+              <p class="font-medium text-gray-900 mb-3">Juste après l'appel setCount(count + 1) dans un gestionnaire onPress, que vaut count dans la suite de cette même fonction ?</p>
+              <div class="space-y-2" role="group" aria-label="Réponses à la question 1">
+                <button type="button" class="quiz-option" data-option="a">La nouvelle valeur, count + 1</button>
+                <button type="button" class="quiz-option" data-option="b">L'ancienne valeur, jusqu'au prochain rendu</button>
+                <button type="button" class="quiz-option" data-option="c">undefined, le temps que React recalcule l'état</button>
+              </div>
+              <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+              <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>setCount demande un nouveau rendu ; la variable count du rendu en cours ne change pas. La nouvelle valeur n'est visible qu'au rendu suivant, comme une nouvelle exécution de la fonction @Composable.</p>
+            </div>
+            <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 2: guided step (sidebar section "Atelier") -->
+        <section id="step-2" class="step-panel" data-title="Étape 1 — Titre de l'étape">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Afficher un compteur sur le téléphone avec Expo Go et vérifier que
+              Fast Refresh applique une modification sans relancer l'application.
+            </p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-sm text-gray-600 mb-3">Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx expo start</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+            <div class="code-block-wrapper">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+export default function Index() {
+  const [count, setCount] = useState&lt;number&gt;(0);
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Compteur : {count}&lt;/Text&gt;
+      &lt;Pressable style={styles.button} onPress={() =&gt; setCount((c) =&gt; c + 1)}&gt;
+        &lt;Text style={styles.buttonText}&gt;Ajouter 1&lt;/Text&gt;
+      &lt;/Pressable&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 },
+  title: { fontSize: 24, fontWeight: '600' },
+  button: { backgroundColor: '#1f2430', paddingHorizontal: 20, paddingVertical: 12, borderRadius: 8 },
+  buttonText: { color: '#ffffff', fontSize: 16 },
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Le terminal affiche un QR code. Après le scan, le téléphone affiche « Compteur : 0 » et un bouton « Ajouter 1 ».</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> Sur le téléphone, trois appuis sur « Ajouter 1 » affichent « Compteur : 3 ».</li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> Après avoir remplacé « Compteur » par « Total » et enregistré, le téléphone affiche le nouveau texte sans redémarrer l'application.</li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Un composant React est une fonction de ses props et de son état : chaque appel à setCount relance la fonction et produit une nouvelle interface, comme une recomposition en Compose ou un appel à build() en Flutter.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Prism core + autoloader (pinned 1.29.0) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script>
+  Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+</script>
+
+<!-- Navigation JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.step-panel'));
+  var stepIds = panels.map(function (p) { return p.id; });
+  var sidebarLinks = Array.prototype.slice.call(document.querySelectorAll('.step-link'));
+  var titleEl = document.getElementById('current-step-title');
+  var prevBtn = document.getElementById('prev-step');
+  var nextBtn = document.getElementById('next-step');
+  var progressBar = document.getElementById('progress-bar');
+  var sidebar = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebar-overlay');
+  var sidebarToggle = document.getElementById('sidebar-toggle');
+
+  var storageKey = 'codelab-progress:' + window.location.pathname;
+
+  function loadCompleted() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCompleted(list) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(list));
+    } catch (e) {
+      /* localStorage unavailable: navigation still works without persistence */
+    }
+  }
+
+  var completed = loadCompleted();
+
+  function indexOfStep(id) {
+    var idx = stepIds.indexOf(id);
+    return idx === -1 ? 0 : idx;
+  }
+
+  function markCompleted(idx) {
+    var id = stepIds[idx];
+    if (completed.indexOf(id) === -1) {
+      completed.push(id);
+      saveCompleted(completed);
+    }
+  }
+
+  function updateSidebarState(activeId) {
+    sidebarLinks.forEach(function (link) {
+      var id = link.getAttribute('data-step');
+      link.classList.toggle('is-active', id === activeId);
+      link.classList.toggle('is-completed', completed.indexOf(id) !== -1 && id !== activeId);
+    });
+  }
+
+  function closeMobileSidebar() {
+    if (sidebar) sidebar.classList.remove('is-open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('is-open');
+  }
+
+  function showStep(idx, options) {
+    options = options || {};
+    if (idx < 0) idx = 0;
+    if (idx > panels.length - 1) idx = panels.length - 1;
+
+    var id = stepIds[idx];
+
+    panels.forEach(function (panel, i) {
+      panel.classList.toggle('is-active', i === idx);
+    });
+
+    if (titleEl) {
+      titleEl.textContent = panels[idx].getAttribute('data-title') || panels[idx].id;
+    }
+
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.disabled = idx === panels.length - 1;
+
+    if (progressBar) {
+      var pct = ((idx + 1) / panels.length) * 100;
+      progressBar.style.width = pct + '%';
+    }
+
+    if (idx > 0) {
+      for (var i = 0; i < idx; i++) {
+        markCompleted(i);
+      }
+    }
+
+    updateSidebarState(id);
+
+    if (!options.skipHash) {
+      if (history.replaceState) {
+        history.replaceState(null, '', '#' + id);
+      } else {
+        window.location.hash = id;
+      }
+    }
+
+    document.getElementById('content').scrollTop = 0;
+    closeMobileSidebar();
+  }
+
+  function currentIndex() {
+    var hash = window.location.hash.replace('#', '');
+    return indexOfStep(hash);
+  }
+
+  // Sidebar links: native anchor navigation updates location.hash, which
+  // fires 'hashchange'; we just react to that in one place.
+  window.addEventListener('hashchange', function () {
+    showStep(currentIndex(), { skipHash: true });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      showStep(currentIndex() - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      showStep(currentIndex() + 1);
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+    if (e.key === 'ArrowLeft') {
+      showStep(currentIndex() - 1);
+    } else if (e.key === 'ArrowRight') {
+      showStep(currentIndex() + 1);
+    }
+  });
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function () {
+      sidebar.classList.add('is-open');
+      sidebarOverlay.classList.add('is-open');
+    });
+  }
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeMobileSidebar);
+  }
+
+  // Copy-to-clipboard for every code block.
+  Array.prototype.slice.call(document.querySelectorAll('.copy-btn')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var wrapper = btn.closest('.code-block-wrapper');
+      var codeEl = wrapper ? wrapper.querySelector('code') : null;
+      if (!codeEl) return;
+
+      var text = codeEl.textContent;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copie';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {
+          fallbackCopy(text);
+          done();
+        });
+      } else {
+        fallbackCopy(text);
+        done();
+      }
+    });
+  });
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    document.body.removeChild(ta);
+  }
+
+  // Initial render.
+  showStep(currentIndex(), { skipHash: true });
+  if (window.location.hash) {
+    // Normalize the hash (e.g. redirect #foo -> #step-1 if invalid).
+    history.replaceState(null, '', '#' + stepIds[currentIndex()]);
+  }
+
+  if (window.Prism) {
+    Prism.highlightAll();
+  }
+})();
+</script>
+
+<!-- Quiz JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var questions = Array.prototype.slice.call(document.querySelectorAll('.quiz-question'));
+  if (!questions.length) return;
+
+  var storageKey = 'codelab-quiz:' + window.location.pathname;
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(state));
+    } catch (e) {
+      /* localStorage unavailable: the quiz still works without persistence */
+    }
+  }
+
+  var state = loadState();
+
+  function updateScores() {
+    var firstTry = 0;
+    questions.forEach(function (question) {
+      var entry = state[question.id];
+      if (entry && entry.done && entry.tries === 1) firstTry++;
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (el) {
+      el.textContent = firstTry + ' / ' + questions.length;
+    });
+  }
+
+  questions.forEach(function (question) {
+    var options = Array.prototype.slice.call(question.querySelectorAll('.quiz-option'));
+    var feedback = question.querySelector('.quiz-feedback');
+    var explain = question.querySelector('.quiz-explain');
+    var answer = question.getAttribute('data-answer');
+
+    function showFeedback(text) {
+      if (!feedback) return;
+      feedback.textContent = text;
+      feedback.hidden = false;
+    }
+
+    function finish() {
+      options.forEach(function (option) {
+        option.disabled = true;
+        if (option.getAttribute('data-option') === answer) {
+          option.classList.add('is-correct');
+        }
+      });
+      if (explain) explain.hidden = false;
+    }
+
+    if (state[question.id] && state[question.id].done) {
+      finish();
+      showFeedback('Bonne réponse.');
+    }
+
+    options.forEach(function (option) {
+      option.addEventListener('click', function () {
+        var entry = state[question.id] || { tries: 0, done: false };
+        if (entry.done) return;
+
+        entry.tries += 1;
+
+        if (option.getAttribute('data-option') === answer) {
+          entry.done = true;
+          showFeedback(entry.tries === 1 ? 'Bonne réponse du premier coup.' : 'Bonne réponse.');
+          finish();
+        } else {
+          option.classList.add('is-wrong');
+          option.disabled = true;
+          showFeedback('Pas encore. Relisez la question et réessayez.');
+        }
+
+        state[question.id] = entry;
+        saveState(state);
+        updateScores();
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-reset]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state = {};
+      saveState(state);
+      window.location.reload();
+    });
+  });
+
+  updateScores();
+})();
+</script>
+
+</body>
+</html>

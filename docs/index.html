@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Développement multiplateforme avec React Native (Expo) - IAM2</title>
+<meta name="description" content="Support de cours Développement multiplateforme avec React Native (Expo), IAM2, 2e année Master Développement Mobile.">
+
+<!-- Tailwind Play CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Roboto -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6.4.0 (pinned) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Roboto', 'sans-serif'],
+        },
+        colors: {
+          sidebar: {
+            DEFAULT: '#1f2430',
+            hover: '#2a3040',
+          },
+          brand: {
+            DEFAULT: '#ff3d2e',
+            dark: '#e6291b',
+          },
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Roboto', sans-serif; }
+  .md-card {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e5e7eb;
+  }
+  .session-card { transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
+  .session-card.is-available:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.07), 0 10px 15px rgba(0,0,0,0.06);
+  }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+<!-- Header -->
+<header class="bg-sidebar text-white">
+  <div class="max-w-6xl mx-auto px-4 md:px-6 py-10">
+    <p class="text-xs uppercase tracking-wide text-gray-400">IAM2 - 2e année Master Développement Mobile</p>
+    <h1 class="text-2xl md:text-3xl font-medium mt-1">Développement multiplateforme avec React Native (Expo)</h1>
+    <p class="text-gray-300 mt-2">TypeScript, Expo Router, SQLite, TanStack Query, Firebase, MQTT - testé sur téléphone avec Expo Go</p>
+    <div class="flex flex-wrap gap-4 mt-6 text-sm text-gray-300">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-chalkboard-user text-brand" aria-hidden="true"></i>
+        <span>Prof. Wael Bouaziz</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-calendar-days text-brand" aria-hidden="true"></i>
+        <span>Vendredi 8:30-11:40</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-location-dot text-brand" aria-hidden="true"></i>
+        <span>Cours en salle 13 (8:30-10:00), atelier en C2I (10:10-11:40)</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-mobile-screen-button text-brand" aria-hidden="true"></i>
+        <span>Expo SDK 57 - Expo Go</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-layer-group text-brand" aria-hidden="true"></i>
+        <span>7 séances + préparation</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Sessions grid -->
+<main class="max-w-6xl mx-auto px-4 md:px-6 py-10">
+  <h2 class="text-lg font-medium mb-1">Séances du cours</h2>
+  <p class="text-gray-600 text-sm mb-6">Cliquez sur une séance disponible pour ouvrir le codelab correspondant. Chaque séance dure 3 h : 90 min de cours puis 90 min d'atelier.</p>
+
+  <!--
+    One card per session. When docs/session-XX.html is created, replace the
+    card's <div> by <a href="session-XX.html"> with the classes
+    "session-card md-card p-5 flex flex-col gap-3 is-available", and the
+    "Bientôt" badge and footer by the "Disponible" ones shown in the comment
+    below.
+      badge:  <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-green-100 text-green-700"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Disponible</span>
+      footer: <div class="text-sm text-brand flex items-center gap-2 mt-auto"><span>Ouvrir le codelab</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></div>
+  -->
+  <div id="sessions-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+    <div class="session-card md-card p-5 flex flex-col gap-3 opacity-60">
+      <div class="flex items-center justify-between">
+        <span class="text-xs uppercase tracking-wide text-gray-500">Préparation - avant S1</span>
+        <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-gray-100 text-gray-500"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bientôt</span>
+      </div>
+      <h3 class="font-medium text-gray-900">Session 00 - Préparation de l'environnement</h3>
+      <p class="text-sm text-gray-600">Mini-app : w0-hello (travail à la maison, environ 1 h)</p>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto"><span>Pas encore publiée</span></div>
+    </div>
+
+    <div class="session-card md-card p-5 flex flex-col gap-3 opacity-60">
+      <div class="flex items-center justify-between">
+        <span class="text-xs uppercase tracking-wide text-gray-500">Séance 1</span>
+        <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-gray-100 text-gray-500"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bientôt</span>
+      </div>
+      <h3 class="font-medium text-gray-900">Session 01 - TypeScript et React pour développeurs Kotlin/Flutter, Expo Router</h3>
+      <p class="text-sm text-gray-600">Mini-app : Profile &amp; Contacts</p>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto"><span>Pas encore publiée</span></div>
+    </div>
+
+    <div class="session-card md-card p-5 flex flex-col gap-3 opacity-60">
+      <div class="flex items-center justify-between">
+        <span class="text-xs uppercase tracking-wide text-gray-500">Séance 2</span>
+        <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-gray-100 text-gray-500"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bientôt</span>
+      </div>
+      <h3 class="font-medium text-gray-900">Session 02 - Persistance locale avec SQLite</h3>
+      <p class="text-sm text-gray-600">Mini-app : Offline Expense Tracker</p>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto"><span>Pas encore publiée</span></div>
+    </div>
+
+    <div class="session-card md-card p-5 flex flex-col gap-3 opacity-60">
+      <div class="flex items-center justify-between">
+        <span class="text-xs uppercase tracking-wide text-gray-500">Séance 3</span>
+        <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-gray-100 text-gray-500"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bientôt</span>
+      </div>
+      <h3 class="font-medium text-gray-900">Session 03 - Consommer une API REST avec TanStack Query</h3>
+      <p class="text-sm text-gray-600">Mini-app : Mini-Shop (DummyJSON)</p>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto"><span>Pas encore publiée</span></div>
+    </div>
+
+    <div class="session-card md-card p-5 flex flex-col gap-3 opacity-60">
+      <div class="flex items-center justify-between">
+        <span class="text-xs uppercase tracking-wide text-gray-500">Séance 4</span>
+        <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-gray-100 text-gray-500"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bientôt</span>
+      </div>
+      <h3 class="font-medium text-gray-900">Session 04 - Firebase : authentification et Firestore temps réel</h3>
+      <p class="text-sm text-gray-600">Mini-app : Shared Task Board</p>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto"><span>Pas encore publiée</span></div>
+    </div>
+
+    <div class="session-card md-card p-5 flex flex-col gap-3 opacity-60">
+      <div class="flex items-center justify-between">
+        <span class="text-xs uppercase tracking-wide text-gray-500">Séance 5</span>
+        <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-gray-100 text-gray-500"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bientôt</span>
+      </div>
+      <h3 class="font-medium text-gray-900">Session 05 - Offline-first, cache local et notifications</h3>
+      <p class="text-sm text-gray-600">Mini-app : Offline-ready Shop + reminders</p>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto"><span>Pas encore publiée</span></div>
+    </div>
+
+    <div class="session-card md-card p-5 flex flex-col gap-3 opacity-60">
+      <div class="flex items-center justify-between">
+        <span class="text-xs uppercase tracking-wide text-gray-500">Séance 6</span>
+        <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-gray-100 text-gray-500"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bientôt</span>
+      </div>
+      <h3 class="font-medium text-gray-900">Session 06 - IoT : consommer un appareil via MQTT</h3>
+      <p class="text-sm text-gray-600">Mini-app : IoT Dashboard (ESP32 / Wokwi)</p>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto"><span>Pas encore publiée</span></div>
+    </div>
+
+    <div class="session-card md-card p-5 flex flex-col gap-3 opacity-60">
+      <div class="flex items-center justify-between">
+        <span class="text-xs uppercase tracking-wide text-gray-500">Séance 7</span>
+        <span class="text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1 bg-gray-100 text-gray-500"><i class="fa-solid fa-lock" aria-hidden="true"></i> Bientôt</span>
+      </div>
+      <h3 class="font-medium text-gray-900">Session 07 - Architecture, préparation à l'examen, atelier projet</h3>
+      <p class="text-sm text-gray-600">Mini-app : Final project kickoff</p>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-auto"><span>Pas encore publiée</span></div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="max-w-6xl mx-auto px-4 md:px-6 py-8 text-xs text-gray-500 border-t border-gray-200">
+  <p>Développement multiplateforme avec React Native (Expo) - IAM2 - Prof. Wael Bouaziz</p>
+</footer>
+
+</body>
+</html>
