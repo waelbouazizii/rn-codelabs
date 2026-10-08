@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<!--
+  Codelab skeleton template - Développement multiplateforme avec React Native (Expo), IAM2
+
+  DO NOT edit the skeleton markup, the navigation JavaScript, the quiz CSS and
+  JavaScript, or the pinned asset versions below when authoring a session.
+  Copy this file to docs/session-XX.html and only touch:
+    - <title>, the session title in the sidebar and the header label
+    - the sidebar entries (section headings data-nav-section and step links)
+    - the <section class="step-panel" ...> blocks (edit, add, remove)
+  See CLAUDE.md and session-guidelines.md for the full rules.
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 00 - Préparation de l'environnement - IAM2 React Native</title>
+
+<!-- Tailwind Play CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Roboto -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6.4.0 (pinned) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Prism 1.29.0 (pinned): core theme, language components load on demand via autoloader -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Roboto', 'sans-serif'],
+        },
+        colors: {
+          sidebar: {
+            DEFAULT: '#1f2430',
+            hover: '#2a3040',
+          },
+          brand: {
+            DEFAULT: '#ff3d2e',
+            dark: '#e6291b',
+          },
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Roboto', sans-serif; }
+
+  /* Sidebar */
+  #sidebar {
+    transition: transform 0.25s ease-in-out;
+  }
+  #sidebar::-webkit-scrollbar { width: 6px; }
+  #sidebar::-webkit-scrollbar-thumb { background: #3a4052; border-radius: 4px; }
+
+  .step-link { position: relative; }
+  .step-link.is-active {
+    background-color: rgba(255, 61, 46, 0.15);
+    border-left: 3px solid #ff3d2e;
+    color: #ffffff;
+  }
+  .step-link .step-marker {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+  }
+  .step-link.is-completed .step-marker .marker-number { display: none; }
+  .step-link.is-completed .step-marker .marker-check { display: flex; }
+  .step-link .step-marker .marker-check { display: none; }
+
+  /* Progress bar */
+  #progress-track {
+    height: 4px;
+    background: #e5e7eb;
+  }
+  #progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #ff3d2e, #ff8a3d);
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.is-active { display: block; }
+
+  /* Content cards */
+  .md-card {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e5e7eb;
+  }
+
+  /* Code blocks + copy button */
+  .code-block-wrapper { position: relative; }
+  .code-block-wrapper pre[class*="language-"] {
+    margin: 0;
+    border-radius: 0.5rem;
+    max-height: 32rem;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.375rem;
+    background: rgba(255,255,255,0.1);
+    color: #d4d4d4;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
+  /* Mobile sidebar */
+  @media (max-width: 767px) {
+    #sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 40;
+      transform: translateX(-100%);
+      width: 85vw;
+      max-width: 20rem;
+    }
+    #sidebar.is-open { transform: translateX(0); }
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 30;
+    }
+    #sidebar-overlay.is-open { display: block; }
+  }
+
+  /* Quiz */
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    cursor: pointer;
+  }
+  .quiz-option:hover:not(:disabled) { background: #f9fafb; }
+  .quiz-option:focus-visible { outline: 2px solid #ff3d2e; outline-offset: 2px; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-option.is-correct { border-color: #16a34a; background: #f0fdf4; }
+  .quiz-option.is-wrong { border-color: #e11d48; background: #fff1f2; }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Mobile overlay -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="bg-sidebar text-gray-300 w-72 flex-shrink-0 flex flex-col overflow-y-auto">
+    <div class="px-5 py-5 border-b border-white/10">
+      <p class="text-xs uppercase tracking-wide text-gray-400">IAM2 - React Native</p>
+      <h1 class="text-white font-medium text-base mt-1">Développement multiplateforme avec React Native (Expo)</h1>
+      <p class="text-xs text-gray-400 mt-1" id="sidebar-session-title">Session 00 - Préparation de l'environnement</p>
+    </div>
+    <nav class="flex-1 py-2" aria-label="Étapes du codelab">
+      <ul id="step-nav-list">
+        <li data-nav-section="preparation" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Préparation à la maison (environ 1 h)</li>
+        <li>
+          <a href="#step-1" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-1">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">1</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Prérequis &amp; objectifs</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-2" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-2">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">2</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 1 — Installer Node.js, Git, VS Code et Expo Go</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-3" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-3">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">3</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 2 — Créer le compte Expo et se connecter</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-4" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-4">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">4</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 3 — Créer et cloner le dépôt GitHub</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-5" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-5">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">5</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 4 — Créer w0-hello et l&#x27;ouvrir dans Expo Go</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-6" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-6">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">6</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 5 — Modifier l&#x27;écran et observer Fast Refresh</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-7" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-7">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">7</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 6 — Créer le projet Firebase</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-8" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-8">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">8</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Livrable — capture d&#x27;écran de w0-hello</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="px-5 py-4 border-t border-white/10 text-xs text-gray-500">
+      <a href="index.html" class="hover:text-gray-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au sommaire</a>
+    </div>
+  </aside>
+
+  <!-- Main column -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-4">
+      <button id="sidebar-toggle" class="md:hidden text-gray-600 hover:text-gray-900" aria-label="Ouvrir le menu des étapes">
+        <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+      </button>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs text-gray-500">Session 00 - IAM2 React Native</p>
+        <h2 id="current-step-title" class="font-medium text-gray-900 truncate">Prérequis &amp; objectifs</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="prev-step" class="px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape précédente">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Précédent</span>
+        </button>
+        <button id="next-step" class="px-3 py-2 rounded-md bg-brand text-white hover:bg-brand-dark text-sm flex items-center gap-2" aria-label="Étape suivante">
+          <span class="hidden sm:inline">Suivant</span>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress bar -->
+    <div id="progress-track" class="w-full">
+      <div id="progress-bar"></div>
+    </div>
+
+    <!-- Content -->
+    <main id="content" class="flex-1 overflow-y-auto">
+      <div class="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6">
+
+        <!-- Step 1 -->
+        <section id="step-1" class="step-panel is-active" data-title="Prérequis &amp; objectifs">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Cette page se fait à la maison, avant la séance 01, en une heure environ. À la fin, votre PC et votre téléphone sont prêts : une application Expo créée sur le PC s'affiche sur votre téléphone dans Expo Go, votre dépôt GitHub existe et votre projet Firebase est créé pour la séance 04.</p>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <div class="text-sm text-gray-800"><p class="font-medium">Avant la séance</p><p class="mt-1">Ouvrez Expo Go sur votre téléphone, installé depuis le Play Store ou l'App Store, et lisez la version de SDK qu'il prend en charge. Elle doit correspondre au SDK utilisé sur cette page : SDK 57, et à l'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code> des commandes. Sur iPhone, seule la version de l'App Store fonctionne : en cas d'écart, attendez la mise à jour de la page au lieu d'installer une autre version d'Expo Go. Sur Android, laissez Expo CLI proposer la version d'Expo Go adaptée ou téléchargez-la sur <a href="https://expo.dev/go" class="text-brand underline">expo.dev/go</a>.</p></div>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-box-open text-brand" aria-hidden="true"></i>
+              Ce qu'il vous faut
+            </h3>
+            <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
+              <li>un PC sous Windows 10 ou 11 (macOS et Linux conviennent aussi), avec le droit d'installer des logiciels ;</li>
+              <li>un téléphone Android ou un iPhone, connecté au même réseau Wi-Fi que le PC ;</li>
+              <li>une adresse e-mail pour créer les comptes Expo, GitHub et Firebase (compte Google) ;</li>
+              <li>environ 3 Go d'espace disque libre.</li>
+            </ul>
+            <p class="text-gray-700">Aucun outil de compilation native n'est nécessaire : le téléphone avec Expo Go est la seule cible.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-table text-brand" aria-hidden="true"></i>
+              Étapes de préparation
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-left border border-gray-200">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th scope="col" class="px-3 py-2">Étape</th>
+                    <th scope="col" class="px-3 py-2">Ce que vous faites</th>
+                    <th scope="col" class="px-3 py-2">Durée estimée</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium">Étape 1</th>
+                    <td class="px-3 py-2">Installer Node.js, Git, VS Code sur le PC et Expo Go sur le téléphone</td>
+                    <td class="px-3 py-2">15 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium">Étape 2</th>
+                    <td class="px-3 py-2">Créer le compte Expo, se connecter sur le PC et dans Expo Go</td>
+                    <td class="px-3 py-2">10 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium">Étape 3</th>
+                    <td class="px-3 py-2">Créer le dépôt GitHub et le cloner</td>
+                    <td class="px-3 py-2">5 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium">Étape 4</th>
+                    <td class="px-3 py-2">Créer w0-hello et l'ouvrir dans Expo Go</td>
+                    <td class="px-3 py-2">10 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium">Étape 5</th>
+                    <td class="px-3 py-2">Modifier l'écran et observer Fast Refresh</td>
+                    <td class="px-3 py-2">10 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium">Étape 6</th>
+                    <td class="px-3 py-2">Créer le projet Firebase (utilisé à la séance 04)</td>
+                    <td class="px-3 py-2">10 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200">
+                    <th scope="row" class="px-3 py-2 font-medium">Livrable</th>
+                    <td class="px-3 py-2">Publier la capture d'écran du téléphone</td>
+                    <td class="px-3 py-2">5 min</td>
+                  </tr>
+                  <tr class="border-t border-gray-200 bg-gray-50 font-medium">
+                    <th scope="row" class="px-3 py-2 font-medium">Total</th>
+                    <td class="px-3 py-2"></td>
+                    <td class="px-3 py-2">environ 1 h 05</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2 -->
+        <section id="step-2" class="step-panel" data-title="Étape 1 — Installer Node.js, Git, VS Code et Expo Go">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 15 min. Installer sur le PC Node.js 24 LTS, Git et VS Code avec trois extensions, puis installer Expo Go sur le téléphone depuis le store.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez PowerShell (menu Démarrer, PowerShell).</p>
+            <p class="text-sm text-gray-600 mb-2">PowerShell (Windows) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-powershell">winget install OpenJS.NodeJS.LTS
+winget install Git.Git
+winget install Microsoft.VisualStudioCode</code></pre>
+            </div>
+            <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Sur macOS ou Linux, installez Node.js 24 LTS depuis <a href="https://nodejs.org" class="text-brand underline">nodejs.org</a>, Git depuis <a href="https://git-scm.com" class="text-brand underline">git-scm.com</a> et VS Code depuis <a href="https://code.visualstudio.com" class="text-brand underline">code.visualstudio.com</a>. Toutes les autres commandes de cette page sont identiques.</p>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Fermez le terminal, ouvrez-en un nouveau, puis vérifiez les versions.</p>
+            <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">node -v
+npm -v
+git --version
+code --version</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Installez les trois extensions VS Code du cours : Expo Tools, ESLint et Prettier.</p>
+            <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">code --install-extension expo.vscode-expo-tools
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension esbenp.prettier-vscode</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Dans les deux commandes suivantes, remplacez le nom et l'adresse par les vôtres avant d'exécuter. Git les inscrit dans chaque commit.</p>
+            <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">git config --global user.name "Prenom Nom"
+git config --global user.email "prenom.nom@example.com"</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed">Sur le téléphone, installez Expo Go depuis le Play Store (Android) ou l'App Store (iPhone).</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-gray-700">Aucun code à écrire dans cette étape.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node -v</code> affiche v24 (24.3 ou plus) ou v22 (22.13 ou plus). Les commandes <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git --version</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">code --version</code> affichent un numéro de version. Expo Go est installé sur le téléphone.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node -v</code> affiche une version v24 ou v22, jamais v23 ni v25.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git config --global user.name</code> affiche votre nom.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans VS Code, le panneau Extensions liste Expo Tools, ESLint et Prettier.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, Expo Go s'ouvre et indique qu'il prend en charge le SDK 57.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Avec Expo Go, le PC ne compile aucun code natif : Node.js exécute Metro, le serveur qui assemble votre JavaScript, et Expo Go contient déjà la partie native de l'application. C'est pour cela que la chaîne Gradle que vous utilisez en Kotlin n'intervient pas ici.</p>
+            </div>
+            <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Si <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node -v</code> affiche une autre version majeure que 24 ou 22, désinstallez Node.js puis installez la version 24 LTS depuis <a href="https://nodejs.org" class="text-brand underline">nodejs.org</a>. Expo SDK 57 est validé pour ce cours avec Node.js 24 et 22 uniquement.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si le terminal répond que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git</code> ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">code</code> est une commande inconnue juste après l'installation, le terminal a été ouvert avant l'installation : fermez-le et ouvrez-en un nouveau.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 3 -->
+        <section id="step-3" class="step-panel" data-title="Étape 2 — Créer le compte Expo et se connecter">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Créer un compte Expo gratuit et se connecter avec ce même compte dans le terminal du PC et dans Expo Go sur le téléphone.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Créez un compte gratuit sur <a href="https://expo.dev/signup" class="text-brand underline">expo.dev/signup</a> et notez votre nom d'utilisateur.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Connectez le terminal à ce compte. La commande pose des questions : répondez avec votre nom d'utilisateur et votre mot de passe. Si npx propose de télécharger un paquet, acceptez.</p>
+            <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx expo login</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Vérifiez ensuite le compte connecté.</p>
+            <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx expo whoami</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Seulement si PowerShell refuse d'exécuter npx parce que l'exécution de scripts est désactivée — PowerShell (Windows) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-powershell">Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed">Sur le téléphone, ouvrez Expo Go et connectez-vous avec le même compte.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-gray-700">Aucun code à écrire dans cette étape.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> affiche votre nom d'utilisateur Expo. Expo Go affiche le même compte sur le téléphone.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le terminal, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> affiche votre nom d'utilisateur.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, Expo Go affiche ce même nom d'utilisateur dans l'écran du compte.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Sur iPhone, Expo Go pour le SDK 57 n'ouvre un projet que si le terminal et l'application utilisent le même compte Expo. Sur Android, la connexion n'est pas toujours exigée aujourd'hui, mais faites-la quand même : la règle peut changer avec une prochaine version du SDK.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Deux comptes différents (par exemple un compte créé avec Google sur le téléphone et un autre avec un mot de passe sur le PC) empêchent l'ouverture du projet sur iPhone. Comparez le nom affiché par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> et celui affiché dans Expo Go.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 4 -->
+        <section id="step-4" class="step-panel" data-title="Étape 3 — Créer et cloner le dépôt GitHub">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 5 min. Créer le dépôt GitHub qui recevra toutes vos applications du cours, puis le cloner sur le PC.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <ol class="list-decimal pl-6 space-y-2 text-gray-700 mb-4">
+              <li>Connectez-vous à <a href="https://github.com" class="text-brand underline">github.com</a> (créez un compte si nécessaire).</li>
+              <li>Créez un nouveau dépôt nommé <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>, avec votre prénom et votre nom en minuscules, sans accent ni espace.</li>
+              <li>Choisissez la visibilité privée et cochez l'option qui ajoute un fichier README, pour que le dépôt ne soit pas vide.</li>
+              <li>Dans les réglages du dépôt, invitez comme collaborateur le compte GitHub de l'enseignant, communiqué avec le lien de cette page.</li>
+            </ol>
+            <p class="text-gray-700 leading-relaxed mb-4">Créez un dossier de travail dont le chemin ne contient ni espace ni accent, hors de OneDrive.</p>
+            <p class="text-sm text-gray-600 mb-2">PowerShell (Windows) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-powershell">mkdir C:\dev
+cd C:\dev</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Bash (macOS, Linux, Git Bash) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">mkdir -p ~/dev
+cd ~/dev</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Dans les commandes suivantes, remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">USERNAME</code> par votre nom d'utilisateur GitHub et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">prenom-nom</code> par les vôtres avant d'exécuter. À la première connexion, Git ouvre une fenêtre du navigateur pour vous identifier.</p>
+            <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">git clone https://github.com/USERNAME/iam2-rn-prenom-nom.git
+cd iam2-rn-prenom-nom
+git status</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-gray-700">Aucun code à écrire dans cette étape.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code> existe sur le PC et contient le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code>. La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git status</code> indique qu'il n'y a rien à valider.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le dossier cloné contient <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git status</code> ne signale aucune modification.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Cette étape ne concerne que le PC : aucune vérification sur le téléphone ici, elle reprend à l'Étape 4.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Un seul dépôt contient un dossier par séance : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s2-expenses</code>, et ainsi de suite. Chaque remise est un tag Git sur ce dépôt ; c'est le tag qui est noté, pas un fichier envoyé par e-mail.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Un chemin avec des espaces, des accents ou synchronisé par OneDrive provoque des erreurs difficiles à lire avec Metro et npm. Gardez un chemin court comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">C:\dev</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 5 -->
+        <section id="step-5" class="step-panel" data-title="Étape 4 — Créer w0-hello et l&#x27;ouvrir dans Expo Go">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Créer une application Expo SDK 57 dans votre dépôt et l'afficher sur votre téléphone avec Expo Go.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Dans le terminal, placez-vous dans le dossier de votre dépôt (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>), puis exécutez :</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx create-expo-app@latest w0-hello --template default@sdk-57
+cd w0-hello
+npx expo start</code></pre>
+            </div>
+            <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-gray-800">Au premier lancement, Windows peut demander l'autorisation d'accès réseau pour Node.js : autorisez-le sur les réseaux privés. Le PC et le téléphone doivent être sur le même réseau Wi-Fi, déclaré comme réseau privé dans Windows.</p>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Scannez le QR code affiché dans le terminal : sur Android depuis Expo Go, sur iPhone avec l'application Appareil photo.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un second terminal dans le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> et vérifiez que l'application appartient bien à votre dépôt :</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">git rev-parse --show-toplevel</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">La commande doit afficher le chemin du dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>, et non celui de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>.</p>
+            <p class="text-sm text-gray-600 mb-2">Seulement si la commande affiche le chemin de w0-hello (un dépôt Git a été créé dans l'application) — PowerShell (Windows) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-powershell">Remove-Item -Recurse -Force .git</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Seulement si la commande affiche le chemin de w0-hello — Bash (macOS, Linux, Git Bash) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">rm -rf .git</code></pre>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Seulement si le QR code ne se connecte pas : mode tunnel. Arrêtez d'abord le serveur avec Ctrl+C dans le Terminal 1 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx expo start --tunnel</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed">Le mode tunnel peut proposer d'installer un paquet supplémentaire : acceptez. Il est plus lent que le réseau local.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-gray-700">Aucun code à écrire dans cette étape : vous lancez l'application de démarrage fournie par le modèle.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Le terminal affiche un QR code. Après le scan, Expo Go télécharge le JavaScript depuis votre PC et affiche l'écran de démarrage du modèle Expo.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le Terminal 1 affiche un QR code et reste en cours d'exécution.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, Expo Go affiche l'écran de démarrage de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git rev-parse --show-toplevel</code> affiche le chemin de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> lance Metro sur le PC. Expo Go télécharge votre JavaScript par le Wi-Fi et l'exécute avec les modules natifs qu'il contient déjà : aucun APK n'est construit, contrairement au lancement d'un projet Kotlin ou à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">flutter run</code>.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si Expo Go signale que la version de SDK du projet ne correspond pas : sur Android, laissez Expo CLI installer la version d'Expo Go adaptée ou téléchargez-la sur <a href="https://expo.dev/go" class="text-brand underline">expo.dev/go</a> ; sur iPhone, seule la version de l'App Store fonctionne, attendez la mise à jour de cette page. Si le chargement n'aboutit jamais, vérifiez que le PC et le téléphone sont sur le même Wi-Fi, puis utilisez le bloc tunnel.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 6 -->
+        <section id="step-6" class="step-panel" data-title="Étape 5 — Modifier l&#x27;écran et observer Fast Refresh">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Remplacer l'application de démarrage par un écran à votre nom et vérifier que chaque enregistrement met à jour le téléphone sans relancer l'application.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Arrêtez le serveur avec Ctrl+C dans le Terminal 1, puis réinitialisez le projet. Le script pose une question sur les fichiers de démarrage : les deux réponses conviennent.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npm run reset-project</code></pre>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> dans VS Code. Si un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app-example</code> existe, supprimez-le dans l'explorateur de VS Code. Remplacez ensuite le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> par le code de la carte suivante, avec votre prénom et votre nom, et enregistrez.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Relancez le serveur et rescannez le QR code si Expo Go ne se reconnecte pas seul.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">npx expo start</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+              <pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+
+// Replace with your own first name and last name.
+const STUDENT_NAME: string = 'Prénom Nom';
+
+export default function Index() {
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;w0-hello&lt;/Text&gt;
+      &lt;Text style={styles.text}&gt;{STUDENT_NAME}&lt;/Text&gt;
+      &lt;Text style={styles.text}&gt;IAM2 - React Native avec Expo&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#ffffff',
+  },
+  title: { fontSize: 28, fontWeight: '700', color: '#1f2430' },
+  text: { fontSize: 16, color: '#374151' },
+});</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">Le téléphone affiche trois lignes centrées : w0-hello, votre prénom et votre nom, puis IAM2 - React Native avec Expo.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, l'écran affiche votre prénom et votre nom.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Après avoir remplacé « w0-hello » par « Bonjour IAM2 » dans le code et enregistré, le téléphone affiche le nouveau texte en moins de deux secondes, sans relancer Expo Go.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Remettez ensuite le texte « w0-hello » et enregistrez.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Fast Refresh renvoie au téléphone uniquement le module modifié et relance le rendu du composant. C'est l'équivalent du Hot Reload de Flutter et de Live Edit en Compose, avec une différence : ici aucun code natif n'est recompilé, jamais.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si le téléphone affiche encore l'ancien écran après la réinitialisation, le serveur n'a pas été relancé : arrêtez-le avec Ctrl+C, relancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> et rescannez le QR code. Si un écran rouge signale un fichier introuvable dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app-example</code>, supprimez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app-example</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 7 -->
+        <section id="step-7" class="step-panel" data-title="Étape 6 — Créer le projet Firebase">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 10 min. Créer dès maintenant le projet Firebase utilisé à la séance 04, avec l'authentification par e-mail et Firestore, pour ne pas perdre de temps en séance.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Tout se passe dans le navigateur, sur <a href="https://console.firebase.google.com" class="text-brand underline">console.firebase.google.com</a>, avec un compte Google. Le forfait gratuit suffit : ne saisissez aucun moyen de paiement. Le serveur Expo de l'Étape 5 peut rester lancé.</p>
+            <ol class="list-decimal pl-6 space-y-2 text-gray-700 mb-4">
+              <li>Créez un projet nommé <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom</code> (votre prénom, sans accent). Google Analytics n'est pas nécessaire.</li>
+              <li>Dans la section Authentication, activez la méthode de connexion par adresse e-mail et mot de passe.</li>
+              <li>Dans la section Firestore Database, créez la base de données en mode production, dans une région européenne. La région ne peut plus être changée ensuite.</li>
+              <li>N'enregistrez pas encore d'application et ne copiez aucune clé : ce sera fait à la séance 04.</li>
+            </ol>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+              Code complet
+            </h3>
+            <p class="text-gray-700">Aucun code à écrire dans cette étape.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+              Résultat attendu
+            </h3>
+            <p class="text-gray-700">La console Firebase affiche votre projet, la méthode e-mail et mot de passe activée dans Authentication, et une base Firestore vide.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Vérification
+            </h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La console liste le projet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans Authentication, la méthode e-mail et mot de passe est marquée comme activée.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans Firestore Database, l'onglet des règles montre des règles qui refusent toute lecture et toute écriture (mode production).</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Cette étape ne concerne que le navigateur : aucune vérification sur le téléphone ici.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> En mode production, Firestore refuse tout tant que vous n'avez pas écrit de règles de sécurité. C'est le bon point de départ : à la séance 04, vous écrirez des règles qui n'autorisent que les utilisateurs connectés, au lieu d'ouvrir la base puis d'oublier de la refermer.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Le mode test ouvre la base à tout le monde pendant une durée limitée, puis la bloque : l'application cesse alors de fonctionner sans message clair. Choisissez le mode production.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 8 -->
+        <section id="step-8" class="step-panel" data-title="Livrable — capture d&#x27;écran de w0-hello">
+          <div class="md-card p-6">
+            <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+              Objectif
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Durée : 5 min. Prouver que votre environnement fonctionne avant la séance 01 : une capture d'écran de votre téléphone, et un premier commit poussé sur GitHub. Il n'y a pas de tag pour cette séance.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-mobile-screen text-brand" aria-hidden="true"></i>
+              Capture d'écran
+            </h3>
+            <p class="text-gray-700 leading-relaxed">Sur le téléphone, avec w0-hello affiché dans Expo Go et votre nom visible, faites une capture d'écran. Publiez-la dans l'espace de dépôt du cours indiqué par l'enseignant avant la séance 01.</p>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+              Commandes
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">Dans le Terminal 2 (dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>), enregistrez l'application dans votre dépôt. Ce commit n'est pas noté : il vérifie que Git et GitHub fonctionnent avant la séance 01.</p>
+            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+            <div class="code-block-wrapper mb-4">
+              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+              <pre><code class="language-bash">git add .
+git commit -m "Add w0-hello smoke test"
+git push</code></pre>
+            </div>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+              Checklist avant la séance 01
+            </h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node -v</code> affiche v24 ou v22.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> et Expo Go affichent le même compte Expo.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Expo Go prend en charge le SDK 57.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>w0-hello s'affiche sur le téléphone avec votre nom.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La capture d'écran est publiée.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur github.com, votre dépôt affiche le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> et son fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">package.json</code>.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le projet Firebase existe, avec Authentication (e-mail et mot de passe) et Firestore en mode production.</span></li>
+            </ul>
+          </div>
+
+          <div class="md-card p-6 mt-6">
+            <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+              À retenir
+            </h3>
+            <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Chaque séance crée une nouvelle application dans un nouveau dossier du même dépôt. À la séance 01, vous créerez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code> exactement comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> : même commande, même SDK, même téléphone.</p>
+            </div>
+            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> apparaît sur GitHub comme un dossier vide ou non cliquable, un dépôt Git est resté dans l'application : revenez à l'Étape 4, supprimez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.git</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>, puis refaites le commit.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Prism core + autoloader (pinned 1.29.0) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script>
+  Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+</script>
+
+<!-- Navigation JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.step-panel'));
+  var stepIds = panels.map(function (p) { return p.id; });
+  var sidebarLinks = Array.prototype.slice.call(document.querySelectorAll('.step-link'));
+  var titleEl = document.getElementById('current-step-title');
+  var prevBtn = document.getElementById('prev-step');
+  var nextBtn = document.getElementById('next-step');
+  var progressBar = document.getElementById('progress-bar');
+  var sidebar = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebar-overlay');
+  var sidebarToggle = document.getElementById('sidebar-toggle');
+
+  var storageKey = 'codelab-progress:' + window.location.pathname;
+
+  function loadCompleted() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCompleted(list) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(list));
+    } catch (e) {
+      /* localStorage unavailable: navigation still works without persistence */
+    }
+  }
+
+  var completed = loadCompleted();
+
+  function indexOfStep(id) {
+    var idx = stepIds.indexOf(id);
+    return idx === -1 ? 0 : idx;
+  }
+
+  function markCompleted(idx) {
+    var id = stepIds[idx];
+    if (completed.indexOf(id) === -1) {
+      completed.push(id);
+      saveCompleted(completed);
+    }
+  }
+
+  function updateSidebarState(activeId) {
+    sidebarLinks.forEach(function (link) {
+      var id = link.getAttribute('data-step');
+      link.classList.toggle('is-active', id === activeId);
+      link.classList.toggle('is-completed', completed.indexOf(id) !== -1 && id !== activeId);
+    });
+  }
+
+  function closeMobileSidebar() {
+    if (sidebar) sidebar.classList.remove('is-open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('is-open');
+  }
+
+  function showStep(idx, options) {
+    options = options || {};
+    if (idx < 0) idx = 0;
+    if (idx > panels.length - 1) idx = panels.length - 1;
+
+    var id = stepIds[idx];
+
+    panels.forEach(function (panel, i) {
+      panel.classList.toggle('is-active', i === idx);
+    });
+
+    if (titleEl) {
+      titleEl.textContent = panels[idx].getAttribute('data-title') || panels[idx].id;
+    }
+
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.disabled = idx === panels.length - 1;
+
+    if (progressBar) {
+      var pct = ((idx + 1) / panels.length) * 100;
+      progressBar.style.width = pct + '%';
+    }
+
+    if (idx > 0) {
+      for (var i = 0; i < idx; i++) {
+        markCompleted(i);
+      }
+    }
+
+    updateSidebarState(id);
+
+    if (!options.skipHash) {
+      if (history.replaceState) {
+        history.replaceState(null, '', '#' + id);
+      } else {
+        window.location.hash = id;
+      }
+    }
+
+    document.getElementById('content').scrollTop = 0;
+    closeMobileSidebar();
+  }
+
+  function currentIndex() {
+    var hash = window.location.hash.replace('#', '');
+    return indexOfStep(hash);
+  }
+
+  // Sidebar links: native anchor navigation updates location.hash, which
+  // fires 'hashchange'; we just react to that in one place.
+  window.addEventListener('hashchange', function () {
+    showStep(currentIndex(), { skipHash: true });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      showStep(currentIndex() - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      showStep(currentIndex() + 1);
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+    if (e.key === 'ArrowLeft') {
+      showStep(currentIndex() - 1);
+    } else if (e.key === 'ArrowRight') {
+      showStep(currentIndex() + 1);
+    }
+  });
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function () {
+      sidebar.classList.add('is-open');
+      sidebarOverlay.classList.add('is-open');
+    });
+  }
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeMobileSidebar);
+  }
+
+  // Copy-to-clipboard for every code block.
+  Array.prototype.slice.call(document.querySelectorAll('.copy-btn')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var wrapper = btn.closest('.code-block-wrapper');
+      var codeEl = wrapper ? wrapper.querySelector('code') : null;
+      if (!codeEl) return;
+
+      var text = codeEl.textContent;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copie';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {
+          fallbackCopy(text);
+          done();
+        });
+      } else {
+        fallbackCopy(text);
+        done();
+      }
+    });
+  });
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    document.body.removeChild(ta);
+  }
+
+  // Initial render.
+  showStep(currentIndex(), { skipHash: true });
+  if (window.location.hash) {
+    // Normalize the hash (e.g. redirect #foo -> #step-1 if invalid).
+    history.replaceState(null, '', '#' + stepIds[currentIndex()]);
+  }
+
+  if (window.Prism) {
+    Prism.highlightAll();
+  }
+})();
+</script>
+
+<!-- Quiz JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var questions = Array.prototype.slice.call(document.querySelectorAll('.quiz-question'));
+  if (!questions.length) return;
+
+  var storageKey = 'codelab-quiz:' + window.location.pathname;
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(state));
+    } catch (e) {
+      /* localStorage unavailable: the quiz still works without persistence */
+    }
+  }
+
+  var state = loadState();
+
+  function updateScores() {
+    var firstTry = 0;
+    questions.forEach(function (question) {
+      var entry = state[question.id];
+      if (entry && entry.done && entry.tries === 1) firstTry++;
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (el) {
+      el.textContent = firstTry + ' / ' + questions.length;
+    });
+  }
+
+  questions.forEach(function (question) {
+    var options = Array.prototype.slice.call(question.querySelectorAll('.quiz-option'));
+    var feedback = question.querySelector('.quiz-feedback');
+    var explain = question.querySelector('.quiz-explain');
+    var answer = question.getAttribute('data-answer');
+
+    function showFeedback(text) {
+      if (!feedback) return;
+      feedback.textContent = text;
+      feedback.hidden = false;
+    }
+
+    function finish() {
+      options.forEach(function (option) {
+        option.disabled = true;
+        if (option.getAttribute('data-option') === answer) {
+          option.classList.add('is-correct');
+        }
+      });
+      if (explain) explain.hidden = false;
+    }
+
+    if (state[question.id] && state[question.id].done) {
+      finish();
+      showFeedback('Bonne réponse.');
+    }
+
+    options.forEach(function (option) {
+      option.addEventListener('click', function () {
+        var entry = state[question.id] || { tries: 0, done: false };
+        if (entry.done) return;
+
+        entry.tries += 1;
+
+        if (option.getAttribute('data-option') === answer) {
+          entry.done = true;
+          showFeedback(entry.tries === 1 ? 'Bonne réponse du premier coup.' : 'Bonne réponse.');
+          finish();
+        } else {
+          option.classList.add('is-wrong');
+          option.disabled = true;
+          showFeedback('Pas encore. Relisez la question et réessayez.');
+        }
+
+        state[question.id] = entry;
+        saveState(state);
+        updateScores();
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-reset]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state = {};
+      saveState(state);
+      window.location.reload();
+    });
+  });
+
+  updateScores();
+})();
+</script>
+
+</body>
+</html>
