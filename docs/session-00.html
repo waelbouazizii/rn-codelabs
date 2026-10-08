@@ -305,7 +305,7 @@
             <p class="text-gray-700 leading-relaxed mb-4">Cette page se fait à la maison, avant la séance 01, en une heure environ. À la fin, votre PC et votre téléphone sont prêts : une application Expo créée sur le PC s'affiche sur votre téléphone dans Expo Go, votre dépôt GitHub existe et votre projet Firebase est créé pour la séance 04.</p>
             <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
               <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
-              <div class="text-sm text-gray-800"><p class="font-medium">Avant la séance</p><p class="mt-1">Ouvrez Expo Go sur votre téléphone, installé depuis le Play Store ou l'App Store, et lisez la version de SDK qu'il prend en charge. Elle doit correspondre au SDK utilisé sur cette page : SDK 57, et à l'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code> des commandes. Sur iPhone, seule la version de l'App Store fonctionne : en cas d'écart, attendez la mise à jour de la page au lieu d'installer une autre version d'Expo Go. Sur Android, laissez Expo CLI proposer la version d'Expo Go adaptée ou téléchargez-la sur <a href="https://expo.dev/go" class="text-brand underline">expo.dev/go</a>.</p></div>
+              <div class="text-sm text-gray-800"><p class="font-medium">Avant la séance</p><p class="mt-1">Dès qu'Expo Go est installé sur votre téléphone (Étape 1), ouvrez-le et lisez la version de SDK qu'il prend en charge. Elle doit correspondre au SDK utilisé sur cette page : SDK 57, et à l'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code> des commandes. Sur iPhone, seule la version de l'App Store fonctionne : en cas d'écart, attendez la mise à jour de la page au lieu d'installer une autre version d'Expo Go. Sur Android, laissez Expo CLI proposer la version d'Expo Go adaptée ou téléchargez-la sur <a href="https://expo.dev/go" class="text-brand underline">expo.dev/go</a>.</p></div>
             </div>
           </div>
 
@@ -502,7 +502,7 @@ git config --global user.email "prenom.nom@example.com"</code></pre>
               <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
               Commandes
             </h3>
-            <p class="text-gray-700 leading-relaxed mb-4">Créez un compte gratuit sur <a href="https://expo.dev/signup" class="text-brand underline">expo.dev/signup</a> et notez votre nom d'utilisateur.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Créez un compte gratuit sur <a href="https://expo.dev/signup" class="text-brand underline">expo.dev/signup</a> avec une adresse e-mail et un mot de passe, et notez votre nom d'utilisateur.</p>
             <p class="text-gray-700 leading-relaxed mb-4">Connectez le terminal à ce compte. La commande pose des questions : répondez avec votre nom d'utilisateur et votre mot de passe. Si npx propose de télécharger un paquet, acceptez.</p>
             <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
             <div class="code-block-wrapper mb-4">
@@ -561,7 +561,7 @@ git config --global user.email "prenom.nom@example.com"</code></pre>
             </div>
             <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
               <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
-              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Deux comptes différents (par exemple un compte créé avec Google sur le téléphone et un autre avec un mot de passe sur le PC) empêchent l'ouverture du projet sur iPhone. Comparez le nom affiché par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> et celui affiché dans Expo Go.</p>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Deux comptes différents (un sur le PC, un autre sur le téléphone) empêchent l'ouverture du projet sur iPhone. Comparez le nom affiché par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> et celui affiché dans Expo Go.</p>
             </div>
           </div>
         </section>
@@ -585,13 +585,13 @@ git config --global user.email "prenom.nom@example.com"</code></pre>
               <li>Connectez-vous à <a href="https://github.com" class="text-brand underline">github.com</a> (créez un compte si nécessaire).</li>
               <li>Créez un nouveau dépôt nommé <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>, avec votre prénom et votre nom en minuscules, sans accent ni espace.</li>
               <li>Choisissez la visibilité privée et cochez l'option qui ajoute un fichier README, pour que le dépôt ne soit pas vide.</li>
-              <li>Dans les réglages du dépôt, invitez comme collaborateur le compte GitHub de l'enseignant, communiqué avec le lien de cette page.</li>
+              <li>Dans les réglages du dépôt, invitez comme collaborateur le compte GitHub <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">waelbouazizii</code>.</li>
             </ol>
             <p class="text-gray-700 leading-relaxed mb-4">Créez un dossier de travail dont le chemin ne contient ni espace ni accent, hors de OneDrive.</p>
             <p class="text-sm text-gray-600 mb-2">PowerShell (Windows) :</p>
             <div class="code-block-wrapper mb-4">
               <button class="copy-btn" aria-label="Copier la commande">Copier</button>
-              <pre><code class="language-powershell">mkdir C:\dev
+              <pre><code class="language-powershell">New-Item -ItemType Directory -Force C:\dev
 cd C:\dev</code></pre>
             </div>
             <p class="text-sm text-gray-600 mb-2">Bash (macOS, Linux, Git Bash) :</p>
@@ -682,23 +682,6 @@ npx expo start</code></pre>
               <p class="text-sm text-gray-800">Au premier lancement, Windows peut demander l'autorisation d'accès réseau pour Node.js : autorisez-le sur les réseaux privés. Le PC et le téléphone doivent être sur le même réseau Wi-Fi, déclaré comme réseau privé dans Windows.</p>
             </div>
             <p class="text-gray-700 leading-relaxed mb-4">Scannez le QR code affiché dans le terminal : sur Android depuis Expo Go, sur iPhone avec l'application Appareil photo.</p>
-            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un second terminal dans le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> et vérifiez que l'application appartient bien à votre dépôt :</p>
-            <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
-            <div class="code-block-wrapper mb-4">
-              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
-              <pre><code class="language-bash">git rev-parse --show-toplevel</code></pre>
-            </div>
-            <p class="text-gray-700 leading-relaxed mb-4">La commande doit afficher le chemin du dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>, et non celui de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>.</p>
-            <p class="text-sm text-gray-600 mb-2">Seulement si la commande affiche le chemin de w0-hello (un dépôt Git a été créé dans l'application) — PowerShell (Windows) :</p>
-            <div class="code-block-wrapper mb-4">
-              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
-              <pre><code class="language-powershell">Remove-Item -Recurse -Force .git</code></pre>
-            </div>
-            <p class="text-sm text-gray-600 mb-2">Seulement si la commande affiche le chemin de w0-hello — Bash (macOS, Linux, Git Bash) :</p>
-            <div class="code-block-wrapper mb-4">
-              <button class="copy-btn" aria-label="Copier la commande">Copier</button>
-              <pre><code class="language-bash">rm -rf .git</code></pre>
-            </div>
             <p class="text-sm text-gray-600 mb-2">Seulement si le QR code ne se connecte pas : mode tunnel. Arrêtez d'abord le serveur avec Ctrl+C dans le Terminal 1 — Bash et PowerShell (identique) :</p>
             <div class="code-block-wrapper mb-4">
               <button class="copy-btn" aria-label="Copier la commande">Copier</button>
@@ -730,9 +713,7 @@ npx expo start</code></pre>
             </h3>
             <ul class="space-y-2 text-gray-700">
               <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le Terminal 1 affiche un QR code et reste en cours d'exécution.</span></li>
-              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, Expo Go affiche l'écran de démarrage de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>.</span></li>
-              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git rev-parse --show-toplevel</code> affiche le chemin de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>.</span></li>
-            </ul>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, Expo Go affiche l'écran de démarrage de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>.</span></li>            </ul>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -766,13 +747,13 @@ npx expo start</code></pre>
               <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
               Commandes
             </h3>
-            <p class="text-gray-700 leading-relaxed mb-4">Arrêtez le serveur avec Ctrl+C dans le Terminal 1, puis réinitialisez le projet. Le script pose une question sur les fichiers de démarrage : les deux réponses conviennent.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Arrêtez le serveur avec Ctrl+C dans le Terminal 1, puis réinitialisez le projet. Le script demande s'il faut conserver les fichiers de démarrage : répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>, puis Entrée, pour les supprimer.</p>
             <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
             <div class="code-block-wrapper mb-4">
               <button class="copy-btn" aria-label="Copier la commande">Copier</button>
               <pre><code class="language-bash">npm run reset-project</code></pre>
             </div>
-            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> dans VS Code. Si un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app-example</code> existe, supprimez-le dans l'explorateur de VS Code. Remplacez ensuite le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> par le code de la carte suivante, avec votre prénom et votre nom, et enregistrez.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> dans VS Code. Si vous avez répondu autrement, un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> existe : supprimez-le dans l'explorateur de VS Code. Remplacez ensuite le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> par le code de la carte suivante, avec votre prénom et votre nom, et enregistrez.</p>
             <p class="text-gray-700 leading-relaxed mb-4">Relancez le serveur et rescannez le QR code si Expo Go ne se reconnecte pas seul.</p>
             <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
             <div class="code-block-wrapper mb-4">
@@ -823,7 +804,7 @@ const styles = StyleSheet.create({
               <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
               Résultat attendu
             </h3>
-            <p class="text-gray-700">Le téléphone affiche trois lignes centrées : w0-hello, votre prénom et votre nom, puis IAM2 - React Native avec Expo.</p>
+            <p class="text-gray-700">Le téléphone affiche une barre de titre « index », puis trois lignes centrées : w0-hello, votre prénom et votre nom, puis IAM2 - React Native avec Expo.</p>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -833,8 +814,7 @@ const styles = StyleSheet.create({
             </h3>
             <ul class="space-y-2 text-gray-700">
               <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, l'écran affiche votre prénom et votre nom.</span></li>
-              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Après avoir remplacé « w0-hello » par « Bonjour IAM2 » dans le code et enregistré, le téléphone affiche le nouveau texte en moins de deux secondes, sans relancer Expo Go.</span></li>
-              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Remettez ensuite le texte « w0-hello » et enregistrez.</span></li>
+              <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Après avoir remplacé « w0-hello » par « Bonjour IAM2 » dans le code et enregistré, le téléphone affiche le nouveau texte en moins de deux secondes, sans relancer Expo Go (remettez ensuite « w0-hello »).</span></li>
             </ul>
           </div>
 
@@ -849,7 +829,7 @@ const styles = StyleSheet.create({
             </div>
             <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
               <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
-              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si le téléphone affiche encore l'ancien écran après la réinitialisation, le serveur n'a pas été relancé : arrêtez-le avec Ctrl+C, relancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> et rescannez le QR code. Si un écran rouge signale un fichier introuvable dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app-example</code>, supprimez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app-example</code>.</p>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si le téléphone affiche encore l'ancien écran après la réinitialisation, le serveur n'a pas été relancé : arrêtez-le avec Ctrl+C, relancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> et rescannez le QR code. Si la question du script n'a pas reçu la réponse <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">y</code> ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>, rien n'est modifié : relancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm run reset-project</code>.</p>
             </div>
           </div>
         </section>
@@ -946,7 +926,7 @@ const styles = StyleSheet.create({
               <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
               Commandes
             </h3>
-            <p class="text-gray-700 leading-relaxed mb-4">Dans le Terminal 2 (dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>), enregistrez l'application dans votre dépôt. Ce commit n'est pas noté : il vérifie que Git et GitHub fonctionnent avant la séance 01.</p>
+            <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un second terminal dans le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> (Terminal 2) et enregistrez l'application dans votre dépôt. Ce commit n'est pas noté : il vérifie que Git et GitHub fonctionnent avant la séance 01.</p>
             <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
             <div class="code-block-wrapper mb-4">
               <button class="copy-btn" aria-label="Copier la commande">Copier</button>
@@ -980,12 +960,7 @@ git push</code></pre>
             <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
               <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
               <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Chaque séance crée une nouvelle application dans un nouveau dossier du même dépôt. À la séance 01, vous créerez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s1-profile-contacts</code> exactement comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> : même commande, même SDK, même téléphone.</p>
-            </div>
-            <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
-              <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
-              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code> apparaît sur GitHub comme un dossier vide ou non cliquable, un dépôt Git est resté dans l'application : revenez à l'Étape 4, supprimez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.git</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">w0-hello</code>, puis refaites le commit.</p>
-            </div>
-          </div>
+            </div>          </div>
         </section>
 
       </div>
