@@ -483,11 +483,11 @@
             <div class="flex-1 rounded border border-gray-300 p-3 bg-white">
               <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap">Hook</p>
               <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/products/useProducts.ts</code></p>
-              <p class="text-sm text-gray-600 mt-1">décrit la requête et son cache</p>
+              <p class="text-sm text-gray-600 mt-1">prépare les données pour l'écran</p>
             </div>
             <div class="flex items-center justify-center text-gray-400"><i class="fa-solid fa-arrow-right hidden md:block" aria-hidden="true"></i><i class="fa-solid fa-arrow-down md:hidden" aria-hidden="true"></i></div>
             <div class="flex-1 rounded border border-gray-300 p-3 bg-white">
-              <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap">Service</p>
+              <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap">Dépôt ou service</p>
               <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib/api.ts</code></p>
               <p class="text-sm text-gray-600 mt-1">parle à la source de données</p>
             </div>
@@ -495,10 +495,11 @@
             <div class="flex-1 rounded border border-gray-300 p-3 bg-white">
               <p class="font-medium text-gray-900">Source de données</p>
               <ul class="text-sm text-gray-600 mt-1 space-y-1">
-                <li class="text-gray-400">SQLite <span class="text-xs">(S2)</span></li>
-                <li class="inline-flex items-center gap-2 rounded border-2 border-brand px-2 py-0.5 text-gray-900">API REST (DummyJSON) <span class="text-xs font-medium bg-brand text-white rounded px-2 py-0.5">cette séance</span></li>
-                <li class="text-gray-400">Firestore <span class="text-xs">(S4)</span></li>
-                <li class="text-gray-400">MQTT <span class="text-xs">(S6)</span></li>
+                <li>Mémoire (S1)</li>
+                <li>SQLite (S2)</li>
+                <li class="inline-flex items-center gap-2 rounded border-2 border-brand px-2 py-0.5">API REST (S3) <span class="text-xs font-medium bg-brand text-white rounded px-2 py-0.5">Séance 03</span></li>
+                <li>Firestore (S4)</li>
+                <li>MQTT (S6)</li>
               </ul>
             </div>
           </div>
@@ -1227,16 +1228,25 @@ export const queryClient = new QueryClient({
             <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
             Commandes
           </h3>
-          <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un terminal dans le dossier de votre dépôt <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>. La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm run reset-project</code> demande s'il faut conserver les fichiers de démarrage : répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>, puis Entrée, pour les supprimer ; la dernière commande s'exécute ensuite.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un terminal dans le dossier de votre dépôt <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>. La dernière commande demande s'il faut conserver les fichiers de démarrage : répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>, puis Entrée, pour les supprimer.</p>
           <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier la commande">Copier</button>
             <pre><code class="language-bash">npx create-expo-app@latest s3-mini-shop --template default@sdk-57
 cd s3-mini-shop
-npm run reset-project
-npx expo install @tanstack/react-query expo-secure-store expo-sqlite</code></pre>
+code .
+npm run reset-project</code></pre>
           </div>
           <p class="text-gray-700 leading-relaxed mb-4">Si vous avez répondu autrement, un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> existe à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s3-mini-shop</code> : supprimez-le dans l'explorateur de VS Code. Ses fichiers ne compilent plus et feraient échouer la vérification des types.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx expo install @tanstack/react-query expo-secure-store expo-sqlite</code></pre>
+          </div>
+          <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-gray-800">Dépendance au SDK : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo install</code> choisit les versions de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-secure-store</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-sqlite</code> compatibles avec le SDK 57 ; pour <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@tanstack/react-query</code>, paquet JavaScript pur, il installe la dernière version 5.</p>
+          </div>
           <p class="text-gray-700 leading-relaxed mb-4">Supprimez ensuite <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> : la route <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/</code> passe dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code>. Créez les fichiers de la carte suivante, enregistrez, puis lancez le serveur et scannez le QR code (Android : depuis Expo Go ; iPhone : avec l'application Appareil photo).</p>
           <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
           <div class="code-block-wrapper mb-4">
@@ -1247,10 +1257,6 @@ npx expo install @tanstack/react-query expo-secure-store expo-sqlite</code></pre
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier la commande">Copier</button>
             <pre><code class="language-bash">npx expo start --tunnel</code></pre>
-          </div>
-          <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
-            <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
-            <p class="text-sm text-gray-800">Dépendance au SDK : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo install</code> choisit les versions de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-secure-store</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-sqlite</code> compatibles avec le SDK 57 ; pour <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@tanstack/react-query</code>, paquet JavaScript pur, il installe la dernière version 5.</p>
           </div>
           </div>
 
@@ -1374,6 +1380,12 @@ const styles = StyleSheet.create({
             Commandes
           </h3>
           <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>, lancé à l'Étape 1, reste ouvert dans le Terminal 1. Le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib</code> existe déjà depuis l'Étape 1 ; créez les dossiers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/products</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code>. Chaque enregistrement met le téléphone à jour ; si l'écran ne change pas, secouez le téléphone pour ouvrir le menu d'Expo Go et choisissez Reload.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un second terminal dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s3-mini-shop</code> pour la vérification des types. Vous le réutiliserez à chaque étape.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+          </div>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -1624,6 +1636,7 @@ const styles = StyleSheet.create({
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>En tirant la liste vers le bas depuis le haut, l'indicateur de rafraîchissement apparaît puis disparaît, et la liste reste visible.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Réseau lent : dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useProducts.ts</code>, passez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">DEBUG_DELAY_MS</code> à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">1500</code>, enregistrez, puis rechargez l'application depuis le menu d'Expo Go (Reload). Le téléphone affiche « Chargement du catalogue » en plein écran pendant environ 1,5 s. Remettez ensuite <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">DEBUG_DELAY_MS</code> à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">0</code>.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Erreur : catalogue affiché, passez le téléphone en mode avion, puis tirez la liste vers le bas. Après les nouveaux essais (plusieurs secondes), l'écran affiche « Impossible de charger le catalogue. » et le bouton « Réessayer ». Désactivez le mode avion, attendez le retour du Wi-Fi et appuyez sur « Réessayer » : la liste revient.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans erreur.</span></li>
           </ul>
           </div>
 
@@ -1658,7 +1671,12 @@ const styles = StyleSheet.create({
             <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
             Commandes
           </h3>
-          <p class="text-gray-700 leading-relaxed">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1 depuis l'Étape 1. Enregistrez chaque fichier et regardez le téléphone se mettre à jour.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1 depuis l'Étape 1. Enregistrez chaque fichier et regardez le téléphone se mettre à jour.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+          </div>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -1725,7 +1743,7 @@ const styles = StyleSheet.create({
   chipTextActive: { color: '#ffffff', fontWeight: '600' },
 });</code></pre>
           </div>
-          <p class="text-gray-700 leading-relaxed mb-4">Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code>, quatre modifications. D'abord, les imports en haut du fichier deviennent :</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code>, trois modifications. D'abord, les imports en haut du fichier deviennent :</p>
           <p class="text-sm text-gray-600 mb-2">Haut du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code> (imports remplacés) :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
@@ -1846,6 +1864,7 @@ const styles = StyleSheet.create({
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, une rangée de pastilles défile horizontalement au-dessus de la liste : « Toutes » puis 24 catégories.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur « Smartphones » affiche 16 produits ; la pastille choisie est remplie.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur « Toutes », puis de nouveau sur « Smartphones » en moins de 30 secondes, affiche la liste immédiatement, sans l'écran « Chargement du catalogue » : la donnée vient du cache.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans erreur.</span></li>
           </ul>
           </div>
 
@@ -1876,7 +1895,12 @@ const styles = StyleSheet.create({
             <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
             Commandes
           </h3>
-          <p class="text-gray-700 leading-relaxed">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1 depuis l'Étape 1. Gardez le téléphone sur l'onglet Catalogue.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1 depuis l'Étape 1. Gardez le téléphone sur l'onglet Catalogue.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+          </div>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -1900,7 +1924,7 @@ export function useDebouncedValue&lt;T&gt;(value: T, delayMs: number): T {
   return debounced;
 }</code></pre>
           </div>
-          <p class="text-gray-700 leading-relaxed mb-4">Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code>, cinq modifications. Les imports ajoutent <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TextInput</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useDebouncedValue</code> :</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code>, quatre modifications. Les imports ajoutent <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TextInput</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useDebouncedValue</code> :</p>
           <p class="text-sm text-gray-600 mb-2">Haut du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code> (imports remplacés) :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
@@ -2097,6 +2121,7 @@ const styles = StyleSheet.create({
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, taper « phone » affiche 23 résultats après une courte pause, et non une requête par lettre.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Taper « zzzz » affiche « Aucun produit trouvé. ».</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Choisir une pastille vide le champ ; taper dans le champ sélectionne « Toutes » (DummyJSON ne sait pas combiner recherche et catégorie).</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans erreur.</span></li>
           </ul>
           </div>
 
@@ -2131,7 +2156,12 @@ const styles = StyleSheet.create({
             <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
             Commandes
           </h3>
-          <p class="text-gray-700 leading-relaxed">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1 depuis l'Étape 1. Créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/product</code>.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1 depuis l'Étape 1. Créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/product</code>.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+          </div>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -2273,6 +2303,7 @@ const styles = StyleSheet.create({
           <ul class="space-y-2 text-gray-700 mb-4">
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, un appui sur un produit ouvre sa fiche : image, marque, catégorie, prix, note, stock et description, avec un bouton de retour.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Après un retour, rouvrir le même produit en moins de 30 secondes l'affiche immédiatement, sans « Chargement du produit ».</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans erreur.</span></li>
           </ul>
           </div>
 
@@ -2311,7 +2342,12 @@ const styles = StyleSheet.create({
             <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
             Commandes
           </h3>
-          <p class="text-gray-700 leading-relaxed">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-secure-store</code> a été installé à l'Étape 1 et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/auth</code>. Sur le téléphone, gardez le compte de démonstration sous la main : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">emilys</code> / <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">emilyspass</code>.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle commande : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-secure-store</code> a été installé à l'Étape 1 et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/auth</code>. Sur le téléphone, gardez le compte de démonstration sous la main : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">emilys</code> / <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">emilyspass</code>.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+          </div>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -2626,6 +2662,7 @@ export default function TabsLayout() {
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">emilys</code> / <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">emilyspass</code>, l'onglet affiche l'avatar, le prénom, le nom et l'adresse e-mail.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Fermez complètement Expo Go (depuis le sélecteur d'applications), rouvrez-le et rouvrez le projet : l'onglet Compte affiche le profil sans nouvelle connexion.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>« Se déconnecter » ramène au formulaire.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans erreur.</span></li>
           </ul>
           </div>
 
@@ -2660,7 +2697,7 @@ export default function TabsLayout() {
             <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
             Commandes
           </h3>
-          <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle installation : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-sqlite</code> a été installé à l'Étape 1 et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Créez les dossiers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/cart</code>. Une fois tous les fichiers enregistrés, ouvrez un second terminal dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s3-mini-shop</code> (Terminal 2) et vérifiez les types ; vous le réutiliserez pour le livrable.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Aucune nouvelle installation : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-sqlite</code> a été installé à l'Étape 1 et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Créez les dossiers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/cart</code>. Une fois tous les fichiers enregistrés, vérifiez les types dans le Terminal 2.</p>
           <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier la commande">Copier</button>
@@ -3072,7 +3109,7 @@ const styles = StyleSheet.create({
           </div>
           <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
-            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Une erreur de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useSQLiteContext</code> signifie que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">SQLiteProvider</code> manque ou se trouve sous un écran qui utilise le panier. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">no such table: cart_items</code> signifie que la base a été créée par une version antérieure de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">migrations.ts</code> : la désinstallation n'existe pas dans Expo Go, videz les données d'Expo Go pour le projet ou changez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">databaseName</code>.</p>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Une erreur de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useSQLiteContext</code> signifie que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">SQLiteProvider</code> manque ou se trouve sous un écran qui utilise le panier. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">no such table: cart_items</code> signifie que la base a été créée par une version antérieure de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">migrations.ts</code> : changez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">databaseName</code> (par exemple <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">shop2.db</code>) dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code>.</p>
           </div>
           </div>
         </section>
@@ -3185,15 +3222,15 @@ npx expo-doctor@latest</code></pre>
             <pre><code class="language-bash">npx expo install --fix</code></pre>
           </div>
           <p class="text-gray-700 leading-relaxed mb-4">Sur le téléphone, faites une capture d'écran du catalogue et une capture de l'onglet Panier avec au moins deux produits. Copiez les images sur le PC dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s3-mini-shop/screenshots/s3-catalogue.png</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s3-mini-shop/screenshots/s3-cart.png</code>. Remplacez ensuite le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code> (dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s3-mini-shop</code>) par le modèle de la carte suivante, complétez-le et enregistrez.</p>
-          <p class="text-gray-700 leading-relaxed mb-4">Revenez à la racine du dépôt, enregistrez le commit, posez le tag et publiez les deux.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Enregistrez et publiez, puis posez le tag.</p>
           <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier la commande">Copier</button>
-            <pre><code class="language-bash">cd ..
-git add s3-mini-shop
-git commit -m "Add s3 mini shop"
+            <pre><code class="language-bash">git add .
+git commit -m "Add s3-mini-shop"
+git push
 git tag s3-submit
-git push origin main --tags</code></pre>
+git push origin s3-submit</code></pre>
           </div>
           <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
