@@ -1203,6 +1203,10 @@ export function OnlineTimer({ contactId }: Props) {
               <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Le fichier est la déclaration de la route. Les parenthèses servent seulement à regrouper des écrans sous un même _layout.tsx ; elles ne font pas partie de l'URL.</p>
             </div>
             <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+            <button type="button" data-quiz-reset class="mt-3 text-sm text-brand underline flex items-center gap-2">
+              <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+              Recommencer le quiz de la session
+            </button>
           </div>
         </section>
 
