@@ -557,11 +557,11 @@
               Quiz éclair
             </h3>
             <div class="quiz-question mb-6" id="quiz-s01-q01" data-answer="c">
-              <p class="font-medium text-gray-900 mb-3">Vous ajoutez avec npm une bibliothèque qui contient son propre code natif Kotlin et Swift, absent d'Expo Go. Que se passe-t-il quand votre écran appelle cette bibliothèque dans Expo Go ?</p>
+              <p class="font-medium text-gray-900 mb-3">Vous ajoutez avec npm une bibliothèque qui contient son propre code natif Kotlin et Swift, absent d'Expo Go. Que se passe-t-il quand votre écran utilise cette bibliothèque dans Expo Go ?</p>
               <div class="space-y-2" role="group" aria-label="Réponses à la question 1">
                 <button type="button" class="quiz-option" data-option="a">Expo Go compile le code natif au premier lancement, qui est seulement plus lent.</button>
                 <button type="button" class="quiz-option" data-option="b">npm installe automatiquement une version équivalente écrite en JavaScript.</button>
-                <button type="button" class="quiz-option" data-option="c">L'import JavaScript réussit, mais le module natif est introuvable à l'exécution et l'appel échoue.</button>
+                <button type="button" class="quiz-option" data-option="c">Le paquet s'installe, mais le module natif est introuvable dans Expo Go : une erreur apparaît au chargement de l'écran ou au premier appel.</button>
               </div>
               <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
               <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Expo Go est déjà compilé : il ne peut exécuter que les modules natifs qu'il contient. npm ne télécharge que des fichiers ; rien ne recompile la partie native. Pour une telle bibliothèque, il faut un development build.</p>
@@ -1303,7 +1303,7 @@ const styles = StyleSheet.create({
               <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
               Résultat attendu
             </h3>
-            <p class="text-gray-700">Le téléphone affiche votre prénom et votre nom, puis la ligne IAM2 - s1-profile-contacts. La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans afficher d'erreur.</p>
+            <p class="text-gray-700">Le téléphone affiche une barre de titre « index », puis votre prénom et votre nom, et la ligne IAM2 - s1-profile-contacts. La commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans afficher d'erreur.</p>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -1390,7 +1390,8 @@ export default function TabsLayout() {
   return (
     &lt;Tabs
       screenOptions={{
-        tabBarIcon: () =&gt; null,
+        tabBarIconStyle: { display: 'none' },
+        tabBarLabelPosition: 'beside-icon',
         tabBarLabelStyle: { fontSize: 14 },
       }}
     &gt;
@@ -1662,7 +1663,7 @@ const styles = StyleSheet.create({
             </div>
             <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
               <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
-              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si Metro affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve "@/features/contacts/contacts" from "src/app/(tabs)/contacts.tsx"</code>, le fichier n'est pas à cet emplacement ou l'alias <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@/</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tsconfig.json</code> ne pointe pas vers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src</code>. La même cause donne avec tsc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">error TS2307: Cannot find module '@/features/contacts/contacts' or its corresponding type declarations.</code></p>
+              <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si Metro affiche une erreur qui commence par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve module @/features/contacts/contacts from</code>, suivie du chemin de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">contacts.tsx</code>, le fichier n'est pas à cet emplacement ou l'alias <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@/</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tsconfig.json</code> ne pointe pas vers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src</code>. La même cause donne avec tsc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">error TS2307: Cannot find module '@/features/contacts/contacts' or its corresponding type declarations.</code></p>
             </div>
           </div>
         </section>
