@@ -369,7 +369,7 @@
           <p class="text-gray-700 leading-relaxed mb-4">Vos applications savent lire une base locale (séance 02) et une API REST (séance 03). Cette séance branche un backend complet sans écrire de serveur : Firebase. Vous construisez Shared Task Board, un tableau de tâches partagé : inscription et connexion par e-mail, tâches synchronisées en temps réel entre deux téléphones, et règles de sécurité qui empêchent de modifier les tâches des autres. Tout tourne dans Expo Go.</p>
           <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
-            <div class="text-sm text-gray-800"><p class="font-medium">Avant la séance</p><p class="mt-1">Ouvrez Expo Go sur votre téléphone, installé depuis le store, et lisez la version de SDK qu'il prend en charge. Elle doit correspondre au SDK utilisé sur cette page : SDK 57, et à l'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code> de l'Étape 1. Sur iPhone, seule la version de l'App Store fonctionne : en cas d'écart, attendez la mise à jour de la page au lieu d'installer une autre version d'Expo Go. Vérifiez aussi que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> et Expo Go affichent le même compte Expo. Enfin, ouvrez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">https://console.firebase.google.com</code> sur le PC et retrouvez le projet Firebase créé en séance 00 : la connexion par e-mail et mot de passe doit être activée (Authentication) et une base Firestore doit exister (Firestore Database). Si vous travaillez en binôme, décidez avant l'atelier quel projet Firebase vous partagez.</p></div>
+            <div class="text-sm text-gray-800"><p class="font-medium">Avant la séance</p><p class="mt-1">Ouvrez Expo Go sur votre téléphone, installé depuis le store, et lisez la version de SDK qu'il prend en charge. Elle doit correspondre au SDK utilisé sur cette page : SDK 57, et à l'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code> de l'Étape 1. Sur iPhone, seule la version de l'App Store fonctionne : en cas d'écart, attendez la mise à jour de la page au lieu d'installer une autre version d'Expo Go. Vérifiez aussi que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> et Expo Go affichent le même compte Expo. Enfin, ouvrez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">https://console.firebase.google.com</code> sur le PC et retrouvez le projet Firebase créé en séance 00 : la connexion par e-mail et mot de passe doit être activée (Authentication) et une base Firestore doit exister (Firestore Database). Si vous travaillez en binôme, décidez avant l'atelier quel projet Firebase vous partagez.</p></div>
           </div>
           </div>
 
@@ -380,7 +380,7 @@
           </h3>
           <ol class="list-decimal pl-6 space-y-2 text-gray-700 mb-4">
             <li>expliquer ce qu'apporte un backend as a service par rapport à l'API REST de la séance 03, et pourquoi seul le SDK JavaScript de Firebase fonctionne dans Expo Go ;</li>
-            <li>initialiser Firebase avec des variables <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">EXPO_PUBLIC_*</code> et garder la session avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initializeAuth</code> + <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getReactNativePersistence(AsyncStorage)</code> ;</li>
+            <li>initialiser Firebase avec des variables <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">EXPO_PUBLIC_*</code> et garder la session avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initializeAuth</code> + <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">getReactNativePersistence(AsyncStorage)</code> ;</li>
             <li>construire une porte d'entrée dans le layout racine avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onAuthStateChanged</code>, un Context et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Stack.Protected</code> ;</li>
             <li>lire et écrire dans Firestore (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">addDoc</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">updateDoc</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">deleteDoc</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">serverTimestamp</code>, requêtes) et écouter en temps réel avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onSnapshot</code>, désabonnement compris ;</li>
             <li>écrire, publier et tester des règles de sécurité : la configuration Web n'est pas un secret, les règles sont la sécurité.</li>
@@ -401,7 +401,7 @@
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Environnement de la séance 00 ; votre dépôt <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code> est cloné sur le PC.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le projet Firebase de la séance 00, avec la connexion par e-mail et mot de passe activée et une base Firestore créée.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le PC et le téléphone sont sur le même réseau Wi-Fi, et le téléphone a accès à Internet.</span></li>
-            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Paquets de la séance, installés à l'Étape 1 : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebase</code> (version 12) et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@react-native-async-storage/async-storage</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Paquets de la séance, installés à l'Étape 1 : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebase</code> (version 12) et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">@react-native-async-storage/async-storage</code>.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Binôme (deux téléphones sur un même tableau) : chacun construit sa propre application sur son PC ; seul le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> pointe vers le même projet Firebase. Seul, utilisez un second appareil ou un second compte : chaque étape dit comment.</span></li>
           </ul>
           </div>
@@ -668,10 +668,10 @@ export const db = getFirestore(app);</code></pre>
           </div>
           <p class="text-sm font-medium text-gray-900 mb-2">À lire dans ce code :</p>
           <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
-            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getApps().length ? getApp() : initializeApp(firebaseConfig)</code> : Fast Refresh peut réexécuter ce module ; on réutilise alors l'application existante au lieu d'en créer une seconde.</li>
-            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initializeAuth</code> avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getReactNativePersistence(AsyncStorage)</code> : la session est enregistrée sur le téléphone et survit au redémarrage. Avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getAuth</code> seul, la session resterait en mémoire et l'utilisateur devrait se reconnecter à chaque lancement.</li>
+            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">getApps().length ? getApp() : initializeApp(firebaseConfig)</code> : Fast Refresh peut réexécuter ce module ; on réutilise alors l'application existante au lieu d'en créer une seconde.</li>
+            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initializeAuth</code> avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">getReactNativePersistence(AsyncStorage)</code> : la session est enregistrée sur le téléphone et survit au redémarrage. Avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getAuth</code> seul, la session resterait en mémoire et l'utilisateur devrait se reconnecter à chaque lancement.</li>
             <li>Le <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">try/catch</code> : un second appel à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initializeAuth</code> (par exemple après un Fast Refresh) lève une erreur ; on récupère alors l'instance déjà créée avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getAuth</code>.</li>
-            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">// @ts-expect-error</code> : à l'exécution, Metro charge la version React Native de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebase/auth</code>, qui exporte <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getReactNativePersistence</code> ; mais les déclarations de types lues par TypeScript ne la listent pas, d'où l'erreur TS2305. C'est la seule exception du cours à la règle « pas de suppression d'erreur TypeScript ». Si une future version de Firebase corrige ses types, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tsc</code> signalera la directive inutile (TS2578) : il suffira de supprimer la ligne de commentaire.</li>
+            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">// @ts-expect-error</code> : à l'exécution, Metro charge la version React Native de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebase/auth</code>, qui exporte <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">getReactNativePersistence</code> ; mais les déclarations de types lues par TypeScript ne la listent pas, d'où l'erreur TS2305. C'est la seule exception du cours à la règle « pas de suppression d'erreur TypeScript ». Si une future version de Firebase corrige ses types, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tsc</code> signalera la directive inutile (TS2578) : il suffira de supprimer la ligne de commentaire.</li>
             <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getFirestore(app)</code> : sur React Native, le cache de Firestore est en mémoire.</li>
           </ul>
           </div>
@@ -685,7 +685,7 @@ export const db = getFirestore(app);</code></pre>
             Un écouteur, une seule source de vérité
           </h3>
           <p class="text-sm text-gray-500 mb-3">Durée : 20 min.</p>
-          <p class="text-gray-700 leading-relaxed mb-4">Firebase Authentication gère les comptes (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">createUserWithEmailAndPassword</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">signInWithEmailAndPassword</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">signOut</code>) et garde la session. L'application ne stocke rien elle-même : elle s'abonne à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onAuthStateChanged</code>, qui appelle une fonction à chaque changement d'utilisateur, y compris au lancement, quand la session est restaurée depuis AsyncStorage.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Firebase Authentication gère les comptes (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">createUserWithEmailAndPassword</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">signInWithEmailAndPassword</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">signOut</code>) et garde la session. L'application ne stocke rien elle-même : elle s'abonne à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onAuthStateChanged</code>, qui appelle une fonction à chaque changement d'utilisateur, y compris au lancement, quand la session est restaurée depuis AsyncStorage.</p>
           <p class="text-gray-700 leading-relaxed mb-4">Conséquence : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">signIn</code> ne met pas à jour l'état React. Il appelle Firebase ; Firebase prévient l'écouteur ; l'écouteur met à jour le Context. Connexion, déconnexion, session restaurée ou expirée passent toutes par le même chemin.</p>
           <div class="overflow-x-auto mb-4">
             <table class="w-full text-sm text-left border border-gray-200">
@@ -914,7 +914,7 @@ const styles = StyleSheet.create({
               </tbody>
             </table>
           </div>
-          <p class="text-sm text-gray-600 mb-2">Exemple à lire : fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/tasks/tasksRepo.ts</code> (vous le créerez à l'Étape 3)</p>
+          <p class="text-sm text-gray-600 mb-2">Exemple à lire : fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/tasks/tasksRepo.ts</code> (vous le créerez à l'Étape 3)</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-ts">import {
@@ -972,27 +972,9 @@ export const tasksRepo = {
           <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
             <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">includeMetadataChanges: true</code> : l'écouteur est aussi rappelé quand seul l'état « en attente » d'un document change, ce qui permet d'afficher puis d'effacer « en attente du serveur ».</li>
             <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">d.data({ serverTimestamps: 'estimate' })</code> : tant que le serveur n'a pas fixé <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">createdAt</code>, Firestore fournit une estimation locale au lieu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">null</code>.</li>
-            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">d.metadata.hasPendingWrites</code> : vrai tant que l'écriture locale n'est pas confirmée par le serveur.</li>
+            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">d.metadata.hasPendingWrites</code> : vrai tant que l'écriture locale n'est pas confirmée par le serveur.</li>
             <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">as TaskData</code> : Firestore ne connaît pas vos types ; le dépôt est le seul endroit qui affirme la forme des documents.</li>
           </ul>
-          </div>
-
-          <div class="md-card p-6 mt-6">
-          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
-            <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
-            Quiz éclair
-          </h3>
-          <div class="quiz-question mb-6" id="quiz-s04-q04" data-answer="c">
-            <p class="font-medium text-gray-900 mb-3">Dans useTasks, l'effet appelle tasksRepo.listen mais ne renvoie pas la fonction de désabonnement. Que se passe-t-il à chaque fois que vous enregistrez un fichier et que Fast Refresh réexécute les effets ?</p>
-            <div class="space-y-2" role="group" aria-label="Réponses à la question 4">
-              <button type="button" class="quiz-option" data-option="a">Rien : Firestore remplace automatiquement l'ancien écouteur par le nouveau.</button>
-              <button type="button" class="quiz-option" data-option="b">L'ancien écouteur est fermé dès que le composant est rendu de nouveau.</button>
-              <button type="button" class="quiz-option" data-option="c">Un écouteur de plus s'ouvre ; les anciens continuent de recevoir les documents et de consommer le quota de lectures.</button>
-            </div>
-            <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
-            <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React n'arrête un abonnement que si l'effet renvoie une fonction de nettoyage, comme onDispose dans DisposableEffect. Sans elle, chaque réexécution de l'effet ajoute un écouteur, et chaque écouteur relit les documents.</p>
-          </div>
-          <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -1030,6 +1012,16 @@ export const tasksRepo = {
             </div>
             <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
             <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Firestore écrit d'abord dans son cache local et notifie les écouteurs : c'est la compensation de latence. L'écriture part vers le serveur dès que le réseau revient ; seule la promesse de addDoc attend cette confirmation.</p>
+          </div>
+          <div class="quiz-question mb-6" id="quiz-s04-q04" data-answer="c">
+            <p class="font-medium text-gray-900 mb-3">Dans useTasks, l'effet appelle tasksRepo.listen mais ne renvoie pas la fonction de désabonnement. Que se passe-t-il à chaque fois que vous enregistrez un fichier et que Fast Refresh réexécute les effets ?</p>
+            <div class="space-y-2" role="group" aria-label="Réponses à la question 4">
+              <button type="button" class="quiz-option" data-option="a">Rien : Firestore remplace automatiquement l'ancien écouteur par le nouveau.</button>
+              <button type="button" class="quiz-option" data-option="b">L'ancien écouteur est fermé dès que le composant est rendu de nouveau.</button>
+              <button type="button" class="quiz-option" data-option="c">Un écouteur de plus s'ouvre ; les anciens continuent de recevoir les documents et de consommer le quota de lectures.</button>
+            </div>
+            <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+            <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React n'arrête un abonnement que si l'effet renvoie une fonction de nettoyage, comme onDispose dans DisposableEffect. Sans elle, chaque réexécution de l'effet ajoute un écouteur, et chaque écouteur relit les documents.</p>
           </div>
           <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
           </div>
@@ -1092,7 +1084,7 @@ service cloud.firestore {
   }
 }</code></pre>
           </div>
-          <p class="text-gray-700 leading-relaxed mb-4">À la création, le document n'existe pas encore : on vérifie <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">request.resource.data.ownerId</code>, la valeur envoyée. Pour modifier ou supprimer, on vérifie <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">resource.data.ownerId</code>, la valeur stockée : impossible de s'approprier la tâche d'un autre en envoyant son propre uid.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">À la création, le document n'existe pas encore : on vérifie <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">request.resource.data.ownerId</code>, la valeur envoyée. Pour modifier ou supprimer, on vérifie <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">resource.data.ownerId</code>, la valeur stockée : impossible de s'approprier la tâche d'un autre en envoyant son propre uid.</p>
           </div>
 
           <div class="md-card p-6 mt-6">
@@ -1194,7 +1186,7 @@ npm run reset-project</code></pre>
           </div>
           <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
-            <div class="text-sm text-gray-800"><p class="font-medium">Dans la console Firebase</p><ol class="list-decimal pl-5 mt-1 space-y-1"><li>Ouvrez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">https://console.firebase.google.com</code> et votre projet de la séance 00.</li><li>Dans les paramètres du projet (roue dentée), onglet Général, section des applications : si aucune application Web n'existe, ajoutez-en une (icône <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;/&gt;</code>), surnom <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s4-taskboard</code>, sans Firebase Hosting.</li><li>Gardez la page affichant l'objet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebaseConfig</code> : vous en copierez les six valeurs dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code>.</li><li>Vérifiez dans Authentication que le fournisseur Adresse e-mail/Mot de passe est activé, et que Firestore Database contient une base.</li></ol><p class="mt-2">En binôme : utilisez tous les deux le projet de l'un de vous ; il envoie les six valeurs à son partenaire. Les noms exacts des menus de la console peuvent varier légèrement.</p></div>
+            <div class="text-sm text-gray-800"><p class="font-medium">Dans la console Firebase</p><ol class="list-decimal pl-5 mt-1 space-y-1"><li>Ouvrez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">https://console.firebase.google.com</code> et votre projet de la séance 00.</li><li>Dans les paramètres du projet (roue dentée), onglet Général, section des applications : si aucune application Web n'existe, ajoutez-en une (icône <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;/&gt;</code>), surnom <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s4-taskboard</code>, sans Firebase Hosting.</li><li>Gardez la page affichant l'objet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebaseConfig</code> : vous en copierez les six valeurs dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code>.</li><li>Vérifiez dans Authentication que le fournisseur Adresse e-mail/Mot de passe est activé, et que Firestore Database contient une base.</li></ol><p class="mt-2">En binôme : utilisez tous les deux le projet de l'un de vous ; il envoie les six valeurs à son partenaire. Les noms exacts des menus de la console peuvent varier légèrement.</p></div>
           </div>
           <p class="text-gray-700 leading-relaxed mb-4">Créez les fichiers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib/firebase.ts</code>, remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> et ajoutez la ligne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> au <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.gitignore</code> (carte suivante). Copiez ensuite le modèle en <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> :</p>
           <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash :</p>
@@ -1359,7 +1351,7 @@ const styles = StyleSheet.create({
             Résultat et vérification
           </h3>
           <ul class="space-y-2 text-gray-700 mb-4">
-            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">package.json</code>, la section <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">dependencies</code> contient <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebase</code> (version <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">^12</code>) et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@react-native-async-storage/async-storage</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">package.json</code>, la section <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">dependencies</code> contient <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebase</code> (version <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">^12</code>) et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">@react-native-async-storage/async-storage</code>.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, Expo Go affiche « Projet Firebase : » suivi de l'identifiant de votre projet, et la phrase « Le tableau des tâches arrive à l'étape 3. ».</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans le Terminal 2, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans erreur et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git check-ignore .env</code> affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> : le fichier est ignoré par Git.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> contient les six noms de variables, sans aucune valeur.</span></li>
@@ -1373,7 +1365,7 @@ const styles = StyleSheet.create({
           </h3>
           <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
-            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID</code> n'est pas lu sur le téléphone : Metro remplace l'expression par sa valeur en construisant le bundle. C'est pourquoi une modification de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> demande de relancer <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>, et pourquoi ces valeurs ne sont jamais secrètes.</p>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID</code> n'est pas lu sur le téléphone : Metro remplace l'expression par sa valeur en construisant le bundle. C'est pourquoi une modification de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> demande de relancer <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>, et pourquoi ces valeurs ne sont jamais secrètes.</p>
           </div>
           <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
@@ -1414,7 +1406,7 @@ const styles = StyleSheet.create({
             <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
             Code complet
           </h3>
-          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/auth/AuthContext.tsx</code> :</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/auth/AuthContext.tsx</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-tsx">import {
@@ -1474,7 +1466,7 @@ export function useAuth(): AuthContextValue {
   return value;
 }</code></pre>
           </div>
-          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/auth/authErrors.ts</code> :</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/auth/authErrors.ts</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-ts">import { FirebaseError } from 'firebase/app';
@@ -1692,7 +1684,7 @@ const styles = StyleSheet.create({
           </div>
           <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
-            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Le message « La connexion par e-mail et mot de passe n'est pas activée dans la console Firebase. » correspond au code <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">auth/operation-not-allowed</code> : activez ce fournisseur dans Authentication. Si l'application redemande la connexion à chaque lancement et que Metro affiche un avertissement commençant par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">You are initializing Firebase Auth for React Native without providing AsyncStorage</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib/firebase.ts</code> n'utilise pas <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initializeAuth</code> avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getReactNativePersistence(AsyncStorage)</code>.</p>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Le message « La connexion par e-mail et mot de passe n'est pas activée dans la console Firebase. » correspond au code <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">auth/operation-not-allowed</code> : activez ce fournisseur dans Authentication. Si l'application redemande la connexion à chaque lancement et que Metro affiche un avertissement commençant par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">You are initializing Firebase Auth for React Native without providing AsyncStorage</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib/firebase.ts</code> n'utilise pas <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initializeAuth</code> avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">getReactNativePersistence(AsyncStorage)</code>.</p>
           </div>
           </div>
         </section>
@@ -1731,7 +1723,7 @@ const styles = StyleSheet.create({
             Code complet
           </h3>
           <p class="text-gray-700 leading-relaxed mb-4">Le dépôt est complet dès maintenant : les Étapes 4 et 5 branchent <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">add</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setDone</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">remove</code>.</p>
-          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/tasks/tasksRepo.ts</code> :</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/tasks/tasksRepo.ts</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-ts">import {
@@ -1785,7 +1777,7 @@ export const tasksRepo = {
   remove: (id: string) =&gt; deleteDoc(doc(db, 'tasks', id)),
 };</code></pre>
           </div>
-          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/tasks/firestoreErrors.ts</code> :</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/tasks/firestoreErrors.ts</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-ts">import { FirebaseError } from 'firebase/app';
@@ -1803,7 +1795,7 @@ export function firestoreErrorMessage(error: unknown): string {
   return 'Erreur inattendue. Réessayez.';
 }</code></pre>
           </div>
-          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/tasks/useTasks.ts</code> :</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/tasks/useTasks.ts</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-ts">import { useEffect, useState } from 'react';
@@ -1833,7 +1825,7 @@ export function useTasks() {
   return { tasks, loading, error };
 }</code></pre>
           </div>
-          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/TaskRow.tsx</code> :</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/components/TaskRow.tsx</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
@@ -1988,7 +1980,7 @@ service cloud.firestore {
             <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
             Commandes
           </h3>
-          <p class="text-gray-700 leading-relaxed mb-4">Aucune installation : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/tasks/useTasks.ts</code> (nouveau hook <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useTaskActions</code>) et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> (formulaire d'ajout), enregistrez, puis vérifiez les types.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Aucune installation : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/tasks/useTasks.ts</code> (nouveau hook <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useTaskActions</code>) et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> (formulaire d'ajout), enregistrez, puis vérifiez les types.</p>
           <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier la commande">Copier</button>
@@ -2001,7 +1993,7 @@ service cloud.firestore {
             <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
             Code complet
           </h3>
-          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/tasks/useTasks.ts</code> :</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/tasks/useTasks.ts</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-ts">import { useEffect, useState } from 'react';
@@ -2195,7 +2187,7 @@ const styles = StyleSheet.create({
             <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
             Commandes
           </h3>
-          <p class="text-gray-700 leading-relaxed mb-4">Aucune installation : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/TaskRow.tsx</code>, modifiez deux endroits de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>, enregistrez, puis vérifiez les types.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Aucune installation : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1. Remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/components/TaskRow.tsx</code>, modifiez deux endroits de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>, enregistrez, puis vérifiez les types.</p>
           <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier la commande">Copier</button>
@@ -2208,7 +2200,7 @@ const styles = StyleSheet.create({
             <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
             Code complet
           </h3>
-          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/TaskRow.tsx</code> :</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/components/TaskRow.tsx</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-tsx">import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -2467,7 +2459,7 @@ service cloud.firestore {
           <p class="text-sm font-medium text-gray-900 mb-2">À lire dans ces règles :</p>
           <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
             <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">title is string</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">title.size()</code> : la validation faite par les règles s'applique à tous les clients, même ceux qui ne passent pas par votre formulaire.</li>
-            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">request.resource.data.diff(resource.data).affectedKeys().hasOnly(['done'])</code> : la liste des champs modifiés ne doit contenir que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">done</code> ; impossible de changer le titre ou le propriétaire d'une tâche.</li>
+            <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">request.resource.data.diff(resource.data).affectedKeys().hasOnly(['done'])</code> : la liste des champs modifiés ne doit contenir que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">done</code> ; impossible de changer le titre ou le propriétaire d'une tâche.</li>
           </ul>
           </div>
 
@@ -2477,7 +2469,7 @@ service cloud.firestore {
             Résultat et vérification
           </h3>
           <ul class="space-y-2 text-gray-700 mb-4">
-            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>À deux appareils : une tâche ajoutée sur l'un apparaît sur l'autre en une ou deux secondes, avec l'adresse de son auteur ; « Terminer » sur l'un barre la tâche sur l'autre.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>À deux appareils : une tâche ajoutée sur l'un apparaît sur l'autre en une ou deux secondes, avec l'adresse de son auteur ; « Terminer » sur une de vos tâches la barre aussi sur l'autre appareil.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Seul avec la console : une modification du champ <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">done</code> dans la console coche ou décoche la tâche sur le téléphone sans action.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Après publication des nouvelles règles, ajoutez une tâche dont le titre dépasse 80 caractères (collez trois fois « Préparer la démonstration du tableau partagé ») : elle apparaît un instant puis disparaît, et « Refusé par les règles de sécurité Firestore. » s'affiche.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Une tâche au titre court s'ajoute toujours, et « Terminer » fonctionne toujours sur vos tâches.</span></li>
@@ -2611,21 +2603,26 @@ npx expo-doctor@latest</code></pre>
             <pre><code class="language-bash">npx expo install --fix</code></pre>
           </div>
           <p class="text-gray-700 leading-relaxed mb-4">Cette commande ne modifie pas <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebase</code>, qui n'est pas un module natif d'Expo.</p>
-          <p class="text-gray-700 leading-relaxed mb-4">Sur le téléphone, faites une capture du tableau avec au moins une tâche de chaque compte, et une capture du message « Refusé par les règles de sécurité Firestore. ». Copiez-les dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s4-taskboard/screenshots/s4-board.png</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s4-taskboard/screenshots/s4-rules.png</code>. Remplacez le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code> (dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s4-taskboard</code>) par le modèle de la carte suivante, complétez-le et enregistrez.</p>
-          <p class="text-gray-700 leading-relaxed mb-4">Vérifiez une dernière fois que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> est ignoré, puis publiez et posez le tag.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Sur le téléphone, faites une capture du tableau avec au moins une tâche de chaque compte, et une capture du message « Refusé par les règles de sécurité Firestore. ». Copiez-les dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">s4-taskboard/screenshots/s4-board.png</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">s4-taskboard/screenshots/s4-rules.png</code>. Remplacez le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code> (dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">s4-taskboard</code>) par le modèle de la carte suivante, complétez-le et enregistrez.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Vérifiez une dernière fois que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> est ignoré : la commande doit afficher <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code>.</p>
           <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier la commande">Copier</button>
-            <pre><code class="language-bash">git check-ignore .env
-git add .
-git commit -m "Add s4-taskboard"
-git push
-git tag s4-submit
-git push origin s4-submit</code></pre>
+            <pre><code class="language-bash">git check-ignore .env</code></pre>
           </div>
           <div class="border-l-4 border-red-600 bg-red-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-triangle-exclamation text-red-600 mt-1" aria-hidden="true"></i>
             <p class="text-sm text-red-900">Si <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git check-ignore .env</code> n'affiche pas <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code>, arrêtez-vous : ajoutez la ligne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.gitignore</code> (Étape 1) avant <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git add</code>. Le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env.example</code>, sans valeurs, est commité à sa place.</p>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Seulement si la commande a affiché <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> : publiez et posez le tag.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">git add .
+git commit -m "Add s4-taskboard"
+git push
+git tag s4-submit
+git push origin s4-submit</code></pre>
           </div>
           </div>
 
