@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<!--
+  Codelab skeleton template - Développement multiplateforme avec React Native (Expo), IAM2
+
+  DO NOT edit the skeleton markup, the navigation JavaScript, the quiz CSS and
+  JavaScript, or the pinned asset versions below when authoring a session.
+  Copy this file to docs/session-XX.html and only touch:
+    - <title>, the session title in the sidebar and the header label
+    - the sidebar entries (section headings data-nav-section and step links)
+    - the <section class="step-panel" ...> blocks (edit, add, remove)
+  See CLAUDE.md and session-guidelines.md for the full rules.
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Séance 1 - Premiers pas avec React Native - Formation club</title>
+
+<!-- Tailwind Play CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Roboto -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6.4.0 (pinned) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Prism 1.29.0 (pinned): core theme, language components load on demand via autoloader -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Roboto', 'sans-serif'],
+        },
+        colors: {
+          sidebar: {
+            DEFAULT: '#1f2430',
+            hover: '#2a3040',
+          },
+          brand: {
+            DEFAULT: '#ff3d2e',
+            dark: '#e6291b',
+          },
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Roboto', sans-serif; }
+
+  /* Sidebar */
+  #sidebar {
+    transition: transform 0.25s ease-in-out;
+  }
+  #sidebar::-webkit-scrollbar { width: 6px; }
+  #sidebar::-webkit-scrollbar-thumb { background: #3a4052; border-radius: 4px; }
+
+  .step-link { position: relative; }
+  .step-link.is-active {
+    background-color: rgba(255, 61, 46, 0.15);
+    border-left: 3px solid #ff3d2e;
+    color: #ffffff;
+  }
+  .step-link .step-marker {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+  }
+  .step-link.is-completed .step-marker .marker-number { display: none; }
+  .step-link.is-completed .step-marker .marker-check { display: flex; }
+  .step-link .step-marker .marker-check { display: none; }
+
+  /* Progress bar */
+  #progress-track {
+    height: 4px;
+    background: #e5e7eb;
+  }
+  #progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #ff3d2e, #ff8a3d);
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.is-active { display: block; }
+
+  /* Content cards */
+  .md-card {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e5e7eb;
+  }
+
+  /* Code blocks + copy button */
+  .code-block-wrapper { position: relative; }
+  .code-block-wrapper pre[class*="language-"] {
+    margin: 0;
+    border-radius: 0.5rem;
+    max-height: 32rem;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.375rem;
+    background: rgba(255,255,255,0.1);
+    color: #d4d4d4;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
+  /* Mobile sidebar */
+  @media (max-width: 767px) {
+    #sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 40;
+      transform: translateX(-100%);
+      width: 85vw;
+      max-width: 20rem;
+    }
+    #sidebar.is-open { transform: translateX(0); }
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 30;
+    }
+    #sidebar-overlay.is-open { display: block; }
+  }
+
+  /* Quiz */
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    cursor: pointer;
+  }
+  .quiz-option:hover:not(:disabled) { background: #f9fafb; }
+  .quiz-option:focus-visible { outline: 2px solid #ff3d2e; outline-offset: 2px; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-option.is-correct { border-color: #16a34a; background: #f0fdf4; }
+  .quiz-option.is-wrong { border-color: #e11d48; background: #fff1f2; }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Mobile overlay -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="bg-sidebar text-gray-300 w-72 flex-shrink-0 flex flex-col overflow-y-auto">
+    <div class="px-5 py-5 border-b border-white/10">
+      <p class="text-xs uppercase tracking-wide text-gray-400">Club — Formation React Native</p>
+      <h1 class="text-white font-medium text-base mt-1">Développer des apps mobiles avec React Native (Expo)</h1>
+      <p class="text-xs text-gray-400 mt-1" id="sidebar-session-title">Séance 1 — Premiers pas avec React Native</p>
+    </div>
+    <nav class="flex-1 py-2" aria-label="Étapes du codelab">
+      <ul id="step-nav-list">
+        <li data-nav-section="cours" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Présentation (55 min)</li>
+        <li>
+          <a href="#step-1" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-1">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">1</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Bienvenue — programme et préparation</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-2" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-2">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">2</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Du web au mobile</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-3" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-3">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">3</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — React, React Native et Expo</span>
+          </a>
+        </li>
+        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (2 h 20)</li>
+        <li>
+          <a href="#step-4" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-4">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">4</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 1 — Vérifier les outils</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-5" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-5">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">5</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 2 — Créer le projet et l'ouvrir sur le téléphone</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-6" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-6">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">6</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — L'essentiel de JavaScript et TypeScript</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-7" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-7">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">7</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 3 — Premier composant</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-8" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-8">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">8</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 4 — Un composant réutilisable avec des props</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-9" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-9">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">9</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 5 — L'état avec useState</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-10" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-10">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">10</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 6 — Liste, saisie et ajout de tâches</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-11" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-11">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">11</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 7 — useEffect : une horloge avec nettoyage</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-12" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-12">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">12</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Défi — Améliorer Club Tasks</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-13" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-13">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">13</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Récapitulatif — quiz et séance 2</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="px-5 py-4 border-t border-white/10 text-xs text-gray-500">
+      <a href="index.html" class="hover:text-gray-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au sommaire</a>
+    </div>
+  </aside>
+
+  <!-- Main column -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-4">
+      <button id="sidebar-toggle" class="md:hidden text-gray-600 hover:text-gray-900" aria-label="Ouvrir le menu des étapes">
+        <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+      </button>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs text-gray-500">Formation React Native — Séance 1</p>
+        <h2 id="current-step-title" class="font-medium text-gray-900 truncate">Bienvenue — programme et préparation</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="prev-step" class="px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape précédente">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Précédent</span>
+        </button>
+        <button id="next-step" class="px-3 py-2 rounded-md bg-brand text-white hover:bg-brand-dark disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape suivante">
+          <span class="hidden sm:inline">Suivant</span>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress bar -->
+    <div id="progress-track" class="w-full">
+      <div id="progress-bar"></div>
+    </div>
+
+    <!-- Content -->
+    <main id="content" class="flex-1 overflow-y-auto">
+      <div class="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6">
+
+        <section id="step-1" class="step-panel is-active" data-title="Bienvenue — programme et préparation">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">À la fin de cette séance, vous aurez créé une application React Native avec Expo, vous l'aurez lancée sur votre téléphone avec Expo Go, et vous aurez utilisé des composants, des props, useState et useEffect. Aucune connaissance de React n'est nécessaire.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-clock text-brand" aria-hidden="true"></i>
+Programme
+</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left border border-gray-200">
+<thead class="bg-gray-100 text-gray-700">
+<tr>
+<th scope="col" class="px-3 py-2">Partie</th>
+<th scope="col" class="px-3 py-2">Durée</th>
+</tr>
+</thead>
+<tbody class="text-gray-700">
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Accueil</th>
+<td class="px-3 py-2">10 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Du web au mobile</th>
+<td class="px-3 py-2">25 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">React, React Native et Expo</th>
+<td class="px-3 py-2">20 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Étapes 1 et 2 : installation et premier lancement</th>
+<td class="px-3 py-2">20 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Pause</th>
+<td class="px-3 py-2">10 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">L'essentiel de JavaScript et TypeScript</th>
+<td class="px-3 py-2">20 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Étapes 3 à 5</th>
+<td class="px-3 py-2">55 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Pause</th>
+<td class="px-3 py-2">10 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Étapes 6 et 7</th>
+<td class="px-3 py-2">25 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Quiz, défis et suite</th>
+<td class="px-3 py-2">15 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Total</th>
+<td class="px-3 py-2">3 h 30</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-4">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800">
+<p class="font-medium">Avant la séance</p>
+<p class="mt-1">Dépendance au SDK : ouvrez Expo Go, installé depuis le store, sur votre téléphone et lisez sa version de SDK. Cette page utilise le SDK 57 (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code>). Si Expo Go affiche le SDK 58, utilisez la commande SDK 58 donnée à l'Étape 2. Sur iPhone, seule la version du store fonctionne : mettez Expo Go à jour depuis l'App Store au lieu d'installer autre chose.</p>
+</div>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-download text-brand" aria-hidden="true"></i>
+Outils à installer
+</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left border border-gray-200">
+<thead class="bg-gray-100 text-gray-700">
+<tr>
+<th scope="col" class="px-3 py-2">Outil</th>
+<th scope="col" class="px-3 py-2">Lien</th>
+<th scope="col" class="px-3 py-2">Vérification</th>
+</tr>
+</thead>
+<tbody class="text-gray-700">
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Node.js LTS (version 24)</th>
+<td class="px-3 py-2"><a href="https://nodejs.org/en/download" target="_blank" rel="noopener" class="text-brand underline break-all">https://nodejs.org/en/download</a></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node -v</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Git</th>
+<td class="px-3 py-2"><a href="https://git-scm.com/downloads" target="_blank" rel="noopener" class="text-brand underline break-all">https://git-scm.com/downloads</a></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git --version</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">VS Code</th>
+<td class="px-3 py-2"><a href="https://code.visualstudio.com" target="_blank" rel="noopener" class="text-brand underline break-all">https://code.visualstudio.com</a></td>
+<td class="px-3 py-2">ouvrir l'application</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Expo Go (Android)</th>
+<td class="px-3 py-2"><a href="https://play.google.com/store/apps/details?id=host.exp.exponent" target="_blank" rel="noopener" class="text-brand underline break-all">https://play.google.com/store/apps/details?id=host.exp.exponent</a></td>
+<td class="px-3 py-2">ouvrir l'application</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Expo Go (iPhone)</th>
+<td class="px-3 py-2"><a href="https://apps.apple.com/app/expo-go/id982107779" target="_blank" rel="noopener" class="text-brand underline break-all">https://apps.apple.com/app/expo-go/id982107779</a></td>
+<td class="px-3 py-2">ouvrir l'application</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Compte Expo</th>
+<td class="px-3 py-2"><a href="https://expo.dev/signup" target="_blank" rel="noopener" class="text-brand underline break-all">https://expo.dev/signup</a></td>
+<td class="px-3 py-2">se connecter dans Expo Go</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-4">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800">
+<p class="font-medium">Séance en ligne</p>
+<p class="mt-1">Le PC et le téléphone doivent être sur le même Wi-Fi, pas sur les données mobiles. Après chaque étape, écrivez OK dans le chat de Google Meet, ou BLOQUÉ suivi du message d'erreur. Si vous êtes bloqué, partagez votre écran avec un assistant. Le code complet de chaque étape est sur cette page.</p>
+</div>
+</div>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-4">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800">
+<p class="font-medium">Pas de PC ou installation bloquée</p>
+<p class="mt-1">Suivez la séance sur <a href="https://snack.expo.dev" target="_blank" rel="noopener" class="text-brand underline break-all">https://snack.expo.dev</a> dans le navigateur et scannez son QR code avec Expo Go. Dans Snack, placez le code de l'écran dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">App.tsx</code> et les composants dans un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">components</code>, puis importez-les avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">'./components/TaskItem'</code>.</p>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-2" class="step-panel" data-title="Cours — Du web au mobile">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Comprendre pourquoi les frameworks multiplateformes existent.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-timeline text-brand" aria-hidden="true"></i>
+De la page web à l'application mobile
+</h3>
+<figure class="mb-0">
+<ol class="border-l-2 border-gray-300 ml-2 space-y-4">
+<li class="relative pl-6"><span class="absolute -left-[0.45rem] top-1.5 w-3 h-3 rounded-full bg-brand" aria-hidden="true"></span><p class="font-medium text-gray-900">Années 1990</p><p class="text-sm text-gray-700 mt-0.5">Pages web statiques : le serveur fait tout.</p></li>
+<li class="relative pl-6"><span class="absolute -left-[0.45rem] top-1.5 w-3 h-3 rounded-full bg-brand" aria-hidden="true"></span><p class="font-medium text-gray-900">Années 2000</p><p class="text-sm text-gray-700 mt-0.5">JavaScript et AJAX : la page se met à jour sans rechargement.</p></li>
+<li class="relative pl-6"><span class="absolute -left-[0.45rem] top-1.5 w-3 h-3 rounded-full bg-brand" aria-hidden="true"></span><p class="font-medium text-gray-900">2007-2008</p><p class="text-sm text-gray-700 mt-0.5">iPhone, Android et les stores : applications natives en Swift ou Objective-C et en Java ou Kotlin, donc deux bases de code.</p></li>
+<li class="relative pl-6"><span class="absolute -left-[0.45rem] top-1.5 w-3 h-3 rounded-full bg-brand" aria-hidden="true"></span><p class="font-medium text-gray-900">Vers 2010</p><p class="text-sm text-gray-700 mt-0.5">Applications hybrides (Cordova, PhoneGap) : un site web dans une WebView.</p></li>
+<li class="relative pl-6"><span class="absolute -left-[0.45rem] top-1.5 w-3 h-3 rounded-full bg-brand" aria-hidden="true"></span><p class="font-medium text-gray-900">2015 et 2017</p><p class="text-sm text-gray-700 mt-0.5">React Native en 2015, Flutter en 2017 : une base de code pour une interface native.</p></li>
+<li class="relative pl-6"><span class="absolute -left-[0.45rem] top-1.5 w-3 h-3 rounded-full bg-brand" aria-hidden="true"></span><p class="font-medium text-gray-900">Aujourd'hui</p><p class="text-sm text-gray-700 mt-0.5">React Native est utilisé par des applications comme Instagram, Discord ou Shopify, et Expo est la manière recommandée de démarrer.</p></li>
+</ol>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.1 — Chaque étape répond au problème de la précédente : une seule base de code, sans sacrifier l'expérience native.</figcaption>
+</figure>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-layer-group text-brand" aria-hidden="true"></i>
+Trois approches
+</h3>
+<figure class="mb-0">
+<div class="overflow-x-auto">
+<svg role="img" aria-labelledby="c01-approaches-title c01-approaches-desc" viewBox="0 0 720 250" width="720" height="250" class="w-full h-auto min-w-[640px]" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, sans-serif">
+<title id="c01-approaches-title">Trois approches pour construire une application mobile</title>
+<desc id="c01-approaches-desc">Trois colonnes. Natif : du code Kotlin ou Swift produit des vues natives. Hybride : du HTML, du CSS et du JavaScript produisent une WebView qui affiche une page web. React Native : du code JavaScript ou TypeScript produit des vues natives pilotées par JavaScript.</desc>
+<defs>
+<marker id="c01-approaches-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#1f2430"/>
+</marker>
+</defs>
+<text x="120" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2430">Natif</text>
+<rect x="15" y="38" width="210" height="64" rx="10" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="120" y="75" text-anchor="middle" font-size="13" fill="#1f2430">Code Kotlin ou Swift</text>
+<line x1="120" y1="102" x2="120" y2="146" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-approaches-arrow)"/>
+<rect x="15" y="150" width="210" height="84" rx="10" fill="#f1f3f5" stroke="#1f2430" stroke-width="1.5"/>
+<text x="120" y="197" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2430">Vues natives</text>
+<text x="360" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2430">Hybride</text>
+<rect x="255" y="38" width="210" height="64" rx="10" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="360" y="75" text-anchor="middle" font-size="13" fill="#1f2430">HTML, CSS, JS</text>
+<line x1="360" y1="102" x2="360" y2="146" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-approaches-arrow)"/>
+<rect x="255" y="150" width="210" height="84" rx="10" fill="#f1f3f5" stroke="#1f2430" stroke-width="1.5"/>
+<text x="360" y="186" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2430">WebView</text>
+<text x="360" y="208" text-anchor="middle" font-size="12" fill="#374151">qui affiche une page web</text>
+<text x="600" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2430">React Native</text>
+<rect x="495" y="38" width="210" height="64" rx="10" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="600" y="75" text-anchor="middle" font-size="13" fill="#1f2430">Code JavaScript/TypeScript</text>
+<line x1="600" y1="102" x2="600" y2="146" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-approaches-arrow)"/>
+<rect x="495" y="150" width="210" height="84" rx="10" fill="#f1f3f5" stroke="#1f2430" stroke-width="3"/>
+<text x="600" y="186" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2430">Vues natives</text>
+<text x="600" y="208" text-anchor="middle" font-size="12" fill="#374151">pilotées par JavaScript</text>
+</svg>
+</div>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.2 — React Native écrit en JavaScript mais affiche de vraies vues natives, contrairement à une application hybride.</figcaption>
+</figure>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Quiz éclair
+</h3>
+<div class="quiz-question mb-6" id="quiz-c01-q01" data-answer="b">
+<p class="font-medium text-gray-900 mb-3">Une application hybride Cordova affiche son interface avec :</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 1">
+<button type="button" class="quiz-option" data-option="a">des vues natives Android et iOS, comme React Native</button>
+<button type="button" class="quiz-option" data-option="b">une WebView qui affiche une page HTML</button>
+<button type="button" class="quiz-option" data-option="c">un moteur de rendu qui dessine chaque pixel, comme Flutter</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Cordova emballe un site web dans une WebView ; React Native crée des vues natives ; Flutter dessine lui-même son interface.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+        </section>
+
+        <section id="step-3" class="step-panel" data-title="Cours — React, React Native et Expo">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Savoir à quoi servent React, React Native, Expo et Expo Go.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-brands fa-react text-brand" aria-hidden="true"></i>
+React : décrire l'interface
+</h3>
+<p class="text-gray-700 leading-relaxed mb-4">React (2013, Facebook) est déclaratif : vous décrivez ce que l'écran affiche pour un état donné, et React le met à jour.</p>
+<figure class="mb-0">
+<div class="space-y-3">
+<div class="rounded border border-gray-300 p-3 bg-white min-w-0">
+<p class="font-medium text-gray-900 mb-2">Impératif (web)</p>
+<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-nowrap overflow-x-auto">document.getElementById('count').textContent = count;</code>
+</div>
+<div class="rounded border border-gray-300 p-3 bg-white min-w-0">
+<p class="font-medium text-gray-900 mb-2">Déclaratif (React)</p>
+<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-nowrap overflow-x-auto">&lt;Text&gt;Compteur : {count}&lt;/Text&gt;</code>
+</div>
+</div>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.3 — En impératif on modifie l'écran à la main ; en déclaratif on décrit l'écran et React se charge des mises à jour.</figcaption>
+</figure>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-cubes text-brand" aria-hidden="true"></i>
+Composants
+</h3>
+<p class="text-gray-700 leading-relaxed mb-4">Une application est un arbre de composants : chaque composant en contient d'autres, jusqu'aux plus petits éléments de l'écran.</p>
+<figure class="mb-0">
+<div class="overflow-x-auto">
+<svg role="img" aria-labelledby="c01-tree-title c01-tree-desc" viewBox="0 0 720 310" width="720" height="310" class="w-full h-auto min-w-[640px]" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, sans-serif">
+<title id="c01-tree-title">Arbre de composants de l'application</title>
+<desc id="c01-tree-desc">App contient l'écran Index. L'écran Index contient un titre, un champ de saisie et une liste. La liste contient trois composants TaskItem.</desc>
+<defs>
+<marker id="c01-tree-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#1f2430"/>
+</marker>
+</defs>
+<rect x="240" y="15" width="150" height="40" rx="8" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="315" y="40" text-anchor="middle" font-size="13" fill="#1f2430">App</text>
+<rect x="240" y="85" width="150" height="40" rx="8" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="315" y="110" text-anchor="middle" font-size="13" fill="#1f2430">Écran Index</text>
+<rect x="55" y="165" width="150" height="40" rx="8" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="130" y="190" text-anchor="middle" font-size="13" fill="#1f2430">Titre</text>
+<rect x="240" y="165" width="150" height="40" rx="8" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="315" y="190" text-anchor="middle" font-size="13" fill="#1f2430">Champ de saisie</text>
+<rect x="425" y="165" width="150" height="40" rx="8" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="500" y="190" text-anchor="middle" font-size="13" fill="#1f2430">Liste</text>
+<rect x="300" y="255" width="120" height="40" rx="8" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="360" y="280" text-anchor="middle" font-size="13" fill="#1f2430">TaskItem</text>
+<rect x="440" y="255" width="120" height="40" rx="8" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="500" y="280" text-anchor="middle" font-size="13" fill="#1f2430">TaskItem</text>
+<rect x="580" y="255" width="120" height="40" rx="8" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="640" y="280" text-anchor="middle" font-size="13" fill="#1f2430">TaskItem</text>
+<line x1="315" y1="55" x2="315" y2="83" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-tree-arrow)"/>
+<line x1="315" y1="125" x2="130" y2="163" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-tree-arrow)"/>
+<line x1="315" y1="125" x2="315" y2="163" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-tree-arrow)"/>
+<line x1="315" y1="125" x2="500" y2="163" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-tree-arrow)"/>
+<line x1="500" y1="205" x2="360" y2="253" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-tree-arrow)"/>
+<line x1="500" y1="205" x2="500" y2="253" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-tree-arrow)"/>
+<line x1="500" y1="205" x2="640" y2="253" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-tree-arrow)"/>
+</svg>
+</div>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.4 — Une application est un arbre de composants : chaque composant est une fonction qui renvoie de l'interface.</figcaption>
+</figure>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-mobile-screen text-brand" aria-hidden="true"></i>
+React Native, Expo et Expo Go
+</h3>
+<ul class="list-disc pl-5 space-y-2 text-gray-700 mb-4">
+<li><strong>React Native</strong> transforme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;View&gt;</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;Text&gt;</code> en vues natives.</li>
+<li><strong>Expo</strong> est la boîte à outils : création du projet, serveur de développement, bibliothèques.</li>
+<li><strong>Expo Go</strong> est une application sur le téléphone qui exécute votre projet après le scan d'un QR code : Android Studio n'est pas nécessaire.</li>
+</ul>
+<figure class="mb-0">
+<div class="flex flex-col md:flex-row md:items-stretch gap-3">
+<div class="flex-1 rounded border border-gray-300 p-3 bg-white">
+<p class="font-medium text-gray-900 flex items-center gap-2"><i class="fa-solid fa-laptop text-gray-500" aria-hidden="true"></i> PC</p>
+<ul class="text-sm text-gray-600 mt-1 space-y-1">
+<li>VS Code : vous modifiez le code</li>
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> : le serveur Metro prépare le JavaScript</li>
+</ul>
+</div>
+<div class="flex flex-col items-center justify-center text-center text-sm text-gray-700 px-2 md:w-40">
+<i class="fa-solid fa-wifi text-brand text-lg" aria-hidden="true"></i>
+<p class="mt-1"><i class="fa-solid fa-arrow-right hidden md:inline text-gray-400" aria-hidden="true"></i><i class="fa-solid fa-arrow-down md:hidden text-gray-400" aria-hidden="true"></i> Wi-Fi : le code JavaScript</p>
+</div>
+<div class="flex-1 rounded border border-gray-300 p-3 bg-white">
+<p class="font-medium text-gray-900 flex items-center gap-2"><i class="fa-solid fa-mobile-screen text-gray-500" aria-hidden="true"></i> Téléphone</p>
+<ul class="text-sm text-gray-600 mt-1 space-y-1">
+<li>Expo Go : exécute le code et affiche l'application</li>
+</ul>
+</div>
+</div>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.5 — Le PC sert le code JavaScript, Expo Go l'exécute sur le téléphone ; chaque enregistrement recharge l'écran (Fast Refresh).</figcaption>
+</figure>
+<div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mt-4">
+<i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-gray-800">Expo Go contient un ensemble fixe de modules natifs. Une bibliothèque qui apporte son propre code natif demande un development build, que cette formation n'utilise pas.</p>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-table text-brand" aria-hidden="true"></i>
+Si vous connaissez déjà…
+</h3>
+<p class="text-gray-700 leading-relaxed mb-3">Aide-mémoire, à consulter pendant les étapes.</p>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left border border-gray-200">
+<thead class="bg-gray-100 text-gray-700">
+<tr>
+<th scope="col" class="px-3 py-2">Notion</th>
+<th scope="col" class="px-3 py-2">Web (HTML/JS)</th>
+<th scope="col" class="px-3 py-2">Flutter</th>
+<th scope="col" class="px-3 py-2">Jetpack Compose</th>
+<th scope="col" class="px-3 py-2">React Native</th>
+</tr>
+</thead>
+<tbody class="text-gray-700">
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Bloc d'interface</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;div&gt;</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;p&gt;</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Widget</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@Composable</code></td>
+<td class="px-3 py-2">composant (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">View</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Text</code>)</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Entrées d'un composant</th>
+<td class="px-3 py-2">attributs HTML</td>
+<td class="px-3 py-2">champs du constructeur</td>
+<td class="px-3 py-2">paramètres</td>
+<td class="px-3 py-2">props</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">État local</th>
+<td class="px-3 py-2">variable + mise à jour du DOM</td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setState</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">remember { mutableStateOf() }</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Effet de bord</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">addEventListener</code> / <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setInterval</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">initState</code> / <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">dispose</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">LaunchedEffect</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Liste</th>
+<td class="px-3 py-2">boucle + <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">innerHTML</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ListView.builder</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">LazyColumn</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Clic</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onclick</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onPressed</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onClick</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onPress</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Quiz éclair
+</h3>
+<div class="quiz-question mb-6" id="quiz-c01-q02" data-answer="a">
+<p class="font-medium text-gray-900 mb-3">Sur le téléphone, le composant &lt;Text&gt; de React Native devient :</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 2">
+<button type="button" class="quiz-option" data-option="a">une vue de texte native de la plateforme</button>
+<button type="button" class="quiz-option" data-option="b">une balise &lt;p&gt; dans une WebView</button>
+<button type="button" class="quiz-option" data-option="c">une image du texte dessinée par Expo Go</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React Native associe chaque composant de base à une vue native (TextView sur Android, UILabel sur iOS).</p>
+</div>
+<div class="quiz-question mb-6" id="quiz-c01-q03" data-answer="c">
+<p class="font-medium text-gray-900 mb-3">Un camarade ajoute une bibliothèque npm qui contient du code natif personnalisé. Que se passe-t-il dans Expo Go ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 3">
+<button type="button" class="quiz-option" data-option="a">Expo Go la télécharge et la compile automatiquement</button>
+<button type="button" class="quiz-option" data-option="b">elle fonctionne car tout paquet npm est du JavaScript</button>
+<button type="button" class="quiz-option" data-option="c">elle ne fonctionne pas : il faudrait un development build</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Expo Go n'exécute que du JavaScript et les modules natifs déjà inclus dans l'application.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+        </section>
+
+        <section id="step-4" class="step-panel" data-title="Étape 1 — Vérifier les outils">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Vérifier Node.js et Git, puis connecter le compte Expo.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">node -v
+git --version</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Seulement sur iPhone : connecter le compte Expo (le même que dans Expo Go)</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx expo login</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Seulement si PowerShell refuse d'exécuter npx (scripts désactivés)</p>
+<div class="code-block-wrapper ">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-powershell">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-gray-700 leading-relaxed">Aucun code à écrire à cette étape.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node -v</code> affiche v24 (24.3 ou plus) ou v22 (22.13 ou plus). <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git --version</code> affiche une version. Sur iPhone, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo login</code> confirme la connexion.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La version de Node.js est 24 ou 22.13 et plus, jamais une version majeure impaire comme 23 ou 25.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, Expo Go s'ouvre et affiche le compte connecté.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le téléphone est sur le même Wi-Fi que le PC.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Node.js exécute les outils Expo sur le PC. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx</code> télécharge et lance un outil sans installation globale.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">running scripts is disabled on this system</code> signifie que PowerShell bloque <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx.ps1</code> : lancez la commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Set-ExecutionPolicy</code> ou utilisez cmd.</li>
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">'node' is not recognized</code> signifie que Node.js n'est pas installé ou que le terminal a été ouvert avant l'installation : fermez-le et rouvrez-le.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-5" class="step-panel" data-title="Étape 2 — Créer le projet et l'ouvrir sur le téléphone">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Créer le projet club-tasks et le voir sur le téléphone.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+<div class="code-block-wrapper mb-3">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx create-expo-app@latest club-tasks --template default@sdk-57
+cd club-tasks
+npm run reset-project</code></pre>
+</div>
+<p class="text-gray-700 leading-relaxed mb-4">Si <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> demande s'il faut conserver les fichiers d'exemple, acceptez : ils sont déplacés dans un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> et il reste un écran vide <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>. Ouvrez ensuite le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> dans VS Code.</p>
+<p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx expo start</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go affiche SDK 58 : créer le projet en SDK 58</p>
+<div class="code-block-wrapper mb-2">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx create-expo-app@latest club-tasks --template default@sdk-58
+cd club-tasks
+npm run reset-project</code></pre>
+</div>
+<p class="text-sm text-gray-700 mb-4"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Ce bloc dépend de la version d'Expo Go dans le store. Il remplace le premier bloc : lancez-le depuis le dossier parent, après avoir arrêté le serveur et supprimé un éventuel dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> existant, puis lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+<p class="text-sm text-gray-600 mb-2">Seulement si le QR code ne se connecte pas : mode tunnel</p>
+<div class="code-block-wrapper mb-3">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx expo start --tunnel</code></pre>
+</div>
+<p class="text-gray-700 leading-relaxed">Sur Android, scannez le QR code depuis Expo Go. Sur iPhone, scannez-le avec l'application Appareil photo.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-gray-700 leading-relaxed">Aucun code à écrire : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> a créé un écran vide dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed">Le terminal affiche un QR code. Après le scan, le téléphone affiche l'écran de départ, vide à part une ligne de texte. Une barre de titre peut apparaître en haut de l'écran : elle vient du routeur, c'est normal.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>L'application s'ouvre sur le téléphone dans Expo Go.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Vous avez écrit OK dans le chat de Google Meet.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>, modifiez le texte affiché et enregistrez : le téléphone affiche le nouveau texte sans redémarrer (Fast Refresh).</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le serveur Metro, sur le PC, assemble le JavaScript et l'envoie à Expo Go par le Wi-Fi.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li>Un message indiquant que le projet est incompatible avec cette version d'Expo Go signifie que le SDK du projet et celui d'Expo Go sont différents : recréez le projet avec le bon <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template</code>.</li>
+<li>Si le QR code charge sans fin, le téléphone n'atteint pas le PC (données mobiles, autre Wi-Fi, pare-feu) : utilisez le bloc du mode tunnel.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-6" class="step-panel" data-title="Cours — L'essentiel de JavaScript et TypeScript">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Connaître les sept notions de JavaScript utilisées dans les étapes suivantes.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Aide-mémoire, à consulter pendant les étapes
+</h3>
+<p class="text-sm text-gray-600 mb-2">Exemple à lire, à tester dans un fichier scratch.ts si vous le souhaitez</p>
+<div class="code-block-wrapper mb-2">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-ts">const name = 'Amira';
+let year = 1;
+year = year + 1;
+
+const greet = (n: string): string =&gt; `Bonjour ${n}`;
+console.log(greet(name));
+
+const student = { name: 'Amira', year: 2 };
+const { year: currentYear } = student;
+console.log(currentYear);
+
+const promoted = { ...student, year: 3 };
+console.log(student.year, promoted.year);
+
+const scores = [12, 15, 9];
+const bonus = scores.map((s) =&gt; s + 1);
+const passed = scores.filter((s) =&gt; s &gt;= 10);
+console.log(bonus, passed);
+
+export type Student = { name: string; year: number };</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-4">Si vous créez ce fichier, placez-le à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>, pas dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> : chaque fichier de ce dossier devient un écran.</p>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left border border-gray-200">
+<thead class="bg-gray-100 text-gray-700">
+<tr>
+<th scope="col" class="px-3 py-2">Notion</th>
+<th scope="col" class="px-3 py-2">Ce que fait le code</th>
+</tr>
+</thead>
+<tbody class="text-gray-700">
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">const et let</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">const</code> crée une variable qu'on ne réaffecte pas ; <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">let</code> crée une variable qu'on peut réaffecter, comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">year</code>.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Fonction fléchée et gabarit de texte</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">(n: string): string =&gt;</code> est une fonction courte. Entre accents graves, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">${n}</code> insère une valeur dans le texte.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Déstructuration</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">const { year: currentYear } = student</code> lit la propriété <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">year</code> de l'objet et la range dans la variable <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">currentYear</code>.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Spread</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">{ ...student, year: 3 }</code> crée un nouvel objet : il copie <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">student</code>, puis remplace <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">year</code>. L'original ne change pas.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">map</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">scores.map</code> transforme chaque élément et renvoie une nouvelle liste : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[13, 16, 10]</code>.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">filter</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">scores.filter</code> garde les éléments qui passent le test et renvoie une nouvelle liste : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[12, 15]</code>.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">type et export</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">type</code> décrit la forme d'un objet ; <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">export</code> le rend utilisable depuis un autre fichier.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-4">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800">
+<p class="font-medium">TypeScript</p>
+<p class="mt-1">TypeScript, c'est JavaScript avec des types. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">(n: string)</code> signifie que la fonction n'accepte que du texte, et VS Code souligne les erreurs avant même le lancement de l'application.</p>
+</div>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Quiz éclair
+</h3>
+<div class="quiz-question mb-6" id="quiz-c01-q04" data-answer="b">
+<p class="font-medium text-gray-900 mb-3">Après const promoted = { ...student, year: 3 }, que vaut student.year ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 4">
+<button type="button" class="quiz-option" data-option="a">3, car promoted et student sont le même objet</button>
+<button type="button" class="quiz-option" data-option="b">2, car le spread crée une copie</button>
+<button type="button" class="quiz-option" data-option="c">undefined, car year a été déplacé dans promoted</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Le spread copie les propriétés dans un nouvel objet ; l'original ne change pas. React compte sur ce principe pour détecter les changements.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+        </section>
+
+        <section id="step-7" class="step-panel" data-title="Étape 3 — Premier composant">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Écrire le premier écran avec View, Text et StyleSheet.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas. Enregistrez le fichier, puis regardez le téléphone. Si le serveur est arrêté, relancez-le depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+<div class="code-block-wrapper ">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+
+export default function Index() {
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;Text style={styles.subtitle}&gt;Ma première application React Native&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+});</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Résultat et vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le téléphone affiche « Club Tasks » en grand et en gras, avec le sous-titre en dessous.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">fontSize: 28</code> par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">fontSize: 40</code>, enregistrez : le titre grandit sur le téléphone.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Un composant est une fonction qui renvoie du JSX. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">View</code> est un conteneur (comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">div</code> ou Container) et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Text</code> affiche du texte. Les styles sont des objets JavaScript, et la mise en page utilise Flexbox, en colonne par défaut.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Text strings must be rendered within a &lt;Text&gt; component</code> signifie que du texte a été écrit directement dans une <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">View</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-8" class="step-panel" data-title="Étape 4 — Un composant réutilisable avec des props">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Créer TaskItem et le réutiliser avec des props différentes.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed">Dans VS Code, créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code>, puis le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TaskItem.tsx</code> dans ce dossier. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas. Enregistrez le fichier, puis regardez le téléphone. Si le serveur est arrêté, relancez-le depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/TaskItem.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { Pressable, StyleSheet, Text } from 'react-native';
+
+type Props = {
+  title: string;
+  done: boolean;
+  onToggle: () =&gt; void;
+};
+
+export default function TaskItem({ title, done, onToggle }: Props) {
+  return (
+    &lt;Pressable style={styles.row} onPress={onToggle}&gt;
+      &lt;Text style={[styles.text, done &amp;&amp; styles.done]}&gt;
+        {done ? '[x] ' : '[ ] '}
+        {title}
+      &lt;/Text&gt;
+    &lt;/Pressable&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  row: { padding: 14, borderRadius: 8, backgroundColor: '#f1f3f5' },
+  text: { fontSize: 16 },
+  done: { textDecorationLine: 'line-through', color: '#868e96' },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+<div class="code-block-wrapper ">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+import TaskItem from '../components/TaskItem';
+
+export default function Index() {
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;TaskItem title="Installer Node.js" done={true} onToggle={() =&gt; {}} /&gt;
+      &lt;TaskItem title="Créer le projet Expo" done={false} onToggle={() =&gt; {}} /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+});</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Résultat et vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le téléphone affiche deux lignes grises : la première est barrée avec [x], la seconde affiche [ ].</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur une ligne ne fait rien pour l'instant (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onToggle</code> est vide) : c'est normal.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Les props sont les entrées d'un composant, en lecture seule. Les données descendent par les props et les événements remontent par des fonctions comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onToggle</code> : c'est le flux de données à sens unique.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Property 'title' is missing in type</code> (TypeScript) signifie qu'une prop obligatoire a été oubliée.</li>
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve module ../components/TaskItem</code> signifie que le nom du dossier ou du fichier est différent : vérifiez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/TaskItem.tsx</code>, majuscules comprises.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-9" class="step-panel" data-title="Étape 5 — L'état avec useState">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Faire réagir l'écran aux appuis grâce à l'état.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas. Enregistrez le fichier, puis regardez le téléphone. Si le serveur est arrêté, relancez-le depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+<div class="code-block-wrapper ">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import TaskItem from '../components/TaskItem';
+
+export default function Index() {
+  const [count, setCount] = useState(0);
+  const [done, setDone] = useState(false);
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;Text style={styles.subtitle}&gt;Compteur : {count}&lt;/Text&gt;
+      &lt;Pressable style={styles.button} onPress={() =&gt; setCount(count + 1)}&gt;
+        &lt;Text style={styles.buttonText}&gt;Ajouter 1&lt;/Text&gt;
+      &lt;/Pressable&gt;
+      &lt;TaskItem title="Comprendre useState" done={done} onToggle={() =&gt; setDone(!done)} /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+  button: { backgroundColor: '#1f2430', paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+});</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed">Le téléphone affiche « Compteur : 0 », un bouton sombre « Ajouter 1 » et une ligne de tâche.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, trois appuis sur « Ajouter 1 » affichent « Compteur : 3 ».</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur la tâche la barre, un nouvel appui la rétablit.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code> renvoie la valeur actuelle et une fonction pour la modifier. Appeler cette fonction demande à React de rappeler le composant avec la nouvelle valeur : c'est un nouveau rendu. La variable du rendu en cours ne change pas.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Invalid hook call</code> signifie qu'un hook a été appelé en dehors d'un composant. Dans une condition ou une boucle, un hook provoque une autre erreur, liée à l'ordre des hooks. Dans tous les cas, les hooks se placent en haut de la fonction du composant.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-10" class="step-panel" data-title="Étape 6 — Liste, saisie et ajout de tâches">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Garder une liste de tâches dans l'état, ajouter des tâches avec un champ de texte et les marquer comme terminées d'un appui.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas. Enregistrez le fichier, puis regardez le téléphone. Si le serveur est arrêté, relancez-le depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+<div class="code-block-wrapper ">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import TaskItem from '../components/TaskItem';
+
+type Task = { id: string; title: string; done: boolean };
+
+const INITIAL_TASKS: Task[] = [
+  { id: '1', title: 'Installer Node.js', done: true },
+  { id: '2', title: 'Créer le projet Expo', done: true },
+  { id: '3', title: 'Comprendre useState', done: false },
+];
+
+export default function Index() {
+  const [tasks, setTasks] = useState&lt;Task[]&gt;(INITIAL_TASKS);
+  const [text, setText] = useState('');
+
+  const remaining = tasks.filter((t) =&gt; !t.done).length;
+
+  function addTask() {
+    const title = text.trim();
+    if (title === '') return;
+    setTasks([...tasks, { id: Date.now().toString(), title, done: false }]);
+    setText('');
+  }
+
+  function toggleTask(id: string) {
+    setTasks(tasks.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;Text style={styles.subtitle}&gt;{remaining} tâche(s) restante(s)&lt;/Text&gt;
+
+      &lt;View style={styles.inputRow}&gt;
+        &lt;TextInput
+          style={styles.input}
+          value={text}
+          onChangeText={setText}
+          placeholder="Nouvelle tâche"
+          onSubmitEditing={addTask}
+        /&gt;
+        &lt;Pressable style={styles.button} onPress={addTask}&gt;
+          &lt;Text style={styles.buttonText}&gt;Ajouter&lt;/Text&gt;
+        &lt;/Pressable&gt;
+      &lt;/View&gt;
+
+      &lt;FlatList
+        data={tasks}
+        keyExtractor={(t) =&gt; t.id}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) =&gt; (
+          &lt;TaskItem title={item.title} done={item.done} onToggle={() =&gt; toggleTask(item.id)} /&gt;
+        )}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+  inputRow: { flexDirection: 'row', gap: 8 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#ced4da', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10 },
+  button: { backgroundColor: '#1f2430', paddingHorizontal: 16, justifyContent: 'center', borderRadius: 8 },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+  list: { gap: 8 },
+});</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed">Le téléphone affiche « 1 tâche(s) restante(s) », un champ, un bouton et trois tâches.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Saisissez « Préparer la séance 2 » et appuyez sur Ajouter : la tâche apparaît, le champ se vide et le compteur affiche 2.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur une tâche la barre et met le compteur à jour.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un champ vide n'ajoute rien.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le champ est contrôlé : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">value</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onChangeText</code> le lient à l'état. On ne modifie jamais l'état directement : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[...tasks, newTask]</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">map</code> créent de nouveaux tableaux, et React voit le changement. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">remaining</code> est calculé à partir de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tasks</code>, pas stocké dans un autre état, et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code> a besoin d'une clé stable par élément.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Encountered two children with the same key</code> signifie que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">keyExtractor</code> renvoie deux fois la même valeur.</li>
+<li>L'écran ne se met pas à jour après <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tasks.push(newTask)</code> : le tableau reste le même objet.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-11" class="step-panel" data-title="Étape 7 — useEffect : une horloge avec nettoyage">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Lancer un minuteur quand un composant apparaît et l'arrêter quand il disparaît.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed">Dans VS Code, créez le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/Clock.tsx</code>. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas. Enregistrez le fichier, puis regardez le téléphone. Si le serveur est arrêté, relancez-le depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-sm text-gray-600 mb-2">Nouveau fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/Clock.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useEffect, useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
+
+export default function Clock() {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() =&gt; {
+    const id = setInterval(() =&gt; setNow(new Date()), 1000);
+    return () =&gt; clearInterval(id);
+  }, []);
+
+  return &lt;Text style={styles.clock}&gt;{now.toLocaleTimeString('fr-FR')}&lt;/Text&gt;;
+}
+
+const styles = StyleSheet.create({
+  clock: { fontSize: 14, color: '#868e96' },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>, ajoutez cette ligne juste après l'import de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TaskItem</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import Clock from '../components/Clock';</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Puis ajoutez cette ligne juste après la ligne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">&lt;Clock /&gt;</code></pre>
+</div>
+<details>
+<summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir le fichier complet à ce stade</summary>
+<p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+<div class="code-block-wrapper ">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import TaskItem from '../components/TaskItem';
+import Clock from '../components/Clock';
+
+type Task = { id: string; title: string; done: boolean };
+
+const INITIAL_TASKS: Task[] = [
+  { id: '1', title: 'Installer Node.js', done: true },
+  { id: '2', title: 'Créer le projet Expo', done: true },
+  { id: '3', title: 'Comprendre useState', done: false },
+];
+
+export default function Index() {
+  const [tasks, setTasks] = useState&lt;Task[]&gt;(INITIAL_TASKS);
+  const [text, setText] = useState('');
+
+  const remaining = tasks.filter((t) =&gt; !t.done).length;
+
+  function addTask() {
+    const title = text.trim();
+    if (title === '') return;
+    setTasks([...tasks, { id: Date.now().toString(), title, done: false }]);
+    setText('');
+  }
+
+  function toggleTask(id: string) {
+    setTasks(tasks.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;Clock /&gt;
+      &lt;Text style={styles.subtitle}&gt;{remaining} tâche(s) restante(s)&lt;/Text&gt;
+
+      &lt;View style={styles.inputRow}&gt;
+        &lt;TextInput
+          style={styles.input}
+          value={text}
+          onChangeText={setText}
+          placeholder="Nouvelle tâche"
+          onSubmitEditing={addTask}
+        /&gt;
+        &lt;Pressable style={styles.button} onPress={addTask}&gt;
+          &lt;Text style={styles.buttonText}&gt;Ajouter&lt;/Text&gt;
+        &lt;/Pressable&gt;
+      &lt;/View&gt;
+
+      &lt;FlatList
+        data={tasks}
+        keyExtractor={(t) =&gt; t.id}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) =&gt; (
+          &lt;TaskItem title={item.title} done={item.done} onToggle={() =&gt; toggleTask(item.id)} /&gt;
+        )}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+  inputRow: { flexDirection: 'row', gap: 8 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#ced4da', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10 },
+  button: { backgroundColor: '#1f2430', paddingHorizontal: 16, justifyContent: 'center', borderRadius: 8 },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+  list: { gap: 8 },
+});</code></pre>
+</div>
+</details>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Résultat et vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>L'heure apparaît sous le titre et change chaque seconde sur le téléphone.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Fast Refresh fonctionne toujours.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Retirez temporairement <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;Clock /&gt;</code>, enregistrez, puis remettez-le : aucune erreur, et l'horloge repart.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect</code> exécute du code en dehors du rendu (minuteurs, réseau, abonnements). Avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[]</code>, il s'exécute une seule fois, après le premier rendu. La fonction renvoyée est le nettoyage : elle s'exécute quand le composant disparaît, sinon le minuteur continuerait de tourner.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li>Oublier le nettoyage laisse des minuteurs tourner en arrière-plan.</li>
+<li>Un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setState</code> dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect</code> sans tableau de dépendances provoque une boucle de rendus infinie.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-12" class="step-panel" data-title="Défi — Améliorer Club Tasks">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Améliorer Club Tasks sans code fourni, à partir de ce que vous venez d'apprendre.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-flag-checkered text-brand" aria-hidden="true"></i>
+Défis
+</h3>
+<ol class="list-decimal pl-5 space-y-3 text-gray-700">
+<li><p>Supprimer une tâche par appui long (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onLongPress</code> + <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">filter</code>).</p><p class="text-sm text-gray-600 mt-1">Indice : Ajoutez à TaskItem une prop qui reçoit une fonction, branchez-la sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onLongPress</code>, puis gardez avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">filter</code> les tâches dont l'id est différent.</p></li>
+<li><p>Un interrupteur « Masquer les tâches terminées » (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Switch</code> ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Pressable</code> + un état booléen).</p><p class="text-sm text-gray-600 mt-1">Indice : L'état booléen décide si <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">FlatList</code> reçoit <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tasks</code> ou une liste filtrée.</p></li>
+<li><p>Afficher « Bravo ! » quand il ne reste aucune tâche.</p><p class="text-sm text-gray-600 mt-1">Indice : Affichez ce texte seulement quand <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">remaining</code> vaut 0.</p></li>
+<li><p>Afficher le nombre total de tâches à côté du nombre restant.</p><p class="text-sm text-gray-600 mt-1">Indice : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tasks.length</code> donne le total, sans nouvel état.</p></li>
+</ol>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Chaque défi réutilise uniquement l'état, les props et les méthodes de tableau de cette séance.</p>
+</div>
+</div>
+        </section>
+
+        <section id="step-13" class="step-panel" data-title="Récapitulatif — quiz et séance 2">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Ce que vous savez faire
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Créer un projet Expo et le lancer dans Expo Go.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Écrire un composant avec du JSX et des styles.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Passer des props.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Utiliser useState.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Afficher une liste avec FlatList.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Utiliser useEffect avec un nettoyage.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Quiz final
+</h3>
+<div class="quiz-question mb-6" id="quiz-c01-q05" data-answer="c">
+<p class="font-medium text-gray-900 mb-3">Dans onPress, juste après setCount(count + 1), que vaut count dans la suite de la fonction ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 5">
+<button type="button" class="quiz-option" data-option="a">count + 1, la valeur est mise à jour immédiatement</button>
+<button type="button" class="quiz-option" data-option="b">undefined, le temps que React recalcule</button>
+<button type="button" class="quiz-option" data-option="c">l'ancienne valeur, jusqu'au prochain rendu</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>setCount demande un nouveau rendu ; la variable du rendu en cours ne change pas.</p>
+</div>
+<div class="quiz-question mb-6" id="quiz-c01-q06" data-answer="a">
+<p class="font-medium text-gray-900 mb-3">On écrit tasks.push(newTask); puis setTasks(tasks). Que se passe-t-il à l'écran ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 6">
+<button type="button" class="quiz-option" data-option="a">rien ne change, car React reçoit le même tableau</button>
+<button type="button" class="quiz-option" data-option="b">la tâche apparaît, car push modifie la liste</button>
+<button type="button" class="quiz-option" data-option="c">l'application plante avec une erreur rouge</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React compare l'ancienne et la nouvelle valeur ; un tableau modifié sur place est le même objet, donc aucun nouveau rendu.</p>
+</div>
+<div class="quiz-question mb-6" id="quiz-c01-q07" data-answer="b">
+<p class="font-medium text-gray-900 mb-3">Un useEffect avec le tableau de dépendances [] s'exécute :</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 7">
+<button type="button" class="quiz-option" data-option="a">à chaque rendu du composant</button>
+<button type="button" class="quiz-option" data-option="b">une fois après le premier rendu, et son nettoyage quand le composant disparaît</button>
+<button type="button" class="quiz-option" data-option="c">avant le premier rendu, comme un constructeur</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>[] signifie aucune dépendance : l'effet ne se relance jamais après le premier rendu.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-forward text-brand" aria-hidden="true"></i>
+Séance 2
+</h3>
+<ul class="list-disc pl-5 space-y-2 text-gray-700 mb-3">
+<li>La navigation avec Expo Router : des onglets et un écran de détail <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">task/[id].tsx</code>.</li>
+<li>Le chargement de données depuis une API, avec les états de chargement et d'erreur.</li>
+<li>L'enregistrement des tâches sur le téléphone.</li>
+<li>Un petit mini-projet en équipe.</li>
+</ul>
+<p class="text-gray-700 leading-relaxed">Gardez le projet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> : vous en aurez besoin.</p>
+</div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Prism core + autoloader (pinned 1.29.0) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script>
+  Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+</script>
+
+<!-- Navigation JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.step-panel'));
+  var stepIds = panels.map(function (p) { return p.id; });
+  var sidebarLinks = Array.prototype.slice.call(document.querySelectorAll('.step-link'));
+  var titleEl = document.getElementById('current-step-title');
+  var prevBtn = document.getElementById('prev-step');
+  var nextBtn = document.getElementById('next-step');
+  var progressBar = document.getElementById('progress-bar');
+  var sidebar = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebar-overlay');
+  var sidebarToggle = document.getElementById('sidebar-toggle');
+
+  var storageKey = 'codelab-progress:' + window.location.pathname;
+
+  function loadCompleted() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCompleted(list) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(list));
+    } catch (e) {
+      /* localStorage unavailable: navigation still works without persistence */
+    }
+  }
+
+  var completed = loadCompleted();
+
+  function indexOfStep(id) {
+    var idx = stepIds.indexOf(id);
+    return idx === -1 ? 0 : idx;
+  }
+
+  function markCompleted(idx) {
+    var id = stepIds[idx];
+    if (completed.indexOf(id) === -1) {
+      completed.push(id);
+      saveCompleted(completed);
+    }
+  }
+
+  function updateSidebarState(activeId) {
+    sidebarLinks.forEach(function (link) {
+      var id = link.getAttribute('data-step');
+      link.classList.toggle('is-active', id === activeId);
+      link.classList.toggle('is-completed', completed.indexOf(id) !== -1 && id !== activeId);
+    });
+  }
+
+  function closeMobileSidebar() {
+    if (sidebar) sidebar.classList.remove('is-open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('is-open');
+  }
+
+  function showStep(idx, options) {
+    options = options || {};
+    if (idx < 0) idx = 0;
+    if (idx > panels.length - 1) idx = panels.length - 1;
+
+    var id = stepIds[idx];
+
+    panels.forEach(function (panel, i) {
+      panel.classList.toggle('is-active', i === idx);
+    });
+
+    if (titleEl) {
+      titleEl.textContent = panels[idx].getAttribute('data-title') || panels[idx].id;
+    }
+
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.disabled = idx === panels.length - 1;
+
+    if (progressBar) {
+      var pct = ((idx + 1) / panels.length) * 100;
+      progressBar.style.width = pct + '%';
+    }
+
+    if (idx > 0) {
+      for (var i = 0; i < idx; i++) {
+        markCompleted(i);
+      }
+    }
+
+    updateSidebarState(id);
+
+    if (!options.skipHash) {
+      if (history.replaceState) {
+        history.replaceState(null, '', '#' + id);
+      } else {
+        window.location.hash = id;
+      }
+    }
+
+    document.getElementById('content').scrollTop = 0;
+    closeMobileSidebar();
+  }
+
+  function currentIndex() {
+    var hash = window.location.hash.replace('#', '');
+    return indexOfStep(hash);
+  }
+
+  // Sidebar links: native anchor navigation updates location.hash, which
+  // fires 'hashchange'; we just react to that in one place.
+  window.addEventListener('hashchange', function () {
+    showStep(currentIndex(), { skipHash: true });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      showStep(currentIndex() - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      showStep(currentIndex() + 1);
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+    if (e.key === 'ArrowLeft') {
+      showStep(currentIndex() - 1);
+    } else if (e.key === 'ArrowRight') {
+      showStep(currentIndex() + 1);
+    }
+  });
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function () {
+      sidebar.classList.add('is-open');
+      sidebarOverlay.classList.add('is-open');
+    });
+  }
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeMobileSidebar);
+  }
+
+  // Copy-to-clipboard for every code block.
+  Array.prototype.slice.call(document.querySelectorAll('.copy-btn')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var wrapper = btn.closest('.code-block-wrapper');
+      var codeEl = wrapper ? wrapper.querySelector('code') : null;
+      if (!codeEl) return;
+
+      var text = codeEl.textContent;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copie';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {
+          fallbackCopy(text);
+          done();
+        });
+      } else {
+        fallbackCopy(text);
+        done();
+      }
+    });
+  });
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    document.body.removeChild(ta);
+  }
+
+  // Initial render.
+  showStep(currentIndex(), { skipHash: true });
+  if (window.location.hash) {
+    // Normalize the hash (e.g. redirect #foo -> #step-1 if invalid).
+    history.replaceState(null, '', '#' + stepIds[currentIndex()]);
+  }
+
+  if (window.Prism) {
+    Prism.highlightAll();
+  }
+})();
+</script>
+
+<!-- Quiz JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var questions = Array.prototype.slice.call(document.querySelectorAll('.quiz-question'));
+  if (!questions.length) return;
+
+  var storageKey = 'codelab-quiz:' + window.location.pathname;
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(state));
+    } catch (e) {
+      /* localStorage unavailable: the quiz still works without persistence */
+    }
+  }
+
+  var state = loadState();
+
+  function updateScores() {
+    var firstTry = 0;
+    questions.forEach(function (question) {
+      var entry = state[question.id];
+      if (entry && entry.done && entry.tries === 1) firstTry++;
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (el) {
+      el.textContent = firstTry + ' / ' + questions.length;
+    });
+  }
+
+  questions.forEach(function (question) {
+    var options = Array.prototype.slice.call(question.querySelectorAll('.quiz-option'));
+    var feedback = question.querySelector('.quiz-feedback');
+    var explain = question.querySelector('.quiz-explain');
+    var answer = question.getAttribute('data-answer');
+
+    function showFeedback(text) {
+      if (!feedback) return;
+      feedback.textContent = text;
+      feedback.hidden = false;
+    }
+
+    function finish() {
+      options.forEach(function (option) {
+        option.disabled = true;
+        if (option.getAttribute('data-option') === answer) {
+          option.classList.add('is-correct');
+        }
+      });
+      if (explain) explain.hidden = false;
+    }
+
+    if (state[question.id] && state[question.id].done) {
+      finish();
+      showFeedback('Bonne réponse.');
+    }
+
+    options.forEach(function (option) {
+      option.addEventListener('click', function () {
+        var entry = state[question.id] || { tries: 0, done: false };
+        if (entry.done) return;
+
+        entry.tries += 1;
+
+        if (option.getAttribute('data-option') === answer) {
+          entry.done = true;
+          showFeedback(entry.tries === 1 ? 'Bonne réponse du premier coup.' : 'Bonne réponse.');
+          finish();
+        } else {
+          option.classList.add('is-wrong');
+          option.disabled = true;
+          showFeedback('Pas encore. Relisez la question et réessayez.');
+        }
+
+        state[question.id] = entry;
+        saveState(state);
+        updateScores();
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-reset]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state = {};
+      saveState(state);
+      window.location.reload();
+    });
+  });
+
+  updateScores();
+})();
+</script>
+
+</body>
+</html>
