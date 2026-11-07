@@ -10,6 +10,7 @@
     - the <section class="step-panel" ...> blocks (edit, add, remove)
   See CLAUDE.md and session-guidelines.md for the full rules.
   Club page, not an IAM2 session: 5-column comparison table, 7 quiz questions and a controlled input in Étape 6 are intentional exceptions (instructor decision, Nov 2026).
+  Club page: the 'Sous le capot' panel uses click-triggered CSS transitions (instructor decision, Nov 2026).
 -->
 <html lang="fr">
 <head>
@@ -208,26 +209,26 @@
               <span class="marker-number">3</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Cours — React, React Native et Expo</span>
+            <span>Cours — Sous le capot : couches et moteurs</span>
           </a>
         </li>
-        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (2 h 35)</li>
         <li>
           <a href="#step-4" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-4">
             <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
               <span class="marker-number">4</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Étape 1 — Vérifier les outils</span>
+            <span>Cours — React, React Native et Expo</span>
           </a>
         </li>
+        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (2 h 35)</li>
         <li>
           <a href="#step-5" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-5">
             <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
               <span class="marker-number">5</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Étape 2 — Créer le projet et l'ouvrir sur le téléphone</span>
+            <span>Étape 1 — Vérifier les outils</span>
           </a>
         </li>
         <li>
@@ -236,7 +237,7 @@
               <span class="marker-number">6</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Cours — L'essentiel de JavaScript et TypeScript</span>
+            <span>Étape 2 — Créer le projet et l'ouvrir sur le téléphone</span>
           </a>
         </li>
         <li>
@@ -245,7 +246,7 @@
               <span class="marker-number">7</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Étape 3 — Premier composant</span>
+            <span>Cours — L'essentiel de JavaScript et TypeScript</span>
           </a>
         </li>
         <li>
@@ -254,7 +255,7 @@
               <span class="marker-number">8</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Étape 4 — Un composant réutilisable avec des props</span>
+            <span>Étape 3 — Premier composant</span>
           </a>
         </li>
         <li>
@@ -263,7 +264,7 @@
               <span class="marker-number">9</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Étape 5 — L'état avec useState</span>
+            <span>Étape 4 — Un composant réutilisable avec des props</span>
           </a>
         </li>
         <li>
@@ -272,7 +273,7 @@
               <span class="marker-number">10</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Étape 6 — Liste, saisie et ajout de tâches</span>
+            <span>Étape 5 — L'état avec useState</span>
           </a>
         </li>
         <li>
@@ -281,7 +282,7 @@
               <span class="marker-number">11</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Étape 7 — useEffect : une horloge avec nettoyage</span>
+            <span>Étape 6 — Liste, saisie et ajout de tâches</span>
           </a>
         </li>
         <li>
@@ -290,13 +291,22 @@
               <span class="marker-number">12</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
-            <span>Défi — Améliorer Club Tasks</span>
+            <span>Étape 7 — useEffect : une horloge avec nettoyage</span>
           </a>
         </li>
         <li>
           <a href="#step-13" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-13">
             <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
               <span class="marker-number">13</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Défi — Améliorer Club Tasks</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-14" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-14">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">14</span>
               <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
             </span>
             <span>Récapitulatif — quiz et séance 2</span>
@@ -370,11 +380,15 @@ Programme
 </tr>
 <tr class="border-t border-gray-200">
 <th scope="row" class="px-3 py-2 font-medium">Du web au mobile</th>
-<td class="px-3 py-2">25 min</td>
+<td class="px-3 py-2">15 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Sous le capot : couches et moteurs</th>
+<td class="px-3 py-2">12 min</td>
 </tr>
 <tr class="border-t border-gray-200">
 <th scope="row" class="px-3 py-2 font-medium">React, React Native et Expo</th>
-<td class="px-3 py-2">20 min</td>
+<td class="px-3 py-2">18 min</td>
 </tr>
 <tr class="border-t border-gray-200">
 <th scope="row" class="px-3 py-2 font-medium">Étapes 1 et 2 : installation et premier lancement</th>
@@ -568,7 +582,559 @@ Quiz éclair
 </div>
         </section>
 
-        <section id="step-3" class="step-panel" data-title="Cours — React, React Native et Expo">
+        <section id="step-3" class="step-panel" data-title="Cours — Sous le capot : couches et moteurs">
+<style>
+  /* Club page only: click-triggered transitions for the "Sous le capot" figure. */
+  #c01-layers .cl-btn {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    color: #374151;
+    font-size: 0.875rem;
+  }
+  #c01-layers .cl-btn:hover:not(:disabled) { background: #f3f4f6; }
+  #c01-layers .cl-btn:focus-visible { outline: 2px solid #ff3d2e; outline-offset: 2px; }
+  #c01-layers .cl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  #c01-layers .cl-btn[aria-pressed="true"] { background: #1f2430; border-color: #1f2430; color: #ffffff; }
+  #c01-layers .cl-rev { transition: opacity 300ms ease, transform 300ms ease; }
+  #c01-layers .cl-rev.cl-entering { opacity: 0; transform: translateY(-12px); }
+  #c01-layers.cl-js .cl-rev.cl-hidden,
+  #c01-layers.cl-js .cl-scene.cl-scene-off { display: none; }
+  #c01-layers.cl-js [data-arch="old"],
+  #c01-layers.cl-js .cl-old [data-arch="new"] { display: none; }
+  #c01-layers.cl-js .cl-old [data-arch="old"] { display: block; }
+  #c01-layers .cl-marker { display: none; }
+  #c01-layers .cl-lane.cl-current { border-width: 4px; border-color: #1f2430; }
+  #c01-layers .cl-lane.cl-current .cl-marker { display: inline-flex; }
+  #c01-layers .cl-step.cl-current { font-weight: 700; }
+  @media (prefers-reduced-motion: reduce) {
+    #c01-layers .cl-rev { transition: none; }
+  }
+</style>
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Comprendre ce qu'est un environnement d'exécution, pourquoi une application hybride ajoute une couche, et comment React Native transforme du JavaScript en vues natives.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-layer-group text-brand" aria-hidden="true"></i>
+Les couches, une par une
+</h3>
+<p class="text-gray-700 leading-relaxed mb-4">Utilisez les boutons pour construire chaque pile, du matériel jusqu'à votre application.</p>
+<figure class="mb-0">
+<div id="c01-layers" role="group" aria-label="Animation des couches, contrôlée par les boutons">
+<div class="cl-controls mb-5 space-y-3" hidden>
+<div class="flex flex-wrap gap-2" role="group" aria-label="Choisir une scène">
+<button type="button" class="cl-btn" data-scene-btn="1" aria-pressed="false">Runtime</button>
+<button type="button" class="cl-btn" data-scene-btn="2" aria-pressed="false">Natif</button>
+<button type="button" class="cl-btn" data-scene-btn="3" aria-pressed="false">Hybride</button>
+<button type="button" class="cl-btn" data-scene-btn="4" aria-pressed="false">React Native</button>
+<button type="button" class="cl-btn" data-scene-btn="5" aria-pressed="false">Fils d'exécution</button>
+<button type="button" class="cl-btn" data-scene-btn="6" aria-pressed="false">Qui dessine ?</button>
+<button type="button" class="cl-btn" data-scene-btn="7" aria-pressed="false">Expo Go</button>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<button type="button" class="cl-btn" data-action="prev"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> Couche précédente</button>
+<button type="button" class="cl-btn" data-action="next">Couche suivante <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+<button type="button" class="cl-btn" data-action="all"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Tout afficher</button>
+</div>
+<p class="cl-status text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded px-3 py-2" aria-live="polite"></p>
+</div>
+<div data-scene="1" data-unit="Couche" class="cl-scene mb-6">
+<h4 class="text-base font-medium text-gray-900 mb-3">Qu'est-ce qu'un environnement d'exécution ?</h4>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="4">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Votre application</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">le code que vous écrivez</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-gears mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Environnement d'exécution (runtime)</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">exécute votre code et lui donne accès au système ; sur Android, c'est ART</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Système d'exploitation</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">Android ou iOS : gère les applications, la mémoire et les permissions</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-gray-100 border-gray-400 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-microchip mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Matériel</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Matériel</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">processeur ARM, mémoire, écran tactile, capteurs</p>
+</div></div>
+</li>
+</ol>
+<p class="text-sm text-gray-700 mt-3">Le runtime est l'intermédiaire entre votre code et le système : il le fait tourner sur le processeur et lui ouvre les fonctions du téléphone.</p>
+</div>
+<div data-scene="2" data-unit="Couche" class="cl-scene mb-6">
+<h4 class="text-base font-medium text-gray-900 mb-3">Natif : deux piles différentes</h4>
+<div class="grid sm:grid-cols-2 gap-4">
+<div class="min-w-0">
+<h5 class="font-medium text-gray-900 mb-2">Android</h5>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="5">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Application Kotlin</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">votre code</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-emerald-50 border-emerald-500 px-3 py-2 text-gray-900" data-order="4">
+<div class="flex items-start gap-3"><i class="fa-solid fa-table-cells-large mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Vues Android et Jetpack Compose</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Interface native</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">les composants d'interface natifs</p><div><span class="inline-flex items-center gap-1 rounded-full border border-green-300 bg-green-50 text-green-800 text-xs px-2 py-0.5 mt-1"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Interface native</span></div>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-gears mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">ART (Android Runtime)</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">transforme le bytecode produit par Kotlin en code machine et l'exécute</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Android</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">système basé sur le noyau Linux</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-gray-100 border-gray-400 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-microchip mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Matériel</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Matériel</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">processeur ARM</p>
+</div></div>
+</li>
+</ol>
+</div>
+<div class="min-w-0">
+<h5 class="font-medium text-gray-900 mb-2">iOS</h5>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="5">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Application Swift</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">votre code</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-emerald-50 border-emerald-500 px-3 py-2 text-gray-900" data-order="4">
+<div class="flex items-start gap-3"><i class="fa-solid fa-table-cells-large mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">UIKit et SwiftUI</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Interface native</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">les composants d'interface natifs</p><div><span class="inline-flex items-center gap-1 rounded-full border border-green-300 bg-green-50 text-green-800 text-xs px-2 py-0.5 mt-1"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Interface native</span></div>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-gears mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Code machine ARM</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">Swift est compilé à l'avance, le processeur l'exécute directement</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">iOS</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">système d'Apple</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-gray-100 border-gray-400 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-microchip mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Matériel</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Matériel</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">processeur ARM</p>
+</div></div>
+</li>
+</ol>
+</div>
+</div>
+<p class="text-sm text-gray-700 mt-3">Le chemin le plus court vers l'écran, mais deux piles, deux langages et souvent deux équipes.</p>
+</div>
+<div data-scene="3" data-unit="Couche" class="cl-scene mb-6">
+<h4 class="text-base font-medium text-gray-900 mb-3">Hybride : une couche navigateur en plus (Ionic, Cordova, Capacitor)</h4>
+<ol class="flex flex-col md:grid md:grid-cols-[minmax(0,1fr)_14rem] md:gap-x-3">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900 mb-2 md:col-start-1 md:row-start-1" data-order="5">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Votre application</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">HTML, CSS et JavaScript (composants Ionic)</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-amber-50 border-amber-500 px-3 py-2 text-gray-900 mb-2 md:col-start-1 md:row-start-2" data-order="4">
+<div class="flex items-start gap-3"><i class="fa-solid fa-globe mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Moteur JavaScript et moteur de rendu HTML/CSS</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Navigateur</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">exécutent le code et dessinent la page</p><div><span class="inline-flex items-center gap-1 rounded-full border border-rose-300 bg-rose-50 text-rose-800 text-xs px-2 py-0.5 mt-1"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Interface dessinée comme une page web</span></div>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-amber-50 border-amber-500 px-3 py-2 text-gray-900 mb-2 md:col-start-1 md:row-start-3" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-globe mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">WebView</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Navigateur</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">un navigateur intégré à l'application : Chromium sur Android, WebKit sur iOS</p><div><span class="inline-flex items-center gap-1 rounded-full border border-rose-300 bg-rose-50 text-rose-800 text-xs px-2 py-0.5 mt-1"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Couche en plus</span></div>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900 mb-2 md:col-start-1 md:row-start-4" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Android ou iOS</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">le système</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-gray-100 border-gray-400 px-3 py-2 text-gray-900 mb-2 md:col-start-1 md:row-start-5" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-microchip mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Matériel</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Matériel</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">processeur ARM</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-dashed border-rose-400 px-3 py-2 text-gray-900 mb-2 md:col-start-2 md:row-start-2 md:row-end-5" data-order="4">
+<div class="flex items-start gap-3"><i class="fa-solid fa-plug mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Plugins (Capacitor ou Cordova)</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Plugin</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">appareil photo, GPS, fichiers : chaque accès natif passe par un plugin.</p><div><span class="inline-flex items-center gap-1 rounded-full border border-rose-300 bg-rose-50 text-rose-800 text-xs px-2 py-0.5 mt-1"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Passage par un plugin</span></div>
+</div></div>
+</li>
+</ol>
+<p class="text-sm text-gray-700 mt-3">L'interface vit dans un navigateur. Les WebView modernes sont rapides, mais l'écart se voit dans les animations, le défilement et sur les téléphones d'entrée de gamme, et l'aspect natif doit être imité.</p>
+</div>
+<div data-scene="4" data-unit="Couche" class="cl-scene mb-6" data-arch-scene>
+<h4 class="text-base font-medium text-gray-900 mb-3">React Native : le moteur</h4>
+<button type="button" class="cl-btn mb-3" data-action="arch" aria-pressed="false" hidden>Voir l'ancienne architecture</button>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="8">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Votre application</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">TypeScript et React</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-sky-50 border-sky-500 px-3 py-2 text-gray-900" data-order="7">
+<div class="flex items-start gap-3"><i class="fa-solid fa-code mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">React</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">JavaScript</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">compare l'ancien et le nouvel arbre de composants et calcule uniquement les changements</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-sky-50 border-sky-500 px-3 py-2 text-gray-900" data-order="6">
+<div class="flex items-start gap-3"><i class="fa-solid fa-code mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Hermes</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">JavaScript</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">le moteur JavaScript conçu pour React Native ; en production, le code est précompilé en bytecode</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-2 text-gray-900" data-order="5">
+<div class="flex items-start gap-3"><i class="fa-solid fa-gears mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<div data-arch="new"><p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">JSI (JavaScript Interface)</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">appels directs entre JavaScript et code natif C++, sans messages JSON ; les modules natifs (TurboModules) sont chargés à la demande</p><div><span class="inline-flex items-center gap-1 rounded-full border border-green-300 bg-green-50 text-green-800 text-xs px-2 py-0.5 mt-1"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Appel direct</span></div></div>
+<div data-arch="old"><p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Bridge</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-rose-300 text-rose-800">Ancienne architecture</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">messages JSON asynchrones mis en file d'attente entre JavaScript et le natif</p><div><span class="inline-flex items-center gap-1 rounded-full border border-rose-300 bg-rose-50 text-rose-800 text-xs px-2 py-0.5 mt-1"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Goulot d'étranglement</span></div></div>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-2 text-gray-900" data-order="4">
+<div class="flex items-start gap-3"><i class="fa-solid fa-gears mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<div data-arch="new"><p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Fabric</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">le moteur de rendu : crée et met à jour les vues natives ; Yoga calcule la mise en page Flexbox</p></div>
+<div data-arch="old"><p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Ancien moteur de rendu</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-rose-300 text-rose-800">Ancienne architecture</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">mises à jour envoyées par le bridge</p></div>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-emerald-50 border-emerald-500 px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-table-cells-large mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Vues natives</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Interface native</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">android.view.View et UIView, les mêmes composants qu'une application native</p><div><span class="inline-flex items-center gap-1 rounded-full border border-green-300 bg-green-50 text-green-800 text-xs px-2 py-0.5 mt-1"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Interface native</span></div>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Android ou iOS</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">le système</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-gray-100 border-gray-400 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-microchip mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Matériel</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Matériel</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">processeur ARM</p>
+</div></div>
+</li>
+</ol>
+<p class="text-sm text-gray-700 mt-3"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Depuis Expo SDK 55, seule la nouvelle architecture existe : JSI remplace le bridge et Fabric l'ancien moteur de rendu.</p>
+</div>
+<div data-scene="5" data-unit="Étape" class="cl-scene mb-6">
+<h4 class="text-base font-medium text-gray-900 mb-3">Trois fils d'exécution</h4>
+<div class="space-y-2">
+<div class="cl-lane rounded-lg border-2 bg-sky-50 border-sky-500 px-3 py-3 flex items-center gap-3 text-gray-900" data-lane="js"><span class="cl-marker w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold items-center justify-center shrink-0" aria-hidden="true"></span><i class="fa-solid fa-code shrink-0" aria-hidden="true"></i><div class="min-w-0"><p class="font-bold text-sm">Fil JavaScript</p><p class="text-xs text-gray-700 mt-0.5">Hermes et React : votre code</p></div></div>
+<div class="cl-lane rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-3 flex items-center gap-3 text-gray-900" data-lane="layout"><span class="cl-marker w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold items-center justify-center shrink-0" aria-hidden="true"></span><i class="fa-solid fa-gears shrink-0" aria-hidden="true"></i><div class="min-w-0"><p class="font-bold text-sm">Mise en page</p><p class="text-xs text-gray-700 mt-0.5">Fabric et Yoga calculent tailles et positions, souvent hors du fil principal</p></div></div>
+<div class="cl-lane rounded-lg border-2 bg-emerald-50 border-emerald-500 px-3 py-3 flex items-center gap-3 text-gray-900" data-lane="ui"><span class="cl-marker w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold items-center justify-center shrink-0" aria-hidden="true"></span><i class="fa-solid fa-table-cells-large shrink-0" aria-hidden="true"></i><div class="min-w-0"><p class="font-bold text-sm">Fil principal (UI)</p><p class="text-xs text-gray-700 mt-0.5">les vues natives : dessin, gestes, défilement</p></div></div>
+</div>
+<ol class="list-decimal pl-5 mt-3 space-y-1 text-sm text-gray-800">
+<li class="cl-rev cl-step" data-order="1" data-lane="ui"><span class="cl-detail">Vous appuyez sur « Ajouter » : le fil principal reçoit le geste.</span></li>
+<li class="cl-rev cl-step" data-order="2" data-lane="js"><span class="cl-detail">L'événement arrive au fil JavaScript : onPress s'exécute et l'état change.</span></li>
+<li class="cl-rev cl-step" data-order="3" data-lane="layout"><span class="cl-detail">React calcule les changements, Fabric et Yoga calculent la nouvelle mise en page.</span></li>
+<li class="cl-rev cl-step" data-order="4" data-lane="ui"><span class="cl-detail">Le fil principal met à jour les vues natives à l'écran.</span></li>
+</ol>
+<p class="text-sm text-gray-700 mt-3">Le fil principal reste libre pour les gestes et le défilement pendant que JavaScript travaille.</p>
+</div>
+<div data-scene="6" data-unit="Couche" class="cl-scene mb-6">
+<h4 class="text-base font-medium text-gray-900 mb-3">Qui dessine l'interface ?</h4>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+<div class="min-w-0">
+<h5 class="font-medium text-gray-900 mb-2">Natif</h5>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">App Kotlin ou Swift</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-emerald-50 border-emerald-500 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-table-cells-large mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Vues natives</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Interface native</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Système</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p>
+</div></div>
+</li>
+</ol>
+<p class="cl-rev text-sm text-gray-800 mt-2" data-order="3"><span class="font-medium">Qui dessine :</span> Le système, avec ses vues natives</p>
+</div>
+<div class="min-w-0">
+<h5 class="font-medium text-gray-900 mb-2">Hybride</h5>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">App web</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-amber-50 border-amber-500 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-globe mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">WebView</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Navigateur</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Système</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p>
+</div></div>
+</li>
+</ol>
+<p class="cl-rev text-sm text-gray-800 mt-2" data-order="3"><span class="font-medium">Qui dessine :</span> Le moteur du navigateur</p>
+</div>
+<div class="min-w-0">
+<h5 class="font-medium text-gray-900 mb-2">React Native</h5>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">App JavaScript</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-emerald-50 border-emerald-500 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-table-cells-large mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Vues natives</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Interface native</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Système</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p>
+</div></div>
+</li>
+</ol>
+<p class="cl-rev text-sm text-gray-800 mt-2" data-order="3"><span class="font-medium">Qui dessine :</span> Le système, piloté par JavaScript</p>
+</div>
+<div class="min-w-0">
+<h5 class="font-medium text-gray-900 mb-2">Flutter</h5>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">App Dart</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-gears mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Moteur Flutter (Impeller)</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Système</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p>
+</div></div>
+</li>
+</ol>
+<p class="cl-rev text-sm text-gray-800 mt-2" data-order="3"><span class="font-medium">Qui dessine :</span> Son propre moteur, qui dessine chaque pixel</p>
+</div>
+</div>
+<p class="text-sm text-gray-700 mt-3">React Native et le natif affichent les mêmes vues ; Flutter les redessine lui-même ; l'hybride affiche une page web.</p>
+</div>
+<div data-scene="7" data-unit="Couche" class="cl-scene mb-6">
+<h4 class="text-base font-medium text-gray-900 mb-3">Et Expo Go ?</h4>
+<ol class="flex flex-col gap-2">
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="4">
+<div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Votre code JavaScript</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-brand text-brand-dark">Votre app</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">envoyé depuis le PC par le serveur Metro, en Wi-Fi</p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-white border-dashed border-gray-500 px-3 py-2 text-gray-900" data-order="3">
+<div class="flex items-start gap-3"><i class="fa-solid fa-box mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Expo Go</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Application Expo Go</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">application déjà compilée, installée depuis le store</p>
+<ol class="flex flex-col gap-1.5 mt-2">
+<li class="rounded border-2 bg-sky-50 border-sky-500 px-2 py-1.5 flex items-center gap-2 text-gray-900"><i class="fa-solid fa-code shrink-0" aria-hidden="true"></i><span class="text-xs font-medium">Hermes et les modules natifs d'Expo</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">JavaScript</span></li>
+<li class="rounded border-2 bg-indigo-50 border-indigo-400 px-2 py-1.5 flex items-center gap-2 text-gray-900"><i class="fa-solid fa-gears shrink-0" aria-hidden="true"></i><span class="text-xs font-medium">Fabric et JSI</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Runtime</span></li>
+<li class="rounded border-2 bg-emerald-50 border-emerald-500 px-2 py-1.5 flex items-center gap-2 text-gray-900"><i class="fa-solid fa-table-cells-large shrink-0" aria-hidden="true"></i><span class="text-xs font-medium">Vues natives</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Interface native</span></li>
+</ol>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-slate-200 border-slate-500 px-3 py-2 text-gray-900" data-order="2">
+<div class="flex items-start gap-3"><i class="fa-solid fa-mobile-screen mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Android ou iOS</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Système</span></p>
+</div></div>
+</li>
+<li class="cl-rev cl-layer rounded-lg border-2 bg-gray-100 border-gray-400 px-3 py-2 text-gray-900" data-order="1">
+<div class="flex items-start gap-3"><i class="fa-solid fa-microchip mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Matériel</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">Matériel</span></p>
+</div></div>
+</li>
+</ol>
+<p class="text-sm text-gray-700 mt-3">Tout le moteur est déjà compilé dans Expo Go : seul votre JavaScript voyage. Une bibliothèque qui ajoute du code natif ne peut donc pas y être ajoutée.</p>
+</div>
+</div>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.3 — Chaque approche empile des couches différentes entre votre code et l'écran ; React Native garde de vraies vues natives et appelle le code natif directement grâce à JSI.</figcaption>
+</figure>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Quiz éclair
+</h3>
+<div class="quiz-question mb-6" id="quiz-c01-q08" data-answer="c">
+<p class="font-medium text-gray-900 mb-3">Avec la nouvelle architecture, comment le JavaScript appelle-t-il un module natif comme l'appareil photo ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 8">
+<button type="button" class="quiz-option" data-option="a">Il envoie un message JSON dans une file d'attente, traité plus tard</button>
+<button type="button" class="quiz-option" data-option="b">Il passe par une WebView, comme une application hybride</button>
+<button type="button" class="quiz-option" data-option="c">Il appelle directement le code natif grâce à JSI</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>JSI permet au JavaScript d'appeler directement des fonctions natives écrites en C++ ; l'ancien bridge transformait chaque appel en message JSON asynchrone.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Une application hybride ajoute un navigateur entre votre code et l'écran. React Native exécute votre JavaScript avec Hermes, mais l'interface reste faite de vraies vues natives créées par Fabric ; JSI relie les deux sans file de messages.</p>
+</div>
+</div>
+<script>
+(function () {
+  'use strict';
+
+  var root = document.getElementById('c01-layers');
+  if (!root) return;
+
+  var scenes = Array.prototype.slice.call(root.querySelectorAll('[data-scene]'));
+  var sceneButtons = Array.prototype.slice.call(root.querySelectorAll('[data-scene-btn]'));
+  var controls = root.querySelector('.cl-controls');
+  var prevBtn = root.querySelector('[data-action="prev"]');
+  var nextBtn = root.querySelector('[data-action="next"]');
+  var allBtn = root.querySelector('[data-action="all"]');
+  var archBtn = root.querySelector('[data-action="arch"]');
+  var status = root.querySelector('.cl-status');
+  var current = 0;
+  var level = 1;
+
+  function items(scene) {
+    return Array.prototype.slice.call(scene.querySelectorAll('[data-order]'));
+  }
+
+  function maxLevel(scene) {
+    return items(scene).reduce(function (max, el) {
+      return Math.max(max, Number(el.getAttribute('data-order')));
+    }, 1);
+  }
+
+  function reveal(el) {
+    el.classList.remove('cl-hidden');
+    el.classList.add('cl-entering');
+    void el.offsetWidth;
+    el.classList.remove('cl-entering');
+  }
+
+  function describe(el) {
+    var scope = el;
+    if (el.querySelector('[data-arch]')) {
+      var old = el.closest('.cl-old') !== null;
+      scope = el.querySelector('[data-arch="' + (old ? 'old' : 'new') + '"]');
+    }
+    var label = scope.querySelector('.cl-label');
+    var detail = scope.querySelector('.cl-detail');
+    var parts = [];
+    if (label) parts.push(label.textContent.trim());
+    if (detail) parts.push(detail.textContent.trim());
+    return parts.join(' — ');
+  }
+
+  function updateStatus() {
+    var scene = scenes[current];
+    var unit = scene.getAttribute('data-unit') || 'Couche';
+    var texts = items(scene).filter(function (el) {
+      return Number(el.getAttribute('data-order')) === level && el.querySelector('.cl-label, .cl-detail');
+    }).map(describe);
+    var unique = texts.filter(function (t, i) { return texts.indexOf(t) === i; });
+    status.textContent = unit + ' ' + level + ' / ' + maxLevel(scene) + (unique.length ? ' : ' + unique.join(' ; ') : '');
+  }
+
+  function render(animate) {
+    scenes.forEach(function (scene, i) {
+      scene.classList.toggle('cl-scene-off', i !== current);
+    });
+    sceneButtons.forEach(function (btn, i) {
+      btn.setAttribute('aria-pressed', i === current ? 'true' : 'false');
+    });
+
+    var scene = scenes[current];
+    items(scene).forEach(function (el) {
+      var shown = Number(el.getAttribute('data-order')) <= level;
+      if (shown && el.classList.contains('cl-hidden') && animate) {
+        reveal(el);
+      } else {
+        el.classList.toggle('cl-hidden', !shown);
+      }
+    });
+
+    // Lanes (scene "Fils d'exécution"): highlight the lane of the current step.
+    var step = scene.querySelector('.cl-step[data-order="' + level + '"]');
+    Array.prototype.slice.call(scene.querySelectorAll('.cl-step')).forEach(function (el) {
+      el.classList.toggle('cl-current', el === step);
+    });
+    Array.prototype.slice.call(scene.querySelectorAll('.cl-lane')).forEach(function (lane) {
+      var on = step !== null && lane.getAttribute('data-lane') === step.getAttribute('data-lane');
+      lane.classList.toggle('cl-current', on);
+      lane.querySelector('.cl-marker').textContent = on ? String(level) : '';
+    });
+
+    prevBtn.disabled = current === 0 && level === 1;
+    nextBtn.disabled = current === scenes.length - 1 && level === maxLevel(scene);
+    allBtn.disabled = level === maxLevel(scene);
+    updateStatus();
+  }
+
+  function showScene(index) {
+    current = index;
+    level = 1;
+    render(true);
+  }
+
+  nextBtn.addEventListener('click', function () {
+    if (level < maxLevel(scenes[current])) {
+      level += 1;
+      render(true);
+    } else if (current < scenes.length - 1) {
+      showScene(current + 1);
+    }
+  });
+
+  prevBtn.addEventListener('click', function () {
+    if (level > 1) {
+      level -= 1;
+    } else if (current > 0) {
+      current -= 1;
+      level = maxLevel(scenes[current]);
+    }
+    render(false);
+  });
+
+  allBtn.addEventListener('click', function () {
+    level = maxLevel(scenes[current]);
+    render(true);
+  });
+
+  sceneButtons.forEach(function (btn, i) {
+    btn.addEventListener('click', function () { showScene(i); });
+  });
+
+  if (archBtn) {
+    archBtn.addEventListener('click', function () {
+      var scene = archBtn.closest('[data-scene]');
+      var old = scene.classList.toggle('cl-old');
+      archBtn.setAttribute('aria-pressed', old ? 'true' : 'false');
+      archBtn.textContent = old ? 'Voir la nouvelle architecture' : 'Voir l\u2019ancienne architecture';
+      updateStatus();
+    });
+    archBtn.hidden = false;
+  }
+
+  root.classList.add('cl-js');
+  controls.hidden = false;
+  render(false);
+})();
+</script>
+        </section>
+
+        <section id="step-4" class="step-panel" data-title="Cours — React, React Native et Expo">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -593,7 +1159,7 @@ React : décrire l'interface
 <code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-nowrap overflow-x-auto">&lt;Text&gt;Compteur : {count}&lt;/Text&gt;</code>
 </div>
 </div>
-<figcaption class="text-sm text-gray-600 mt-2">Figure 1.3 — En impératif on modifie l'écran à la main ; en déclaratif on décrit l'écran et React se charge des mises à jour.</figcaption>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.4 — En impératif on modifie l'écran à la main ; en déclaratif on décrit l'écran et React se charge des mises à jour.</figcaption>
 </figure>
 </div>
 <div class="md-card p-6 mt-6">
@@ -637,7 +1203,7 @@ Composants
 <line x1="500" y1="205" x2="640" y2="253" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c01-tree-arrow)"/>
 </svg>
 </div>
-<figcaption class="text-sm text-gray-600 mt-2">Figure 1.4 — Une application est un arbre de composants : chaque composant est une fonction qui renvoie de l'interface.</figcaption>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.5 — Une application est un arbre de composants : chaque composant est une fonction qui renvoie de l'interface.</figcaption>
 </figure>
 </div>
 <div class="md-card p-6 mt-6">
@@ -670,7 +1236,7 @@ React Native, Expo et Expo Go
 </ul>
 </div>
 </div>
-<figcaption class="text-sm text-gray-600 mt-2">Figure 1.5 — Le PC sert le code JavaScript, Expo Go l'exécute sur le téléphone ; chaque enregistrement recharge l'écran (Fast Refresh).</figcaption>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 1.6 — Le PC sert le code JavaScript, Expo Go l'exécute sur le téléphone ; chaque enregistrement recharge l'écran (Fast Refresh).</figcaption>
 </figure>
 <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mt-4">
 <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
@@ -770,7 +1336,7 @@ Quiz éclair
 </div>
         </section>
 
-        <section id="step-4" class="step-panel" data-title="Étape 1 — Vérifier les outils">
+        <section id="step-5" class="step-panel" data-title="Étape 1 — Vérifier les outils">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -847,7 +1413,7 @@ Vérification
 </div>
         </section>
 
-        <section id="step-5" class="step-panel" data-title="Étape 2 — Créer le projet et l'ouvrir sur le téléphone">
+        <section id="step-6" class="step-panel" data-title="Étape 2 — Créer le projet et l'ouvrir sur le téléphone">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -935,7 +1501,7 @@ Vérification
 </div>
         </section>
 
-        <section id="step-6" class="step-panel" data-title="Cours — L'essentiel de JavaScript et TypeScript">
+        <section id="step-7" class="step-panel" data-title="Cours — L'essentiel de JavaScript et TypeScript">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -1040,7 +1606,7 @@ Quiz éclair
 </div>
         </section>
 
-        <section id="step-7" class="step-panel" data-title="Étape 3 — Premier composant">
+        <section id="step-8" class="step-panel" data-title="Étape 3 — Premier composant">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -1112,7 +1678,7 @@ Résultat et vérification
 </div>
         </section>
 
-        <section id="step-8" class="step-panel" data-title="Étape 4 — Un composant réutilisable avec des props">
+        <section id="step-9" class="step-panel" data-title="Étape 4 — Un composant réutilisable avec des props">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -1214,7 +1780,7 @@ Résultat et vérification
 </div>
         </section>
 
-        <section id="step-9" class="step-panel" data-title="Étape 5 — L'état avec useState">
+        <section id="step-10" class="step-panel" data-title="Étape 5 — L'état avec useState">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -1304,7 +1870,7 @@ Vérification
 </div>
         </section>
 
-        <section id="step-10" class="step-panel" data-title="Étape 6 — Liste, saisie et ajout de tâches">
+        <section id="step-11" class="step-panel" data-title="Étape 6 — Liste, saisie et ajout de tâches">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -1438,7 +2004,7 @@ Vérification
 </div>
         </section>
 
-        <section id="step-11" class="step-panel" data-title="Étape 7 — useEffect : une horloge avec nettoyage">
+        <section id="step-12" class="step-panel" data-title="Étape 7 — useEffect : une horloge avec nettoyage">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -1601,7 +2167,7 @@ Résultat et vérification
 </div>
         </section>
 
-        <section id="step-12" class="step-panel" data-title="Défi — Améliorer Club Tasks">
+        <section id="step-13" class="step-panel" data-title="Défi — Améliorer Club Tasks">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -1633,7 +2199,7 @@ Défis
 </div>
         </section>
 
-        <section id="step-13" class="step-panel" data-title="Récapitulatif — quiz et séance 2">
+        <section id="step-14" class="step-panel" data-title="Récapitulatif — quiz et séance 2">
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
