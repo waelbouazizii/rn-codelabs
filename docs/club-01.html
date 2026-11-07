@@ -9,6 +9,7 @@
     - the sidebar entries (section headings data-nav-section and step links)
     - the <section class="step-panel" ...> blocks (edit, add, remove)
   See CLAUDE.md and session-guidelines.md for the full rules.
+  Club page, not an IAM2 session: 5-column comparison table, 7 quiz questions and a controlled input in Étape 6 are intentional exceptions (instructor decision, Nov 2026).
 -->
 <html lang="fr">
 <head>
@@ -210,7 +211,7 @@
             <span>Cours — React, React Native et Expo</span>
           </a>
         </li>
-        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (2 h 20)</li>
+        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (2 h 35)</li>
         <li>
           <a href="#step-4" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-4">
             <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
@@ -753,7 +754,7 @@ Quiz éclair
 <button type="button" class="quiz-option" data-option="c">une image du texte dessinée par Expo Go</button>
 </div>
 <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
-<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React Native associe chaque composant de base à une vue native (TextView sur Android, UILabel sur iOS).</p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React Native associe chaque composant de base à une vue native (TextView sur Android, UITextView sur iOS).</p>
 </div>
 <div class="quiz-question mb-6" id="quiz-c01-q03" data-answer="c">
 <p class="font-medium text-gray-900 mb-3">Un camarade ajoute une bibliothèque npm qui contient du code natif personnalisé. Que se passe-t-il dans Expo Go ?</p>
@@ -866,7 +867,7 @@ Commandes
 cd club-tasks
 npm run reset-project</code></pre>
 </div>
-<p class="text-gray-700 leading-relaxed mb-4">Si <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> demande s'il faut conserver les fichiers d'exemple, acceptez : ils sont déplacés dans un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> et il reste un écran vide <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>. Ouvrez ensuite le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> dans VS Code.</p>
+<p class="text-gray-700 leading-relaxed mb-4">Quand <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> demande s'il faut conserver les fichiers d'exemple, répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code> : les fichiers de départ sont supprimés et il ne reste qu'un écran vide <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>. Ouvrez ensuite le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> dans VS Code.</p>
 <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
 <div class="code-block-wrapper mb-4">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
