@@ -633,7 +633,7 @@ Les couches, une par une
 <button type="button" class="cl-btn" data-scene-btn="2" aria-pressed="false">Natif</button>
 <button type="button" class="cl-btn" data-scene-btn="3" aria-pressed="false">Hybride</button>
 <button type="button" class="cl-btn" data-scene-btn="4" aria-pressed="false">React Native</button>
-<button type="button" class="cl-btn" data-scene-btn="5" aria-pressed="false">Fils d'exécution</button>
+<button type="button" class="cl-btn" data-scene-btn="5" aria-pressed="false">Un appui</button>
 <button type="button" class="cl-btn" data-scene-btn="6" aria-pressed="false">Qui dessine ?</button>
 <button type="button" class="cl-btn" data-scene-btn="7" aria-pressed="false">Expo Go</button>
 </div>
@@ -774,7 +774,7 @@ Les couches, une par une
 </div>
 <div data-scene="4" data-unit="Couche" class="cl-scene mb-6" data-arch-scene>
 <h4 class="text-base font-medium text-gray-900 mb-3">React Native : le moteur</h4>
-<button type="button" class="cl-btn mb-3" data-action="arch" aria-pressed="false" hidden>Voir l'ancienne architecture</button>
+<button type="button" class="cl-btn mb-3" data-action="arch" aria-pressed="false" hidden><i class="fa-solid fa-toggle-off" aria-hidden="true"></i> Ancienne architecture</button>
 <ol class="flex flex-col gap-2">
 <li class="cl-rev cl-layer rounded-lg border-2 bg-white border-brand px-3 py-2 text-gray-900" data-order="8">
 <div class="flex items-start gap-3"><i class="fa-solid fa-cube mt-0.5 shrink-0 text-brand" aria-hidden="true"></i><div class="min-w-0 flex-1">
@@ -788,7 +788,7 @@ Les couches, une par une
 </li>
 <li class="cl-rev cl-layer rounded-lg border-2 bg-sky-50 border-sky-500 px-3 py-2 text-gray-900" data-order="6">
 <div class="flex items-start gap-3"><i class="fa-solid fa-code mt-0.5 shrink-0" aria-hidden="true"></i><div class="min-w-0 flex-1">
-<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Hermes</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">JavaScript</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">le moteur JavaScript conçu pour React Native ; en production, le code est précompilé en bytecode</p>
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1"><span class="cl-label font-bold text-sm">Hermes</span><span class="text-xs rounded px-1.5 py-0.5 bg-white border border-gray-300 text-gray-700">JavaScript</span></p><p class="cl-detail text-xs text-gray-700 mt-0.5">le moteur JavaScript optimisé pour React Native ; en production, le code est précompilé en bytecode</p>
 </div></div>
 </li>
 <li class="cl-rev cl-layer rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-2 text-gray-900" data-order="5">
@@ -821,11 +821,11 @@ Les couches, une par une
 </ol>
 <p class="text-sm text-gray-700 mt-3"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Depuis Expo SDK 55, seule la nouvelle architecture existe : JSI remplace le bridge et Fabric l'ancien moteur de rendu.</p>
 </div>
-<div data-scene="5" data-unit="Étape" class="cl-scene mb-6">
-<h4 class="text-base font-medium text-gray-900 mb-3">Trois fils d'exécution</h4>
+<div data-scene="5" data-unit="Phase" class="cl-scene mb-6">
+<h4 class="text-base font-medium text-gray-900 mb-3">Qui fait quoi pendant un appui ?</h4>
 <div class="space-y-2">
 <div class="cl-lane rounded-lg border-2 bg-sky-50 border-sky-500 px-3 py-3 flex items-center gap-3 text-gray-900" data-lane="js"><span class="cl-marker w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold items-center justify-center shrink-0" aria-hidden="true"></span><i class="fa-solid fa-code shrink-0" aria-hidden="true"></i><div class="min-w-0"><p class="font-bold text-sm">Fil JavaScript</p><p class="text-xs text-gray-700 mt-0.5">Hermes et React : votre code</p></div></div>
-<div class="cl-lane rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-3 flex items-center gap-3 text-gray-900" data-lane="layout"><span class="cl-marker w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold items-center justify-center shrink-0" aria-hidden="true"></span><i class="fa-solid fa-gears shrink-0" aria-hidden="true"></i><div class="min-w-0"><p class="font-bold text-sm">Mise en page</p><p class="text-xs text-gray-700 mt-0.5">Fabric et Yoga calculent tailles et positions, souvent hors du fil principal</p></div></div>
+<div class="cl-lane rounded-lg border-2 bg-indigo-50 border-indigo-400 px-3 py-3 flex items-center gap-3 text-gray-900" data-lane="layout"><span class="cl-marker w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold items-center justify-center shrink-0" aria-hidden="true"></span><i class="fa-solid fa-gears shrink-0" aria-hidden="true"></i><div class="min-w-0"><p class="font-bold text-sm">Mise en page</p><p class="text-xs text-gray-700 mt-0.5">Fabric et Yoga calculent tailles et positions, sur le fil JavaScript ou un fil d'arrière-plan, jamais sur le fil principal</p></div></div>
 <div class="cl-lane rounded-lg border-2 bg-emerald-50 border-emerald-500 px-3 py-3 flex items-center gap-3 text-gray-900" data-lane="ui"><span class="cl-marker w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold items-center justify-center shrink-0" aria-hidden="true"></span><i class="fa-solid fa-table-cells-large shrink-0" aria-hidden="true"></i><div class="min-w-0"><p class="font-bold text-sm">Fil principal (UI)</p><p class="text-xs text-gray-700 mt-0.5">les vues natives : dessin, gestes, défilement</p></div></div>
 </div>
 <ol class="list-decimal pl-5 mt-3 space-y-1 text-sm text-gray-800">
@@ -1065,7 +1065,7 @@ Quiz éclair
       }
     });
 
-    // Lanes (scene "Fils d'exécution"): highlight the lane of the current step.
+    // Lanes (scene "Un appui"): highlight the lane of the current phase.
     var step = scene.querySelector('.cl-step[data-order="' + level + '"]');
     Array.prototype.slice.call(scene.querySelectorAll('.cl-step')).forEach(function (el) {
       el.classList.toggle('cl-current', el === step);
@@ -1120,8 +1120,10 @@ Quiz éclair
     archBtn.addEventListener('click', function () {
       var scene = archBtn.closest('[data-scene]');
       var old = scene.classList.toggle('cl-old');
+      var icon = archBtn.querySelector('i');
       archBtn.setAttribute('aria-pressed', old ? 'true' : 'false');
-      archBtn.textContent = old ? 'Voir la nouvelle architecture' : 'Voir l\u2019ancienne architecture';
+      icon.classList.toggle('fa-toggle-on', old);
+      icon.classList.toggle('fa-toggle-off', !old);
       updateStatus();
     });
     archBtn.hidden = false;
