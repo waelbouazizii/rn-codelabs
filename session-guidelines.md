@@ -136,7 +136,8 @@ Facts taken from `rn-conventions.md` (October 2026, documentation only):
   - a forbidden-phrase grep: "plan de secours", "android studio", "emulat", "newArchEnabled";
   - an SDK grep: every `--template default@sdk-` and every mention of the SDK number matches `rn-conventions.md`;
   - every code sample type-checks: paste it into the session app and run `npx tsc --noEmit`;
-  - every `<svg>` has `role="img"`, a `<title>` and a `<desc>`, and every `<figure>` has a `<figcaption>`.
+  - every `<svg>` has `role="img"`, a `<title>` and a `<desc>`, and every `<figure>` has a `<figcaption>`;
+  - light and dark themes: the page reads well in both (toggle in the header, or the system setting). Inline SVG uses only the fills and strokes the template recolours (`#ffffff`, `#1f2430`, `#374151`, `#f1f3f5`, `#f3f4f6`, stroke `#9ca3af`) or `rgb(var(--...))` tokens; page-specific CSS uses the template tokens (`--c-white`, `--c-ink`, `--c-brand`, `--gray-*`, `--blue-*`...), never fixed hex colours for surfaces and text.
 - **Run the app on two phones** (one Android, one iPhone) for each guided step before publishing.
 - **Check `docs/index.html`** against the Overview table of `rn-course-plan.md` (titles, mini-apps, status).
 - **Claude Code prompts** are plain-text files `prompts/session-0X.md`, run with "Read prompts/session-0X.md and execute it exactly." They start with "Read CLAUDE.md, rn-conventions.md, rn-course-plan.md and templates/codelab-template.html, then create docs/session-0X.html".
