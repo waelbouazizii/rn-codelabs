@@ -92,6 +92,7 @@ Facts taken from `rn-conventions.md` (October 2026, documentation only):
 - Vary the position of the correct answer from one question to the next.
 - One idea per question. Count about 1 minute per question; quiz time is included in the course time.
 - Ids follow `quiz-sXX-qNN` and are never reused or renumbered on a published page (answers are stored in the browser under the id).
+- Keep the `Score de la session` line under each quiz card: the template adds the "Réinitialiser les quiz" button (two clicks to confirm) next to it by script. Do not add a reset button by hand.
 
 ### Markup and accessibility
 
