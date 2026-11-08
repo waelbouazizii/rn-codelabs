@@ -811,7 +811,7 @@ Les couches, une par une
 <button type="button" class="cl-btn cl-btn-ghost" data-action="all"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Tout afficher</button>
 </div>
 <p class="cl-status" aria-live="polite"></p>
-<p class="cl-hint">Astuce : les flèches gauche et droite du clavier font avancer l'animation.</p>
+<p class="cl-hint">Astuce : les flèches gauche et droite du clavier font reculer ou avancer l'animation.</p>
 </div>
 <div data-scene="1" data-unit="Couche" class="cl-scene">
 <p class="cl-eyebrow">Scène 1 / 7</p>
@@ -1225,6 +1225,9 @@ Quiz éclair
   }
 
   function render(animate) {
+    if (archBtn && scenes[current] !== archBtn.closest('[data-scene]')) {
+      setOld(false);
+    }
     scenes.forEach(function (scene, i) {
       scene.classList.toggle('cl-scene-off', i !== current);
     });
@@ -1264,7 +1267,20 @@ Quiz éclair
     updateStatus();
   }
 
+  function setOld(old) {
+    if (!archBtn) return;
+    var icon = archBtn.querySelector('i');
+    archBtn.closest('[data-scene]').classList.toggle('cl-old', old);
+    archBtn.setAttribute('aria-pressed', old ? 'true' : 'false');
+    icon.classList.toggle('fa-toggle-on', old);
+    icon.classList.toggle('fa-toggle-off', !old);
+  }
+
   function showScene(index) {
+    // Leaving the React Native scene switches back to the new architecture.
+    if (archBtn && scenes[current] === archBtn.closest('[data-scene]') && index !== current) {
+      setOld(false);
+    }
     current = index;
     level = 1;
     render(true);
@@ -1304,12 +1320,7 @@ Quiz éclair
 
   if (archBtn) {
     archBtn.addEventListener('click', function () {
-      var scene = archBtn.closest('[data-scene]');
-      var old = scene.classList.toggle('cl-old');
-      var icon = archBtn.querySelector('i');
-      archBtn.setAttribute('aria-pressed', old ? 'true' : 'false');
-      icon.classList.toggle('fa-toggle-on', old);
-      icon.classList.toggle('fa-toggle-off', !old);
+      setOld(archBtn.getAttribute('aria-pressed') !== 'true');
       updateStatus();
     });
     archBtn.hidden = false;
