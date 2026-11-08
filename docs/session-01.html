@@ -139,6 +139,16 @@
 </script>
 
 <meta name="color-scheme" content="light dark">
+<!-- Sidebar: a collapsed menu (desktop only) is restored before the first paint -->
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem('codelab-sidebar') === 'collapsed') {
+        document.documentElement.classList.add('sidebar-collapsed');
+      }
+    } catch (e) { /* storage unavailable: the menu stays open */ }
+  })();
+</script>
 <!-- Theme: a saved choice is applied before the first paint; otherwise the system theme is used -->
 <script>
   (function () {
@@ -494,6 +504,38 @@
   .copy-btn:hover { background: rgba(255,255,255,0.2); }
   .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
 
+  /* Desktop sidebar collapse (the mobile menu keeps its own overlay) */
+  @media (min-width: 768px) {
+    html.sidebar-collapsed #sidebar { display: none; }
+  }
+
+  /* Quiz reset button, added next to each score line */
+  .quiz-score-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+  .quiz-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8125rem;
+    border: 1px solid rgb(var(--gray-300));
+    border-radius: 0.375rem;
+    background: rgb(var(--c-white));
+    color: rgb(var(--gray-600));
+    cursor: pointer;
+  }
+  .quiz-reset-btn:hover { background: rgb(var(--gray-50)); color: rgb(var(--gray-900)); }
+  .quiz-reset-btn:focus-visible { outline: 2px solid rgb(var(--c-brand)); outline-offset: 2px; }
+  .quiz-reset-btn[data-armed="true"] {
+    border-color: rgb(var(--rose-600));
+    background: rgb(var(--rose-50));
+    color: rgb(var(--rose-800));
+  }
+
   /* Mobile sidebar */
   @media (max-width: 767px) {
     #sidebar {
@@ -701,6 +743,9 @@
     <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-4">
       <button id="sidebar-toggle" class="md:hidden text-gray-600 hover:text-gray-900" aria-label="Ouvrir le menu des étapes">
         <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+      </button>
+      <button id="sidebar-collapse" type="button" class="hidden md:inline-flex items-center px-2.5 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm" aria-label="Masquer le menu des étapes" aria-controls="sidebar" aria-expanded="true" title="Masquer le menu des étapes">
+        <i class="fa-solid fa-table-columns" aria-hidden="true"></i>
       </button>
       <div class="flex-1 min-w-0">
         <p class="text-xs text-gray-500">Session 01 - IAM2 React Native</p>
@@ -2994,6 +3039,55 @@ Collez ici la sortie complète de la commande, dans un bloc de code.</code></pre
 })();
 </script>
 
+<!-- Quiz reset buttons - do not modify when authoring a session.
+     Runs before the quiz script, which binds the actual reset to [data-quiz-reset]. -->
+<script>
+(function () {
+  'use strict';
+
+  if (!document.querySelector('.quiz-question')) return;
+
+  var IDLE = 'Réinitialiser les quiz';
+  var ARMED = 'Cliquez encore pour effacer les réponses';
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (score) {
+    var line = score.parentElement;
+    if (!line || !line.parentElement) return;
+
+    var row = document.createElement('div');
+    row.className = 'quiz-score-row';
+    line.parentElement.insertBefore(row, line);
+    row.appendChild(line);
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'quiz-reset-btn';
+    btn.setAttribute('data-quiz-reset', '');
+    btn.innerHTML = '<i class="fa-solid fa-rotate-left" aria-hidden="true"></i> <span aria-live="polite">' + IDLE + '</span>';
+    row.appendChild(btn);
+
+    var label = btn.querySelector('span');
+    var timer = null;
+
+    function disarm() {
+      window.clearTimeout(timer);
+      btn.removeAttribute('data-armed');
+      label.textContent = IDLE;
+    }
+
+    // First click arms the button; the second click reaches the quiz script, which resets.
+    btn.addEventListener('click', function (event) {
+      if (btn.getAttribute('data-armed') === 'true') return;
+      event.stopImmediatePropagation();
+      btn.setAttribute('data-armed', 'true');
+      label.textContent = ARMED;
+      timer = window.setTimeout(disarm, 5000);
+    });
+    btn.addEventListener('blur', disarm);
+  });
+})();
+</script>
+
 <!-- Quiz JavaScript - do not modify when authoring a session -->
 <script>
 (function () {
@@ -3141,6 +3235,42 @@ Collez ici la sortie complète de la commande, dans un bloc de code.</code></pre
   });
 
   apply(current());
+})();
+</script>
+
+<!-- Sidebar JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var btn = document.getElementById('sidebar-collapse');
+  if (!btn) return;
+
+  var root = document.documentElement;
+
+  function apply(collapsed) {
+    root.classList.toggle('sidebar-collapsed', collapsed);
+    var label = collapsed ? 'Afficher le menu des étapes' : 'Masquer le menu des étapes';
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    btn.setAttribute('aria-label', label);
+    btn.title = label;
+  }
+
+  btn.addEventListener('click', function () {
+    var collapsed = !root.classList.contains('sidebar-collapsed');
+    apply(collapsed);
+    try {
+      if (collapsed) {
+        localStorage.setItem('codelab-sidebar', 'collapsed');
+      } else {
+        localStorage.removeItem('codelab-sidebar');
+      }
+    } catch (e) {
+      /* storage unavailable: the choice lasts until the page is reloaded */
+    }
+  });
+
+  apply(root.classList.contains('sidebar-collapsed'));
 })();
 </script>
 
