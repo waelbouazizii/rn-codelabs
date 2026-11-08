@@ -492,7 +492,7 @@ Outils à installer
 <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
 <div class="text-sm text-gray-800">
 <p class="font-medium">Pas de PC ou installation bloquée</p>
-<p class="mt-1">Suivez la séance sur <a href="https://snack.expo.dev" target="_blank" rel="noopener" class="text-brand underline break-all">https://snack.expo.dev</a> dans le navigateur et scannez son QR code avec Expo Go. Dans Snack, placez le code de l'écran dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">App.tsx</code> et les composants dans un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">components</code>, puis importez-les avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">'./components/TaskItem'</code>.</p>
+<p class="mt-1">Suivez la séance sur <a href="https://snack.expo.dev" target="_blank" rel="noopener" class="text-brand underline break-all">https://snack.expo.dev</a> dans le navigateur et scannez son QR code avec Expo Go. Dans Snack, placez le code de l'écran dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">App.tsx</code> et les composants dans un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">components</code>, puis remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">../components/</code> par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">./components/</code> dans tous les imports (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TaskItem</code>, puis <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Clock</code> à l'Étape 7).</p>
 </div>
 </div>
 </div>
@@ -790,7 +790,7 @@ Objectif
 <i class="fa-solid fa-layer-group text-brand" aria-hidden="true"></i>
 Les couches, une par une
 </h3>
-<p class="text-gray-700 leading-relaxed mb-4">Utilisez les boutons pour construire chaque pile, du matériel jusqu'à votre application.</p>
+<p class="text-gray-700 leading-relaxed mb-4">Utilisez les boutons pour construire chaque pile, du matériel jusqu'à votre application : la couche 1 est le matériel, en bas, et chaque clic ajoute la couche du dessus. Dans la scène React Native, le bouton « Ancienne architecture » affiche le bridge et l'ancien moteur de rendu à la place de JSI et de Fabric.</p>
 <figure class="mb-0">
 <div id="c01-layers" role="group" aria-label="Animation des couches, contrôlée par les boutons">
 <div class="cl-controls" hidden>
@@ -998,7 +998,7 @@ Les couches, une par une
 <h4 class="cl-title">Qui fait quoi pendant un appui ?</h4>
 <div class="space-y-2">
 <div class="cl-lane cl-k-js" data-lane="js"><span class="cl-icon" aria-hidden="true"><i class="fa-solid fa-code"></i></span><div class="min-w-0 flex-1"><p class="cl-label">Fil JavaScript</p><p class="cl-detail">Hermes et React : votre code</p></div><span class="cl-marker" aria-hidden="true"></span></div>
-<div class="cl-lane cl-k-runtime" data-lane="layout"><span class="cl-icon" aria-hidden="true"><i class="fa-solid fa-gears"></i></span><div class="min-w-0 flex-1"><p class="cl-label">Mise en page</p><p class="cl-detail">Fabric et Yoga calculent tailles et positions, sur le fil JavaScript ou un fil d'arrière-plan, jamais sur le fil principal</p></div><span class="cl-marker" aria-hidden="true"></span></div>
+<div class="cl-lane cl-k-runtime" data-lane="layout"><span class="cl-icon" aria-hidden="true"><i class="fa-solid fa-gears"></i></span><div class="min-w-0 flex-1"><p class="cl-label">Mise en page</p><p class="cl-detail">Fabric et Yoga calculent tailles et positions, en général sur le fil JavaScript ou un fil d'arrière-plan, hors du fil principal</p></div><span class="cl-marker" aria-hidden="true"></span></div>
 <div class="cl-lane cl-k-ui" data-lane="ui"><span class="cl-icon" aria-hidden="true"><i class="fa-solid fa-table-cells-large"></i></span><div class="min-w-0 flex-1"><p class="cl-label">Fil principal (UI)</p><p class="cl-detail">les vues natives : dessin, gestes, défilement</p></div><span class="cl-marker" aria-hidden="true"></span></div>
 </div>
 <ol class="cl-steps">
@@ -1518,7 +1518,7 @@ Quiz éclair
 <button type="button" class="quiz-option" data-option="c"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">C</span>une image du texte dessinée par Expo Go</button>
 </div>
 <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
-<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React Native associe chaque composant de base à une vue native (TextView sur Android, UITextView sur iOS).</p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React Native associe chaque composant de base à une vue native de la plateforme : pour &lt;Text&gt;, une vue texte native sur Android comme sur iOS, jamais une page web ni une image.</p>
 </div>
 <div class="quiz-question mb-6" id="quiz-c01-q03" data-answer="c">
 <p class="font-medium text-gray-900 mb-3"><span class="inline-block rounded-full bg-gray-900 text-white text-xs font-bold px-2.5 py-0.5 mr-2 align-middle">Question 4 / 8</span>Un camarade ajoute une bibliothèque npm qui contient du code natif personnalisé. Que se passe-t-il dans Expo Go ?</p>
@@ -1554,15 +1554,17 @@ Commandes
 git --version</code></pre>
 </div>
 <p class="text-sm text-gray-600 mb-2">Seulement sur iPhone : connecter le compte Expo (le même que dans Expo Go)</p>
-<div class="code-block-wrapper mb-4">
+<div class="code-block-wrapper mb-2">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
 <pre><code class="language-bash">npx expo login</code></pre>
 </div>
+<p class="text-gray-700 leading-relaxed text-sm mb-4">Au premier lancement, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx</code> télécharge Expo, ce qui peut prendre une minute. S'il affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Ok to proceed? (y)</code>, répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">y</code>.</p>
 <p class="text-sm text-gray-600 mb-2">Seulement si PowerShell refuse d'exécuter npx (scripts désactivés)</p>
-<div class="code-block-wrapper ">
+<div class="code-block-wrapper mb-2">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
 <pre><code class="language-powershell">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
 </div>
+<p class="text-gray-700 leading-relaxed text-sm">PowerShell demande une confirmation : répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">O</code> (Oui) sur Windows en français, ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Y</code> (Yes) sur Windows en anglais, puis relancez la commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx</code>.</p>
 </div>
 <div class="md-card p-6 mt-6">
 <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
@@ -1603,7 +1605,7 @@ Vérification
 <div class="text-sm text-rose-900">
 <p class="font-medium">Erreurs fréquentes</p>
 <ul class="mt-1 space-y-1">
-<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">running scripts is disabled on this system</code> signifie que PowerShell bloque <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx.ps1</code> : lancez la commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Set-ExecutionPolicy</code> ou utilisez cmd.</li>
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">l'exécution de scripts est désactivée sur ce système</code> (Windows en français) ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">running scripts is disabled on this system</code> (Windows en anglais) signifie que PowerShell bloque <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx.ps1</code> : lancez le bloc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Set-ExecutionPolicy</code> ci-dessus ou utilisez cmd.</li>
 <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">'node' is not recognized</code> signifie que Node.js n'est pas installé ou que le terminal a été ouvert avant l'installation : fermez-le et rouvrez-le.</li>
 </ul>
 </div>
@@ -1631,20 +1633,31 @@ Commandes
 cd club-tasks
 npm run reset-project</code></pre>
 </div>
-<p class="text-gray-700 leading-relaxed mb-4">Quand <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> demande s'il faut conserver les fichiers d'exemple, répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code> : les fichiers de départ sont supprimés et il ne reste qu'un écran vide <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>. Ouvrez ensuite le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> dans VS Code.</p>
+<p class="text-gray-700 leading-relaxed mb-3">Pendant la création, ignorez les messages <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm audit</code> et la proposition de mettre à jour <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">create-expo</code> : ne lancez ni <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm audit fix</code>, ni les commandes <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm run android / ios / web</code> proposées à la fin.</p>
+<p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Do you want to move existing files to /example instead of deleting them? (Y/n)</code>. Tapez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code> puis Entrée : Entrée seule choisit Y et garde un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> inutile. Les fichiers de départ sont supprimés et il ne reste qu'un écran vide <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>. Ouvrez ensuite le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> dans VS Code.</p>
 <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
 <div class="code-block-wrapper mb-4">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
 <pre><code class="language-bash">npx expo start</code></pre>
 </div>
-<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go affiche SDK 57 : créer le projet en SDK 57</p>
+<p class="text-sm text-gray-700 mb-2"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Les trois blocs suivants dépendent de la version d'Expo Go dans le store. Ils remplacent le premier bloc : arrêtez le serveur (Ctrl+C), revenez dans le dossier parent avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">cd ..</code>, supprimez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>, recréez le projet, puis lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go affiche SDK 57 et qu'un dossier club-tasks existe déjà : le supprimer (PowerShell)</p>
 <div class="code-block-wrapper mb-2">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-powershell">Remove-Item -Recurse -Force club-tasks</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go affiche SDK 57 et qu'un dossier club-tasks existe déjà : le supprimer (Bash)</p>
+<div class="code-block-wrapper mb-2">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">rm -rf club-tasks</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go affiche SDK 57 : créer le projet en SDK 57</p>
+<div class="code-block-wrapper mb-4">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
 <pre><code class="language-bash">npx create-expo-app@latest club-tasks --template default@sdk-57
 cd club-tasks
 npm run reset-project</code></pre>
 </div>
-<p class="text-sm text-gray-700 mb-4"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Ce bloc dépend de la version d'Expo Go dans le store. Il remplace le premier bloc : lancez-le depuis le dossier parent, après avoir arrêté le serveur et supprimé un éventuel dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> existant, puis lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
 <p class="text-sm text-gray-600 mb-2">Seulement si le QR code ne se connecte pas : mode tunnel</p>
 <div class="code-block-wrapper mb-3">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
@@ -1664,7 +1677,7 @@ Code complet
 <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
 Résultat attendu
 </h3>
-<p class="text-gray-700 leading-relaxed">Le terminal affiche un QR code. Après le scan, le téléphone affiche l'écran de départ, vide à part une ligne de texte. Une barre de titre peut apparaître en haut de l'écran : elle vient du routeur, c'est normal.</p>
+<p class="text-gray-700 leading-relaxed">Le terminal affiche un QR code. Après le scan, le téléphone affiche l'écran de départ, vide à part une ligne de texte. Une barre de titre « index » peut apparaître en haut de l'écran : elle vient du routeur, qui affiche le nom du fichier, c'est normal.</p>
 </div>
 <div class="md-card p-6 mt-6">
 <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
@@ -1691,6 +1704,7 @@ Vérification
 <div class="text-sm text-rose-900">
 <p class="font-medium">Erreurs fréquentes</p>
 <ul class="mt-1 space-y-1">
+<li>Si PowerShell refuse d'exécuter <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx</code> (scripts désactivés), lancez le bloc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Set-ExecutionPolicy</code> de l'Étape 1.</li>
 <li>Un message indiquant que le projet est incompatible avec cette version d'Expo Go signifie que le SDK du projet et celui d'Expo Go sont différents : recréez le projet avec le bon <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template</code>.</li>
 <li>Si le QR code charge sans fin, le téléphone n'atteint pas le PC (données mobiles, autre Wi-Fi, pare-feu) : utilisez le bloc du mode tunnel.</li>
 </ul>
@@ -1736,7 +1750,7 @@ console.log(bonus, passed);
 
 export type Student = { name: string; year: number };</code></pre>
 </div>
-<p class="text-sm text-gray-600 mb-4">Si vous créez ce fichier, placez-le à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>, pas dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> : chaque fichier de ce dossier devient un écran.</p>
+<p class="text-sm text-gray-600 mb-4">Si vous créez ce fichier, placez-le à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>, pas dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> : chaque fichier de ce dossier devient un écran. Lancez-le avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node scratch.ts</code> depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> (Node.js 22.18 ou plus, ou 24).</p>
 <div class="overflow-x-auto">
 <table class="w-full text-sm text-left border border-gray-200">
 <thead class="bg-gray-100 text-gray-700">
@@ -1952,7 +1966,7 @@ const styles = StyleSheet.create({
 Résultat et vérification
 </h3>
 <ul class="space-y-2 text-gray-700">
-<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le téléphone affiche deux lignes grises : la première est barrée avec [x], la seconde affiche [ ].</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le téléphone affiche deux lignes grises : la première est barrée avec [x], la seconde affiche [ ]. Le sous-titre a disparu et le titre a repris sa taille de 28 : c'est normal, ce nouveau fichier les remplace.</span></li>
 <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur une ligne ne fait rien pour l'instant (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onToggle</code> est vide) : c'est normal.</span></li>
 </ul>
 </div>
