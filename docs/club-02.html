@@ -1,0 +1,2893 @@
+<!DOCTYPE html>
+<!--
+  Codelab skeleton template - Développement multiplateforme avec React Native (Expo), IAM2
+
+  DO NOT edit the skeleton markup, the navigation JavaScript, the quiz CSS and
+  JavaScript, or the pinned asset versions below when authoring a session.
+  Copy this file to docs/session-XX.html and only touch:
+    - <title>, the session title in the sidebar and the header label
+    - the sidebar entries (section headings data-nav-section and step links)
+    - the <section class="step-panel" ...> blocks (edit, add, remove)
+  See CLAUDE.md and session-guidelines.md for the full rules.
+  Club page, not an IAM2 session: 5-column comparison table and 7 quiz questions are intentional exceptions (instructor decision, Nov 2026).
+  Club page: the screens call fetch and AsyncStorage through a Context provider, without src/features and src/lib hooks (instructor decision, Nov 2026).
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>Séance 2 - Navigation, API et sauvegarde - Formation club</title>
+
+<!-- Tailwind Play CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Roboto -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6.4.0 (pinned) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Prism 1.29.0 (pinned): core theme, language components load on demand via autoloader -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Roboto', 'sans-serif'],
+        },
+        colors: {
+          white: 'rgb(var(--c-white) / <alpha-value>)',
+          sidebar: {
+            DEFAULT: 'rgb(var(--c-sidebar) / <alpha-value>)',
+            hover: 'rgb(var(--c-sidebar-hover) / <alpha-value>)',
+          },
+          brand: {
+            DEFAULT: 'rgb(var(--c-brand) / <alpha-value>)',
+            dark: 'rgb(var(--c-brand-dark) / <alpha-value>)',
+          },
+          gray: {
+            50: 'rgb(var(--gray-50) / <alpha-value>)',
+            100: 'rgb(var(--gray-100) / <alpha-value>)',
+            200: 'rgb(var(--gray-200) / <alpha-value>)',
+            300: 'rgb(var(--gray-300) / <alpha-value>)',
+            400: 'rgb(var(--gray-400) / <alpha-value>)',
+            500: 'rgb(var(--gray-500) / <alpha-value>)',
+            600: 'rgb(var(--gray-600) / <alpha-value>)',
+            700: 'rgb(var(--gray-700) / <alpha-value>)',
+            800: 'rgb(var(--gray-800) / <alpha-value>)',
+            900: 'rgb(var(--gray-900) / <alpha-value>)',
+          },
+          blue: {
+            50: 'rgb(var(--blue-50) / <alpha-value>)',
+            100: 'rgb(var(--blue-100) / <alpha-value>)',
+            200: 'rgb(var(--blue-200) / <alpha-value>)',
+            300: 'rgb(var(--blue-300) / <alpha-value>)',
+            400: 'rgb(var(--blue-400) / <alpha-value>)',
+            500: 'rgb(var(--blue-500) / <alpha-value>)',
+            600: 'rgb(var(--blue-600) / <alpha-value>)',
+            700: 'rgb(var(--blue-700) / <alpha-value>)',
+            800: 'rgb(var(--blue-800) / <alpha-value>)',
+            900: 'rgb(var(--blue-900) / <alpha-value>)',
+          },
+          indigo: {
+            50: 'rgb(var(--indigo-50) / <alpha-value>)',
+            100: 'rgb(var(--indigo-100) / <alpha-value>)',
+            200: 'rgb(var(--indigo-200) / <alpha-value>)',
+            300: 'rgb(var(--indigo-300) / <alpha-value>)',
+            400: 'rgb(var(--indigo-400) / <alpha-value>)',
+            500: 'rgb(var(--indigo-500) / <alpha-value>)',
+            600: 'rgb(var(--indigo-600) / <alpha-value>)',
+            700: 'rgb(var(--indigo-700) / <alpha-value>)',
+            800: 'rgb(var(--indigo-800) / <alpha-value>)',
+            900: 'rgb(var(--indigo-900) / <alpha-value>)',
+          },
+          rose: {
+            50: 'rgb(var(--rose-50) / <alpha-value>)',
+            100: 'rgb(var(--rose-100) / <alpha-value>)',
+            200: 'rgb(var(--rose-200) / <alpha-value>)',
+            300: 'rgb(var(--rose-300) / <alpha-value>)',
+            400: 'rgb(var(--rose-400) / <alpha-value>)',
+            500: 'rgb(var(--rose-500) / <alpha-value>)',
+            600: 'rgb(var(--rose-600) / <alpha-value>)',
+            700: 'rgb(var(--rose-700) / <alpha-value>)',
+            800: 'rgb(var(--rose-800) / <alpha-value>)',
+            900: 'rgb(var(--rose-900) / <alpha-value>)',
+          },
+          red: {
+            50: 'rgb(var(--red-50) / <alpha-value>)',
+            100: 'rgb(var(--red-100) / <alpha-value>)',
+            200: 'rgb(var(--red-200) / <alpha-value>)',
+            300: 'rgb(var(--red-300) / <alpha-value>)',
+            400: 'rgb(var(--red-400) / <alpha-value>)',
+            500: 'rgb(var(--red-500) / <alpha-value>)',
+            600: 'rgb(var(--red-600) / <alpha-value>)',
+            700: 'rgb(var(--red-700) / <alpha-value>)',
+            800: 'rgb(var(--red-800) / <alpha-value>)',
+            900: 'rgb(var(--red-900) / <alpha-value>)',
+          },
+          amber: {
+            50: 'rgb(var(--amber-50) / <alpha-value>)',
+            100: 'rgb(var(--amber-100) / <alpha-value>)',
+            200: 'rgb(var(--amber-200) / <alpha-value>)',
+            300: 'rgb(var(--amber-300) / <alpha-value>)',
+            400: 'rgb(var(--amber-400) / <alpha-value>)',
+            500: 'rgb(var(--amber-500) / <alpha-value>)',
+            600: 'rgb(var(--amber-600) / <alpha-value>)',
+            700: 'rgb(var(--amber-700) / <alpha-value>)',
+            800: 'rgb(var(--amber-800) / <alpha-value>)',
+            900: 'rgb(var(--amber-900) / <alpha-value>)',
+          },
+          green: {
+            50: 'rgb(var(--green-50) / <alpha-value>)',
+            100: 'rgb(var(--green-100) / <alpha-value>)',
+            200: 'rgb(var(--green-200) / <alpha-value>)',
+            300: 'rgb(var(--green-300) / <alpha-value>)',
+            400: 'rgb(var(--green-400) / <alpha-value>)',
+            500: 'rgb(var(--green-500) / <alpha-value>)',
+            600: 'rgb(var(--green-600) / <alpha-value>)',
+            700: 'rgb(var(--green-700) / <alpha-value>)',
+            800: 'rgb(var(--green-800) / <alpha-value>)',
+            900: 'rgb(var(--green-900) / <alpha-value>)',
+          },
+        },
+      },
+    },
+  };
+</script>
+
+<meta name="color-scheme" content="light dark">
+<!-- Sidebar: a collapsed menu (desktop only) is restored before the first paint -->
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem('codelab-sidebar') === 'collapsed') {
+        document.documentElement.classList.add('sidebar-collapsed');
+      }
+    } catch (e) { /* storage unavailable: the menu stays open */ }
+  })();
+</script>
+<!-- Theme: a saved choice is applied before the first paint; otherwise the system theme is used -->
+<script>
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('codelab-theme'); } catch (e) { /* storage unavailable: follow the system */ }
+    if (theme === 'light' || theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  })();
+</script>
+
+
+<style>
+  /* Theme tokens: light by default, dark when the system asks for it or the
+     theme button forces it. Values are "R G B" so Tailwind can add opacity. */
+  :root {
+    color-scheme: light;
+    --c-white: 255 255 255;
+    --c-ink: 31 36 48;
+    --c-brand: 7 112 147;
+    --c-brand-dark: 5 92 120;
+    --c-sidebar: 32 35 42;
+    --c-sidebar-hover: 44 49 60;
+    --gray-50: 249 250 251;
+    --gray-100: 243 244 246;
+    --gray-200: 229 231 235;
+    --gray-300: 209 213 219;
+    --gray-400: 156 163 175;
+    --gray-500: 107 114 128;
+    --gray-600: 75 85 99;
+    --gray-700: 55 65 81;
+    --gray-800: 31 41 55;
+    --gray-900: 17 24 39;
+    --blue-50: 239 246 255;
+    --blue-100: 219 234 254;
+    --blue-200: 191 219 254;
+    --blue-300: 147 197 253;
+    --blue-400: 96 165 250;
+    --blue-500: 59 130 246;
+    --blue-600: 37 99 235;
+    --blue-700: 29 78 216;
+    --blue-800: 30 64 175;
+    --blue-900: 30 58 138;
+    --indigo-50: 238 242 255;
+    --indigo-100: 224 231 255;
+    --indigo-200: 199 210 254;
+    --indigo-300: 165 180 252;
+    --indigo-400: 129 140 248;
+    --indigo-500: 99 102 241;
+    --indigo-600: 79 70 229;
+    --indigo-700: 67 56 202;
+    --indigo-800: 55 48 163;
+    --indigo-900: 49 46 129;
+    --rose-50: 255 241 242;
+    --rose-100: 255 228 230;
+    --rose-200: 254 205 211;
+    --rose-300: 253 164 175;
+    --rose-400: 251 113 133;
+    --rose-500: 244 63 94;
+    --rose-600: 225 29 72;
+    --rose-700: 190 18 60;
+    --rose-800: 159 18 57;
+    --rose-900: 136 19 55;
+    --red-50: 254 242 242;
+    --red-100: 254 226 226;
+    --red-200: 254 202 202;
+    --red-300: 252 165 165;
+    --red-400: 248 113 113;
+    --red-500: 239 68 68;
+    --red-600: 220 38 38;
+    --red-700: 185 28 28;
+    --red-800: 153 27 27;
+    --red-900: 127 29 29;
+    --amber-50: 255 251 235;
+    --amber-100: 254 243 199;
+    --amber-200: 253 230 138;
+    --amber-300: 252 211 77;
+    --amber-400: 251 191 36;
+    --amber-500: 245 158 11;
+    --amber-600: 217 119 6;
+    --amber-700: 180 83 9;
+    --amber-800: 146 64 14;
+    --amber-900: 120 53 15;
+    --green-50: 240 253 244;
+    --green-100: 220 252 231;
+    --green-200: 187 247 208;
+    --green-300: 134 239 172;
+    --green-400: 74 222 128;
+    --green-500: 34 197 94;
+    --green-600: 22 163 74;
+    --green-700: 21 128 61;
+    --green-800: 22 101 52;
+    --green-900: 20 83 45;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --c-white: 38 42 51;
+      --c-ink: 230 232 235;
+      --c-brand: 88 196 220;
+      --c-brand-dark: 125 211 230;
+      --c-sidebar: 22 24 29;
+      --c-sidebar-hover: 36 40 48;
+      --gray-50: 27 30 36;
+      --gray-100: 48 53 63;
+      --gray-200: 58 64 76;
+      --gray-300: 74 81 96;
+      --gray-400: 107 114 128;
+      --gray-500: 139 147 160;
+      --gray-600: 163 171 181;
+      --gray-700: 196 201 208;
+      --gray-800: 216 220 225;
+      --gray-900: 230 232 235;
+      --blue-50: 41 54 78;
+      --blue-100: 43 63 98;
+      --blue-200: 45 72 117;
+      --blue-300: 48 86 148;
+      --blue-400: 96 165 250;
+      --blue-500: 96 165 250;
+      --blue-600: 147 197 253;
+      --blue-700: 147 197 253;
+      --blue-800: 191 219 254;
+      --blue-900: 219 234 254;
+      --indigo-50: 47 50 78;
+      --indigo-100: 53 56 97;
+      --indigo-200: 59 62 116;
+      --indigo-300: 68 72 146;
+      --indigo-400: 129 140 248;
+      --indigo-500: 129 140 248;
+      --indigo-600: 165 180 252;
+      --indigo-700: 165 180 252;
+      --indigo-800: 199 210 254;
+      --indigo-900: 224 231 255;
+      --rose-50: 67 45 57;
+      --rose-100: 87 47 61;
+      --rose-200: 108 49 66;
+      --rose-300: 141 52 72;
+      --rose-400: 251 113 133;
+      --rose-500: 251 113 133;
+      --rose-600: 253 164 175;
+      --rose-700: 253 164 175;
+      --rose-800: 254 205 211;
+      --rose-900: 255 228 230;
+      --red-50: 66 46 53;
+      --red-100: 86 48 55;
+      --red-200: 106 51 57;
+      --red-300: 138 55 60;
+      --red-400: 248 113 113;
+      --red-500: 248 113 113;
+      --red-600: 252 165 165;
+      --red-700: 252 165 165;
+      --red-800: 254 202 202;
+      --red-900: 254 226 226;
+      --amber-50: 67 58 45;
+      --amber-100: 88 70 41;
+      --amber-200: 108 81 37;
+      --amber-300: 142 100 31;
+      --amber-400: 251 191 36;
+      --amber-500: 251 191 36;
+      --amber-600: 252 211 77;
+      --amber-700: 252 211 77;
+      --amber-800: 253 230 138;
+      --amber-900: 254 243 199;
+      --green-50: 37 64 57;
+      --green-100: 37 79 61;
+      --green-200: 37 95 66;
+      --green-300: 36 120 72;
+      --green-400: 74 222 128;
+      --green-500: 74 222 128;
+      --green-600: 134 239 172;
+      --green-700: 134 239 172;
+      --green-800: 187 247 208;
+      --green-900: 220 252 231;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --c-white: 38 42 51;
+    --c-ink: 230 232 235;
+    --c-brand: 88 196 220;
+    --c-brand-dark: 125 211 230;
+    --c-sidebar: 22 24 29;
+    --c-sidebar-hover: 36 40 48;
+    --gray-50: 27 30 36;
+    --gray-100: 48 53 63;
+    --gray-200: 58 64 76;
+    --gray-300: 74 81 96;
+    --gray-400: 107 114 128;
+    --gray-500: 139 147 160;
+    --gray-600: 163 171 181;
+    --gray-700: 196 201 208;
+    --gray-800: 216 220 225;
+    --gray-900: 230 232 235;
+    --blue-50: 41 54 78;
+    --blue-100: 43 63 98;
+    --blue-200: 45 72 117;
+    --blue-300: 48 86 148;
+    --blue-400: 96 165 250;
+    --blue-500: 96 165 250;
+    --blue-600: 147 197 253;
+    --blue-700: 147 197 253;
+    --blue-800: 191 219 254;
+    --blue-900: 219 234 254;
+    --indigo-50: 47 50 78;
+    --indigo-100: 53 56 97;
+    --indigo-200: 59 62 116;
+    --indigo-300: 68 72 146;
+    --indigo-400: 129 140 248;
+    --indigo-500: 129 140 248;
+    --indigo-600: 165 180 252;
+    --indigo-700: 165 180 252;
+    --indigo-800: 199 210 254;
+    --indigo-900: 224 231 255;
+    --rose-50: 67 45 57;
+    --rose-100: 87 47 61;
+    --rose-200: 108 49 66;
+    --rose-300: 141 52 72;
+    --rose-400: 251 113 133;
+    --rose-500: 251 113 133;
+    --rose-600: 253 164 175;
+    --rose-700: 253 164 175;
+    --rose-800: 254 205 211;
+    --rose-900: 255 228 230;
+    --red-50: 66 46 53;
+    --red-100: 86 48 55;
+    --red-200: 106 51 57;
+    --red-300: 138 55 60;
+    --red-400: 248 113 113;
+    --red-500: 248 113 113;
+    --red-600: 252 165 165;
+    --red-700: 252 165 165;
+    --red-800: 254 202 202;
+    --red-900: 254 226 226;
+    --amber-50: 67 58 45;
+    --amber-100: 88 70 41;
+    --amber-200: 108 81 37;
+    --amber-300: 142 100 31;
+    --amber-400: 251 191 36;
+    --amber-500: 251 191 36;
+    --amber-600: 252 211 77;
+    --amber-700: 252 211 77;
+    --amber-800: 253 230 138;
+    --amber-900: 254 243 199;
+    --green-50: 37 64 57;
+    --green-100: 37 79 61;
+    --green-200: 37 95 66;
+    --green-300: 36 120 72;
+    --green-400: 74 222 128;
+    --green-500: 74 222 128;
+    --green-600: 134 239 172;
+    --green-700: 134 239 172;
+    --green-800: 187 247 208;
+    --green-900: 220 252 231;
+  }
+  /* Always-dark areas keep white text, light grays and the React cyan accent. */
+  #sidebar, .on-dark {
+    --c-white: 255 255 255;
+    --c-brand: 97 218 251;
+    --c-brand-dark: 88 196 220;
+    --gray-50: 249 250 251;
+    --gray-100: 243 244 246;
+    --gray-200: 229 231 235;
+    --gray-300: 209 213 219;
+    --gray-400: 156 163 175;
+    --gray-500: 156 163 175;
+    --gray-600: 75 85 99;
+    --gray-700: 55 65 81;
+    --gray-800: 31 41 55;
+    --gray-900: 17 24 39;
+  }
+
+  /* Inline SVG figures: their fixed colours follow the theme. */
+  svg [fill="#ffffff"] { fill: rgb(var(--c-white)); }
+  svg [fill="#1f2430"] { fill: rgb(var(--c-ink)); }
+  svg [stroke="#1f2430"] { stroke: rgb(var(--c-ink)); }
+  svg [fill="#374151"] { fill: rgb(var(--gray-700)); }
+  svg [fill="#f1f3f5"],
+  svg [fill="#f3f4f6"] { fill: rgb(var(--gray-100)); }
+  svg [stroke="#9ca3af"] { stroke: rgb(var(--gray-400)); }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Roboto', sans-serif; }
+
+  /* Sidebar */
+  #sidebar {
+    transition: transform 0.25s ease-in-out;
+  }
+  #sidebar::-webkit-scrollbar { width: 6px; }
+  #sidebar::-webkit-scrollbar-thumb { background: #3a4052; border-radius: 4px; }
+
+  .step-link { position: relative; }
+  .step-link.is-active {
+    background-color: rgba(97, 218, 251, 0.12);
+    border-left: 3px solid #61dafb;
+    color: #ffffff;
+  }
+  .step-link .step-marker {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+  }
+  .step-link.is-completed .step-marker .marker-number { display: none; }
+  .step-link.is-completed .step-marker .marker-check { display: flex; }
+  .step-link .step-marker .marker-check { display: none; }
+
+  /* Progress bar */
+  #progress-track {
+    height: 4px;
+    background: rgb(var(--gray-200));
+  }
+  #progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, rgb(var(--c-brand)), #61dafb);
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.is-active { display: block; }
+
+  /* Content cards */
+  .md-card {
+    background: rgb(var(--c-white));
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.06);
+    border: 1px solid rgb(var(--gray-200));
+  }
+
+  /* Code blocks + copy button */
+  .code-block-wrapper { position: relative; }
+  .code-block-wrapper pre[class*="language-"] {
+    margin: 0;
+    border: 1px solid rgb(var(--gray-200));
+    border-radius: 0.5rem;
+    max-height: 32rem;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.375rem;
+    background: rgba(255,255,255,0.1);
+    color: #d4d4d4;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
+  /* Desktop sidebar collapse (the mobile menu keeps its own overlay) */
+  @media (min-width: 768px) {
+    html.sidebar-collapsed #sidebar { display: none; }
+  }
+
+  /* Quiz reset button, added next to each score line */
+  .quiz-score-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+  .quiz-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8125rem;
+    border: 1px solid rgb(var(--gray-300));
+    border-radius: 0.375rem;
+    background: rgb(var(--c-white));
+    color: rgb(var(--gray-600));
+    cursor: pointer;
+  }
+  .quiz-reset-btn:hover { background: rgb(var(--gray-50)); color: rgb(var(--gray-900)); }
+  .quiz-reset-btn:focus-visible { outline: 2px solid rgb(var(--c-brand)); outline-offset: 2px; }
+  .quiz-reset-btn[data-armed="true"] {
+    border-color: rgb(var(--rose-600));
+    background: rgb(var(--rose-50));
+    color: rgb(var(--rose-800));
+  }
+
+  /* Mobile sidebar */
+  @media (max-width: 767px) {
+    #sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 40;
+      transform: translateX(-100%);
+      width: 85vw;
+      max-width: 20rem;
+    }
+    #sidebar.is-open { transform: translateX(0); }
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 30;
+    }
+    #sidebar-overlay.is-open { display: block; }
+  }
+
+  /* Quiz */
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid rgb(var(--gray-300));
+    border-radius: 0.375rem;
+    background: rgb(var(--c-white));
+    color: inherit;
+    cursor: pointer;
+  }
+  .quiz-option:hover:not(:disabled) { background: rgb(var(--gray-50)); }
+  .quiz-option:focus-visible { outline: 2px solid rgb(var(--c-brand)); outline-offset: 2px; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-option.is-correct { border-color: rgb(var(--green-600)); background: rgb(var(--green-50)); }
+  .quiz-option.is-wrong { border-color: rgb(var(--rose-600)); background: rgb(var(--rose-50)); }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Mobile overlay -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="bg-sidebar text-gray-300 w-72 flex-shrink-0 flex flex-col overflow-y-auto">
+    <div class="px-5 py-5 border-b border-white/10">
+      <p class="text-xs uppercase tracking-wide text-gray-400">Club — Formation React Native</p>
+      <h1 class="text-white font-medium text-base mt-1">Développer des apps mobiles avec React Native (Expo)</h1>
+      <p class="text-xs text-gray-400 mt-1" id="sidebar-session-title">Séance 2 — Navigation, API et sauvegarde</p>
+    </div>
+    <nav class="flex-1 py-2" aria-label="Étapes du codelab">
+      <ul id="step-nav-list">
+        <li data-nav-section="cours" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Démarrage (35 min)</li>
+        <li>
+          <a href="#step-1" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-1">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">1</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Bienvenue — programme et point de départ</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-2" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-2">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">2</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — La navigation mobile</span>
+          </a>
+        </li>
+        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (2 h 55)</li>
+        <li>
+          <a href="#step-3" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-3">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">3</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 1 — Un écran de détail</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-4" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-4">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">4</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 2 — Partager l'état avec un Context</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-5" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-5">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">5</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 3 — Des onglets</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-6" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-6">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">6</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Le code asynchrone</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-7" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-7">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">7</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 4 — Importer des tâches depuis une API</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-8" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-8">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">8</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 5 — Sauvegarder sur le téléphone</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-9" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-9">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">9</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Défi en équipe</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-10" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-10">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">10</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Récapitulatif — quiz et suite</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="px-5 py-4 border-t border-white/10 text-xs text-gray-500">
+      <a href="index.html" class="hover:text-gray-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au sommaire</a>
+    </div>
+  </aside>
+
+  <!-- Main column -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-4">
+      <button id="sidebar-toggle" class="md:hidden text-gray-600 hover:text-gray-900" aria-label="Ouvrir le menu des étapes">
+        <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+      </button>
+      <button id="sidebar-collapse" type="button" class="hidden md:inline-flex items-center px-2.5 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm" aria-label="Masquer le menu des étapes" aria-controls="sidebar" aria-expanded="true" title="Masquer le menu des étapes">
+        <i class="fa-solid fa-table-columns" aria-hidden="true"></i>
+      </button>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs text-gray-500">Formation React Native — Séance 2</p>
+        <h2 id="current-step-title" class="font-medium text-gray-900 truncate">Bienvenue — programme et point de départ</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" type="button" class="px-2.5 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm" aria-label="Thème automatique. Passer au thème clair" title="Thème : automatique">
+          <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+        </button>
+        <button id="prev-step" class="px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape précédente">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Précédent</span>
+        </button>
+        <button id="next-step" class="px-3 py-2 rounded-md bg-brand text-white hover:bg-brand-dark disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape suivante">
+          <span class="hidden sm:inline">Suivant</span>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress bar -->
+    <div id="progress-track" class="w-full">
+      <div id="progress-bar"></div>
+    </div>
+
+    <!-- Content -->
+    <main id="content" class="flex-1 overflow-y-auto">
+      <div class="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6">
+
+        <section id="step-1" class="step-panel is-active" data-title="Bienvenue — programme et point de départ">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">À la fin de cette séance, Club Tasks aura deux onglets, un écran de détail par tâche, des tâches partagées entre les écrans, des tâches importées depuis une API web et des tâches conservées après le redémarrage de l'application.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-clock text-brand" aria-hidden="true"></i>
+Programme
+</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left border border-gray-200">
+<thead class="bg-gray-100 text-gray-700">
+<tr>
+<th scope="col" class="px-3 py-2">Partie</th>
+<th scope="col" class="px-3 py-2">Durée</th>
+</tr>
+</thead>
+<tbody class="text-gray-700">
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Accueil et rappel</th>
+<td class="px-3 py-2">15 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Cours : la navigation mobile</th>
+<td class="px-3 py-2">20 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Étape 1 : écran de détail</th>
+<td class="px-3 py-2">30 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Étape 2 : partager l'état</th>
+<td class="px-3 py-2">20 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Pause</th>
+<td class="px-3 py-2">10 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Étape 3 : onglets</th>
+<td class="px-3 py-2">20 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Cours : le code asynchrone</th>
+<td class="px-3 py-2">15 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Étape 4 : importer depuis une API</th>
+<td class="px-3 py-2">25 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Pause</th>
+<td class="px-3 py-2">10 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Étape 5 : sauvegarder sur le téléphone</th>
+<td class="px-3 py-2">20 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Défi en équipe</th>
+<td class="px-3 py-2">20 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Clôture</th>
+<td class="px-3 py-2">5 min</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Total</th>
+<td class="px-3 py-2">3 h 30</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-4">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800">
+<p class="font-medium">Avant la séance</p>
+<p class="mt-1"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Ouvrez votre projet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> et lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>. Si Expo Go indique que le projet n'est pas compatible avec sa version (Expo Go a été mis à jour vers le SDK 58), mettez le projet à jour une seule fois, puis suivez la page normalement : toutes les étapes fonctionnent sans changement.</p>
+</div>
+</div>
+<div class="mt-4">
+<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go refuse le projet : mettre le projet à jour (Bash et PowerShell identique)</p>
+<div class="code-block-wrapper mb-3">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx expo install expo@^58.0.0 --fix '--' --legacy-peer-deps
+npx expo start --clear</code></pre>
+</div>
+<p class="text-gray-700 leading-relaxed mb-3 text-sm">Les guillemets autour de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--</code> sont nécessaires dans PowerShell et acceptés par Bash. L'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--legacy-peer-deps</code> évite un conflit de dépendances npm pendant la mise à jour.</p>
+<p class="text-gray-700 leading-relaxed">Si vous créez un nouveau projet, utilisez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-58</code> au lieu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">default@sdk-57</code>.</p>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Point de départ
+</h3>
+<p class="text-gray-700 leading-relaxed mb-4">Vous n'avez pas terminé la séance 1 ou vous étiez absent ? Créez le projet comme à l'Étape 2 de la <a href="club-01.html" class="text-brand underline">séance 1</a>, puis copiez ces trois fichiers.</p>
+<p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import TaskItem from '../components/TaskItem';
+import Clock from '../components/Clock';
+
+type Task = { id: string; title: string; done: boolean };
+
+const INITIAL_TASKS: Task[] = [
+  { id: '1', title: 'Installer Node.js', done: true },
+  { id: '2', title: 'Créer le projet Expo', done: true },
+  { id: '3', title: 'Comprendre useState', done: false },
+];
+
+export default function Index() {
+  const [tasks, setTasks] = useState&lt;Task[]&gt;(INITIAL_TASKS);
+  const [text, setText] = useState('');
+
+  const remaining = tasks.filter((t) =&gt; !t.done).length;
+
+  function addTask() {
+    const title = text.trim();
+    if (title === '') return;
+    setTasks([...tasks, { id: Date.now().toString(), title, done: false }]);
+    setText('');
+  }
+
+  function toggleTask(id: string) {
+    setTasks(tasks.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;Clock /&gt;
+      &lt;Text style={styles.subtitle}&gt;{remaining} tâche(s) restante(s)&lt;/Text&gt;
+
+      &lt;View style={styles.inputRow}&gt;
+        &lt;TextInput
+          style={styles.input}
+          value={text}
+          onChangeText={setText}
+          placeholder="Nouvelle tâche"
+          onSubmitEditing={addTask}
+        /&gt;
+        &lt;Pressable style={styles.button} onPress={addTask}&gt;
+          &lt;Text style={styles.buttonText}&gt;Ajouter&lt;/Text&gt;
+        &lt;/Pressable&gt;
+      &lt;/View&gt;
+
+      &lt;FlatList
+        data={tasks}
+        keyExtractor={(t) =&gt; t.id}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) =&gt; (
+          &lt;TaskItem title={item.title} done={item.done} onToggle={() =&gt; toggleTask(item.id)} /&gt;
+        )}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+  inputRow: { flexDirection: 'row', gap: 8 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#ced4da', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10 },
+  button: { backgroundColor: '#1f2430', paddingHorizontal: 16, justifyContent: 'center', borderRadius: 8 },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+  list: { gap: 8 },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/TaskItem.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { Pressable, StyleSheet, Text } from 'react-native';
+
+type Props = {
+  title: string;
+  done: boolean;
+  onToggle: () =&gt; void;
+};
+
+export default function TaskItem({ title, done, onToggle }: Props) {
+  return (
+    &lt;Pressable style={styles.row} onPress={onToggle}&gt;
+      &lt;Text style={[styles.text, done &amp;&amp; styles.done]}&gt;
+        {done ? '[x] ' : '[ ] '}
+        {title}
+      &lt;/Text&gt;
+    &lt;/Pressable&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  row: { padding: 14, borderRadius: 8, backgroundColor: '#f1f3f5' },
+  text: { fontSize: 16 },
+  done: { textDecorationLine: 'line-through', color: '#868e96' },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/Clock.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useEffect, useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
+
+export default function Clock() {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() =&gt; {
+    const id = setInterval(() =&gt; setNow(new Date()), 1000);
+    return () =&gt; clearInterval(id);
+  }, []);
+
+  return &lt;Text style={styles.clock}&gt;{now.toLocaleTimeString('fr-FR')}&lt;/Text&gt;;
+}
+
+const styles = StyleSheet.create({
+  clock: { fontSize: 14, color: '#868e96' },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
+<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+├── app/
+│   ├── _layout.tsx
+│   └── index.tsx
+└── components/
+    ├── Clock.tsx
+    └── TaskItem.tsx</code>
+<div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mt-0">
+<i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-gray-800">Le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">components</code> est dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src</code>, à côté de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app</code>, et non dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app</code> : avec Expo Router, chaque fichier placé dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app</code> devient un écran.</p>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Rappel de la séance 1
+</h3>
+<div class="quiz-question mb-6" id="quiz-c02-q01" data-answer="b">
+<p class="font-medium text-gray-900 mb-3"><span class="inline-block rounded-full bg-gray-900 text-white text-xs font-bold px-2.5 py-0.5 mr-2 align-middle">Question 1 / 7</span>Pour ajouter une tâche t à l'état tasks, quelle écriture met bien l'écran à jour ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 1">
+<button type="button" class="quiz-option" data-option="a"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">A</span>tasks.push(t); setTasks(tasks);</button>
+<button type="button" class="quiz-option" data-option="b"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">B</span>setTasks([...tasks, t]);</button>
+<button type="button" class="quiz-option" data-option="c"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">C</span>tasks = [...tasks, t];</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Il faut donner à React un nouveau tableau ; push modifie l'ancien et l'affectation directe ne déclenche aucun rendu.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+        </section>
+
+        <section id="step-2" class="step-panel" data-title="Cours — La navigation mobile">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Comprendre la pile et les onglets, et comment Expo Router transforme des fichiers en écrans.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-layer-group text-brand" aria-hidden="true"></i>
+Pile et onglets
+</h3>
+<figure class="mb-0">
+<div class="grid sm:grid-cols-2 gap-4">
+<div class="rounded border border-gray-300 p-4 bg-white min-w-0">
+<p class="font-medium text-gray-900 mb-3 flex items-center gap-2"><i class="fa-solid fa-layer-group text-brand" aria-hidden="true"></i> Pile (Stack)</p>
+<div class="relative h-40 mb-3">
+<div class="absolute left-0 top-0 w-3/4 h-24 rounded border-2 border-gray-300 bg-gray-100 px-3 py-2 text-sm text-gray-700">Liste des tâches<br><span class="text-xs">dessous, conservée</span></div>
+<div class="absolute left-8 top-14 w-3/4 h-24 rounded border-2 border-brand bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow">Détail de la tâche<br><span class="text-xs font-normal text-gray-700">dessus, visible</span></div>
+</div>
+<ul class="text-sm text-gray-700 space-y-1">
+<li>Un nouvel écran se pose au-dessus de la pile.</li>
+<li>Retour enlève l'écran du dessus et retrouve la liste.</li>
+</ul>
+</div>
+<div class="rounded border border-gray-300 p-4 bg-white min-w-0">
+<p class="font-medium text-gray-900 mb-3 flex items-center gap-2"><i class="fa-solid fa-table-columns text-brand" aria-hidden="true"></i> Onglets (Tabs)</p>
+<div class="rounded border-2 border-gray-300 overflow-hidden mb-3">
+<div class="px-3 py-8 text-sm text-gray-700 text-center bg-gray-50">Écran de l'onglet actif : Tâches</div>
+<div class="flex border-t-2 border-gray-300 text-sm">
+<div class="flex-1 py-2 text-center font-medium text-brand border-r border-gray-300"><i class="fa-solid fa-list" aria-hidden="true"></i> Tâches</div>
+<div class="flex-1 py-2 text-center text-gray-700"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> Importer</div>
+</div>
+</div>
+<ul class="text-sm text-gray-700 space-y-1">
+<li>Les écrans sont côte à côte, pas empilés.</li>
+<li>Chaque onglet garde son écran quand on change d'onglet.</li>
+</ul>
+</div>
+</div>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 2.1 — La pile empile les écrans, les onglets les placent côte à côte ; une application combine souvent les deux.</figcaption>
+</figure>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-folder-tree text-brand" aria-hidden="true"></i>
+Le fichier est la route
+</h3>
+<figure class="mb-0">
+<div class="overflow-x-auto">
+<svg role="img" aria-labelledby="c02-routes-title c02-routes-desc" viewBox="0 0 760 380" width="760" height="380" class="w-full h-auto min-w-[680px]" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, sans-serif">
+<title id="c02-routes-title">Des fichiers de src/app aux écrans</title>
+<desc id="c02-routes-desc">Deux fichiers _layout organisent la navigation et ne sont pas des écrans. Le fichier (tabs)/index.tsx donne l'adresse / et l'écran Tâches, (tabs)/api.tsx donne /api et l'écran Importer, task/[id].tsx donne /task/42 et l'écran Détail.</desc>
+<defs>
+<marker id="c02-route-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#1f2430"/>
+</marker>
+</defs>
+<text x="20" y="26" font-size="13" font-weight="700" fill="#1f2430">Fichiers de src/app</text>
+<text x="470" y="26" font-size="13" font-weight="700" fill="#1f2430">Adresse et écran</text>
+<rect x="20" y="44" width="300" height="36" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="34" y="67" font-size="13" font-family="monospace" fill="#1f2430">app/_layout.tsx</text>
+<text x="470" y="67" font-size="12" fill="#374151">pas un écran : la pile racine</text>
+<rect x="20" y="92" width="300" height="36" rx="6" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="34" y="115" font-size="13" font-family="monospace" fill="#1f2430">app/(tabs)/_layout.tsx</text>
+<text x="470" y="115" font-size="12" fill="#374151">pas un écran : la barre d'onglets</text>
+<rect x="20" y="140" width="300" height="36" rx="6" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="34" y="163" font-size="13" font-family="monospace" fill="#1f2430">app/(tabs)/index.tsx</text>
+<line x1="322" y1="158" x2="466" y2="158" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c02-route-arrow)"/>
+<rect x="470" y="140" width="270" height="36" rx="6" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="484" y="163" font-size="13" fill="#1f2430"><tspan font-family="monospace" font-weight="700">/</tspan> : écran Tâches</text>
+<rect x="20" y="188" width="300" height="36" rx="6" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="34" y="211" font-size="13" font-family="monospace" fill="#1f2430">app/(tabs)/api.tsx</text>
+<line x1="322" y1="206" x2="466" y2="206" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c02-route-arrow)"/>
+<rect x="470" y="188" width="270" height="36" rx="6" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="484" y="211" font-size="13" fill="#1f2430"><tspan font-family="monospace" font-weight="700">/api</tspan> : écran Importer</text>
+<rect x="20" y="236" width="300" height="36" rx="6" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="34" y="259" font-size="13" font-family="monospace" fill="#1f2430">app/task/[id].tsx</text>
+<line x1="322" y1="254" x2="466" y2="254" stroke="#1f2430" stroke-width="1.5" marker-end="url(#c02-route-arrow)"/>
+<rect x="470" y="236" width="270" height="36" rx="6" fill="#ffffff" stroke="#1f2430" stroke-width="1.5"/>
+<text x="484" y="259" font-size="13" fill="#1f2430"><tspan font-family="monospace" font-weight="700">/task/42</tspan> : écran Détail</text>
+<text x="20" y="310" font-size="12" fill="#374151"><tspan font-family="monospace" font-weight="700">_layout</tspan> : décrit la navigation du dossier</text>
+<text x="20" y="330" font-size="12" fill="#374151"><tspan font-family="monospace" font-weight="700">(tabs)</tspan> : groupe, n'apparaît pas dans l'adresse</text>
+<text x="20" y="350" font-size="12" fill="#374151"><tspan font-family="monospace" font-weight="700">[id]</tspan> : partie variable de l'adresse</text>
+</svg>
+</div>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 2.2 — Avec Expo Router, chaque fichier de app devient un écran et son chemin devient l'adresse de l'écran.</figcaption>
+</figure>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-table text-brand" aria-hidden="true"></i>
+Si vous connaissez déjà…
+</h3>
+<p class="text-gray-700 leading-relaxed mb-3">Aide-mémoire, à consulter pendant les étapes.</p>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left border border-gray-200">
+<thead class="bg-gray-100 text-gray-700">
+<tr>
+<th scope="col" class="px-3 py-2">Notion</th>
+<th scope="col" class="px-3 py-2">Web</th>
+<th scope="col" class="px-3 py-2">Flutter (go_router)</th>
+<th scope="col" class="px-3 py-2">Jetpack Compose</th>
+<th scope="col" class="px-3 py-2">Expo Router</th>
+</tr>
+</thead>
+<tbody class="text-gray-700">
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Déclarer un écran</th>
+<td class="px-3 py-2">fichier HTML ou route</td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">GoRoute</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">composable()</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">NavHost</code></td>
+<td class="px-3 py-2">fichier dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">app/</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Aller à un écran</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;a href&gt;</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">context.go('/task/42')</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">navController.navigate("task/42")</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;Link href&gt;</code> ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">router.push</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Revenir</th>
+<td class="px-3 py-2">bouton Précédent</td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">context.pop()</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">popBackStack()</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">router.back()</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Paramètre d'adresse</th>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">/task/:id</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">path: '/task/:id'</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">"task/{id}"</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">task/[id].tsx</code></td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium">Lire le paramètre</th>
+<td class="px-3 py-2">URL</td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">state.pathParameters['id']</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">backStackEntry.arguments</code></td>
+<td class="px-3 py-2"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useLocalSearchParams()</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Quiz éclair
+</h3>
+<div class="quiz-question mb-6" id="quiz-c02-q02" data-answer="b">
+<p class="font-medium text-gray-900 mb-3"><span class="inline-block rounded-full bg-gray-900 text-white text-xs font-bold px-2.5 py-0.5 mr-2 align-middle">Question 2 / 7</span>Quel fichier affiche le détail de n'importe quelle tâche, par exemple à l'adresse /task/42 ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 2">
+<button type="button" class="quiz-option" data-option="a"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">A</span>src/app/task/42.tsx</button>
+<button type="button" class="quiz-option" data-option="b"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">B</span>src/app/task/[id].tsx</button>
+<button type="button" class="quiz-option" data-option="c"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">C</span>src/components/TaskDetail.tsx</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Les crochets marquent une partie variable : [id].tsx répond à /task/1, /task/42, etc. Un fichier de components n'est jamais un écran.</p>
+</div>
+<div class="quiz-question mb-6" id="quiz-c02-q03" data-answer="b">
+<p class="font-medium text-gray-900 mb-3"><span class="inline-block rounded-full bg-gray-900 text-white text-xs font-bold px-2.5 py-0.5 mr-2 align-middle">Question 3 / 7</span>Dans src/app/task/[id].tsx, comment lit-on l'identifiant de la tâche ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 3">
+<button type="button" class="quiz-option" data-option="a"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">A</span>props.id</button>
+<button type="button" class="quiz-option" data-option="b"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">B</span>useLocalSearchParams()</button>
+<button type="button" class="quiz-option" data-option="c"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">C</span>useState('id')</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>useLocalSearchParams renvoie les paramètres de l'adresse de l'écran courant.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+        </section>
+
+        <section id="step-3" class="step-panel" data-title="Étape 1 — Un écran de détail">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Ouvrir un écran de détail en appuyant sur « Détails », puis revenir à la liste.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed mb-4">Dans VS Code, créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/task</code>, puis le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[id].tsx</code> à l'intérieur : le nom du fichier contient les crochets. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas.</p>
+<p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
+<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+├── app/
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   └── task/
+│       └── [id].tsx            (nouveau)
+└── components/
+    ├── Clock.tsx
+    └── TaskItem.tsx</code>
+<p class="text-gray-700 leading-relaxed">Après avoir enregistré les fichiers, rechargez l'application : appuyez sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code> dans le terminal où tourne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { Stack } from 'expo-router';
+
+export default function RootLayout() {
+  return (
+    &lt;Stack&gt;
+      &lt;Stack.Screen name="index" options={{ title: 'Club Tasks' }} /&gt;
+      &lt;Stack.Screen name="task/[id]" options={{ title: 'Détail de la tâche' }} /&gt;
+    &lt;/Stack&gt;
+  );
+}</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Nouveau fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/task/[id].tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useLocalSearchParams } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
+
+export default function TaskDetail() {
+  const { id } = useLocalSearchParams&lt;{ id: string }&gt;();
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Tâche n° {id}&lt;/Text&gt;
+      &lt;Text style={styles.hint}&gt;Cet écran ne connaît que l'identifiant : la liste des tâches est dans un autre écran.&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 24, fontWeight: '700' },
+  hint: { fontSize: 16, color: '#495057' },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Link } from 'expo-router';
+import TaskItem from '../components/TaskItem';
+import Clock from '../components/Clock';
+
+type Task = { id: string; title: string; done: boolean };
+
+const INITIAL_TASKS: Task[] = [
+  { id: '1', title: 'Installer Node.js', done: true },
+  { id: '2', title: 'Créer le projet Expo', done: true },
+  { id: '3', title: 'Comprendre useState', done: false },
+];
+
+export default function Index() {
+  const [tasks, setTasks] = useState&lt;Task[]&gt;(INITIAL_TASKS);
+  const [text, setText] = useState('');
+
+  const remaining = tasks.filter((t) =&gt; !t.done).length;
+
+  function addTask() {
+    const title = text.trim();
+    if (title === '') return;
+    setTasks([...tasks, { id: Date.now().toString(), title, done: false }]);
+    setText('');
+  }
+
+  function toggleTask(id: string) {
+    setTasks(tasks.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;Clock /&gt;
+      &lt;Text style={styles.subtitle}&gt;{remaining} tâche(s) restante(s)&lt;/Text&gt;
+
+      &lt;View style={styles.inputRow}&gt;
+        &lt;TextInput
+          style={styles.input}
+          value={text}
+          onChangeText={setText}
+          placeholder="Nouvelle tâche"
+          onSubmitEditing={addTask}
+        /&gt;
+        &lt;Pressable style={styles.button} onPress={addTask}&gt;
+          &lt;Text style={styles.buttonText}&gt;Ajouter&lt;/Text&gt;
+        &lt;/Pressable&gt;
+      &lt;/View&gt;
+
+      &lt;FlatList
+        data={tasks}
+        keyExtractor={(t) =&gt; t.id}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) =&gt; (
+          &lt;View style={styles.row}&gt;
+            &lt;View style={styles.rowMain}&gt;
+              &lt;TaskItem title={item.title} done={item.done} onToggle={() =&gt; toggleTask(item.id)} /&gt;
+            &lt;/View&gt;
+            &lt;Link href={{ pathname: '/task/[id]', params: { id: item.id } }} style={styles.link}&gt;
+              Détails
+            &lt;/Link&gt;
+          &lt;/View&gt;
+        )}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+  inputRow: { flexDirection: 'row', gap: 8 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#ced4da', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10 },
+  button: { backgroundColor: '#1f2430', paddingHorizontal: 16, justifyContent: 'center', borderRadius: 8 },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+  list: { gap: 8 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  rowMain: { flex: 1 },
+  link: { color: '#1c7ed6', fontSize: 16, fontWeight: '600', padding: 8 },
+});</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed">L'écran de la liste a une barre de titre « Club Tasks » ; chaque tâche a un lien bleu « Détails ». Un appui sur « Détails » ouvre l'écran « Tâche n° 1 », avec une flèche de retour dans la barre de titre.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un appui sur la ligne d'une tâche la barre toujours.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>« Détails » ouvre l'écran de la bonne tâche : le numéro affiché correspond à la ligne.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La flèche de retour de la barre de titre, ou le geste retour d'Android, ramène à la liste.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Link</code> change l'adresse et Expo Router trouve le fichier correspondant. La pile garde la liste en dessous : le retour est immédiat et la liste retrouve son état.</p>
+</div>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-4">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800">
+<p class="font-medium">Le problème</p>
+<p class="mt-1">L'écran de détail reçoit seulement l'identifiant. La liste est dans l'état de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">index.tsx</code>, que cet écran ne peut pas lire. L'Étape 2 règle ce problème.</p>
+</div>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li>Un écran « route introuvable » signifie que le fichier n'est pas exactement <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/task/[id].tsx</code>, crochets compris.</li>
+<li>Si « Détails » ne fait rien, l'attribut <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">href</code> du lien contient une faute de frappe.</li>
+<li>VS Code propose parfois un import automatique du type 'src/...' : remplacez-le par le chemin relatif indiqué.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-4" class="step-panel" data-title="Étape 2 — Partager l'état avec un Context">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Mettre les tâches dans un Context pour que chaque écran puisse les lire et les modifier.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed mb-4">Dans VS Code, créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/context</code>, puis le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TasksContext.tsx</code> à l'intérieur. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas.</p>
+<p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
+<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+├── app/
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   └── task/
+│       └── [id].tsx
+├── components/
+│   ├── Clock.tsx
+│   └── TaskItem.tsx
+└── context/
+    └── TasksContext.tsx        (nouveau)</code>
+<p class="text-gray-700 leading-relaxed">Après avoir enregistré les fichiers, rechargez l'application : appuyez sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code> dans le terminal où tourne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-0">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800">
+<p class="font-medium">Qu'est-ce qu'un Context ?</p>
+<p class="mt-1">Un Context est une boîte placée au-dessus de tous les écrans : n'importe quel écran l'ouvre avec un hook. Chez Flutter, c'est le rôle de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Provider</code> ; avec Compose, de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">CompositionLocal</code> ou d'un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ViewModel</code> partagé.</p>
+</div>
+</div>
+<div class="mt-4">
+<p class="text-sm text-gray-600 mb-2">Nouveau fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/context/TasksContext.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { createContext, useContext, useState, type ReactNode } from 'react';
+
+export type Task = { id: string; title: string; done: boolean };
+
+type TasksContextValue = {
+  tasks: Task[];
+  addTask: (title: string) =&gt; void;
+  toggleTask: (id: string) =&gt; void;
+};
+
+const INITIAL_TASKS: Task[] = [
+  { id: '1', title: 'Installer Node.js', done: true },
+  { id: '2', title: 'Créer le projet Expo', done: true },
+  { id: '3', title: 'Comprendre useState', done: false },
+];
+
+const TasksContext = createContext&lt;TasksContextValue | null&gt;(null);
+
+export function TasksProvider({ children }: { children: ReactNode }) {
+  const [tasks, setTasks] = useState&lt;Task[]&gt;(INITIAL_TASKS);
+
+  function addTask(title: string) {
+    setTasks((current) =&gt; [...current, { id: Date.now().toString(), title, done: false }]);
+  }
+
+  function toggleTask(id: string) {
+    setTasks((current) =&gt; current.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  return (
+    &lt;TasksContext.Provider value={{ tasks, addTask, toggleTask }}&gt;{children}&lt;/TasksContext.Provider&gt;
+  );
+}
+
+export function useTasks(): TasksContextValue {
+  const value = useContext(TasksContext);
+  if (value === null) {
+    throw new Error('useTasks must be used inside TasksProvider');
+  }
+  return value;
+}</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { Stack } from 'expo-router';
+import { TasksProvider } from '../context/TasksContext';
+
+export default function RootLayout() {
+  return (
+    &lt;TasksProvider&gt;
+      &lt;Stack&gt;
+        &lt;Stack.Screen name="index" options={{ title: 'Club Tasks' }} /&gt;
+        &lt;Stack.Screen name="task/[id]" options={{ title: 'Détail de la tâche' }} /&gt;
+      &lt;/Stack&gt;
+    &lt;/TasksProvider&gt;
+  );
+}</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Link } from 'expo-router';
+import TaskItem from '../components/TaskItem';
+import Clock from '../components/Clock';
+import { useTasks } from '../context/TasksContext';
+
+export default function Index() {
+  const { tasks, addTask, toggleTask } = useTasks();
+  const [text, setText] = useState('');
+
+  const remaining = tasks.filter((t) =&gt; !t.done).length;
+
+  function handleAdd() {
+    const title = text.trim();
+    if (title === '') return;
+    addTask(title);
+    setText('');
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;Clock /&gt;
+      &lt;Text style={styles.subtitle}&gt;{remaining} tâche(s) restante(s)&lt;/Text&gt;
+
+      &lt;View style={styles.inputRow}&gt;
+        &lt;TextInput
+          style={styles.input}
+          value={text}
+          onChangeText={setText}
+          placeholder="Nouvelle tâche"
+          onSubmitEditing={handleAdd}
+        /&gt;
+        &lt;Pressable style={styles.button} onPress={handleAdd}&gt;
+          &lt;Text style={styles.buttonText}&gt;Ajouter&lt;/Text&gt;
+        &lt;/Pressable&gt;
+      &lt;/View&gt;
+
+      &lt;FlatList
+        data={tasks}
+        keyExtractor={(t) =&gt; t.id}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) =&gt; (
+          &lt;View style={styles.row}&gt;
+            &lt;View style={styles.rowMain}&gt;
+              &lt;TaskItem title={item.title} done={item.done} onToggle={() =&gt; toggleTask(item.id)} /&gt;
+            &lt;/View&gt;
+            &lt;Link href={{ pathname: '/task/[id]', params: { id: item.id } }} style={styles.link}&gt;
+              Détails
+            &lt;/Link&gt;
+          &lt;/View&gt;
+        )}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+  inputRow: { flexDirection: 'row', gap: 8 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#ced4da', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10 },
+  button: { backgroundColor: '#1f2430', paddingHorizontal: 16, justifyContent: 'center', borderRadius: 8 },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+  list: { gap: 8 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  rowMain: { flex: 1 },
+  link: { color: '#1c7ed6', fontSize: 16, fontWeight: '600', padding: 8 },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/task/[id].tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { router, useLocalSearchParams } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTasks } from '../../context/TasksContext';
+
+export default function TaskDetail() {
+  const { id } = useLocalSearchParams&lt;{ id: string }&gt;();
+  const { tasks, toggleTask } = useTasks();
+  const task = tasks.find((t) =&gt; t.id === id);
+
+  if (task === undefined) {
+    return (
+      &lt;View style={styles.container}&gt;
+        &lt;Text style={styles.title}&gt;Tâche introuvable&lt;/Text&gt;
+      &lt;/View&gt;
+    );
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;{task.title}&lt;/Text&gt;
+      &lt;Text style={styles.status}&gt;{task.done ? 'Terminée' : 'À faire'}&lt;/Text&gt;
+      &lt;Pressable style={styles.button} onPress={() =&gt; toggleTask(task.id)}&gt;
+        &lt;Text style={styles.buttonText}&gt;{task.done ? 'Marquer à faire' : 'Marquer terminée'}&lt;/Text&gt;
+      &lt;/Pressable&gt;
+      &lt;Pressable style={styles.secondary} onPress={() =&gt; router.back()}&gt;
+        &lt;Text style={styles.secondaryText}&gt;Retour à la liste&lt;/Text&gt;
+      &lt;/Pressable&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 24, fontWeight: '700' },
+  status: { fontSize: 16, color: '#495057' },
+  button: { backgroundColor: '#1f2430', paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+  secondary: { paddingVertical: 12, alignItems: 'center' },
+  secondaryText: { color: '#1c7ed6', fontSize: 16, fontWeight: '600' },
+});</code></pre>
+</div>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed">L'écran de détail affiche le vrai titre de la tâche et son état, et propose deux boutons : changer l'état et revenir à la liste.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Marquez une tâche comme terminée dans l'écran de détail, puis revenez : la liste l'affiche barrée et le compteur a changé.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Ajoutez une tâche dans la liste, ouvrez ses détails : son titre apparaît.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le Provider garde l'état une seule fois, au-dessus de tous les écrans ; <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useTasks</code> donne à chaque écran les mêmes données. Écrire une fonction dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setTasks</code> calcule la nouvelle valeur à partir de la plus récente, ce qui est plus sûr quand plusieurs mises à jour se suivent.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useTasks must be used inside TasksProvider</code> signifie que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">_layout.tsx</code> n'entoure pas la <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Stack</code> avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TasksProvider</code>.</li>
+<li>Des tâches qui se remettent à zéro ou des valeurs étranges après l'enregistrement : rechargez avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code>.</li>
+<li>VS Code propose parfois un import automatique du type 'src/...' : remplacez-le par le chemin relatif indiqué.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-5" class="step-panel" data-title="Étape 3 — Des onglets">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Ajouter une barre d'onglets avec « Tâches » et « Importer ».</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed mb-2">Arrêtez le serveur (Ctrl+C), puis installez les icônes et relancez-le.</p>
+<p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx expo install @expo/vector-icons
+npx expo start</code></pre>
+</div>
+<p class="text-gray-700 leading-relaxed mb-4">Dans VS Code, créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)</code> (les parenthèses font partie du nom) et déplacez-y le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> : coupez-le, ne le copiez pas. Le fichier est descendu d'un dossier, donc chaque chemin relatif gagne un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">../</code>.</p>
+<div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mt-0 mb-4">
+<i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-gray-800">Il ne doit plus rester de fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">index.tsx</code> directement dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> : deux <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">index.tsx</code> pour la même adresse empêchent l'application de démarrer.</p>
+</div>
+<p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
+<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+├── app/
+│   ├── (tabs)/
+│   │   ├── _layout.tsx         (nouveau)
+│   │   ├── api.tsx             (nouveau)
+│   │   └── index.tsx           (déplacé)
+│   ├── _layout.tsx
+│   └── task/
+│       └── [id].tsx
+├── components/
+│   ├── Clock.tsx
+│   └── TaskItem.tsx
+└── context/
+    └── TasksContext.tsx</code>
+<p class="text-gray-700 leading-relaxed">Après avoir enregistré les fichiers, rechargez l'application : appuyez sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code> dans le terminal où tourne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+<p class="text-gray-700 leading-relaxed mt-2">Si l'écran affiche une route introuvable, arrêtez le serveur (Ctrl+C) et relancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start --clear</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-sm text-gray-600 mb-2">Nouveau fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/_layout.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import Ionicons from '@expo/vector-icons/Ionicons';
+import { Tabs } from 'expo-router';
+
+export default function TabsLayout() {
+  return (
+    &lt;Tabs screenOptions={{ tabBarActiveTintColor: '#1f2430' }}&gt;
+      &lt;Tabs.Screen
+        name="index"
+        options={{
+          title: 'Tâches',
+          tabBarIcon: ({ color, size }) =&gt; (
+            &lt;Ionicons name="list" color={typeof color === 'string' ? color : undefined} size={size} /&gt;
+          ),
+        }}
+      /&gt;
+      &lt;Tabs.Screen
+        name="api"
+        options={{
+          title: 'Importer',
+          tabBarIcon: ({ color, size }) =&gt; (
+            &lt;Ionicons
+              name="cloud-download-outline"
+              color={typeof color === 'string' ? color : undefined}
+              size={size}
+            /&gt;
+          ),
+        }}
+      /&gt;
+    &lt;/Tabs&gt;
+  );
+}</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Nouveau fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/api.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+
+export default function ImportScreen() {
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Importer des tâches&lt;/Text&gt;
+      &lt;Text style={styles.subtitle}&gt;Cet onglet sera complété à l'Étape 4.&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 24, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Fichier déplacé : seuls les trois imports relatifs changent. Voici le fichier complet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/index.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Link } from 'expo-router';
+import TaskItem from '../../components/TaskItem';
+import Clock from '../../components/Clock';
+import { useTasks } from '../../context/TasksContext';
+
+export default function Index() {
+  const { tasks, addTask, toggleTask } = useTasks();
+  const [text, setText] = useState('');
+
+  const remaining = tasks.filter((t) =&gt; !t.done).length;
+
+  function handleAdd() {
+    const title = text.trim();
+    if (title === '') return;
+    addTask(title);
+    setText('');
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;
+      &lt;Clock /&gt;
+      &lt;Text style={styles.subtitle}&gt;{remaining} tâche(s) restante(s)&lt;/Text&gt;
+
+      &lt;View style={styles.inputRow}&gt;
+        &lt;TextInput
+          style={styles.input}
+          value={text}
+          onChangeText={setText}
+          placeholder="Nouvelle tâche"
+          onSubmitEditing={handleAdd}
+        /&gt;
+        &lt;Pressable style={styles.button} onPress={handleAdd}&gt;
+          &lt;Text style={styles.buttonText}&gt;Ajouter&lt;/Text&gt;
+        &lt;/Pressable&gt;
+      &lt;/View&gt;
+
+      &lt;FlatList
+        data={tasks}
+        keyExtractor={(t) =&gt; t.id}
+        contentContainerStyle={styles.list}
+        renderItem={({ item }) =&gt; (
+          &lt;View style={styles.row}&gt;
+            &lt;View style={styles.rowMain}&gt;
+              &lt;TaskItem title={item.title} done={item.done} onToggle={() =&gt; toggleTask(item.id)} /&gt;
+            &lt;/View&gt;
+            &lt;Link href={{ pathname: '/task/[id]', params: { id: item.id } }} style={styles.link}&gt;
+              Détails
+            &lt;/Link&gt;
+          &lt;/View&gt;
+        )}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 28, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+  inputRow: { flexDirection: 'row', gap: 8 },
+  input: { flex: 1, borderWidth: 1, borderColor: '#ced4da', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 10 },
+  button: { backgroundColor: '#1f2430', paddingHorizontal: 16, justifyContent: 'center', borderRadius: 8 },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+  list: { gap: 8 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  rowMain: { flex: 1 },
+  link: { color: '#1c7ed6', fontSize: 16, fontWeight: '600', padding: 8 },
+});</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { Stack } from 'expo-router';
+import { TasksProvider } from '../context/TasksContext';
+
+export default function RootLayout() {
+  return (
+    &lt;TasksProvider&gt;
+      &lt;Stack&gt;
+        &lt;Stack.Screen name="(tabs)" options={{ headerShown: false }} /&gt;
+        &lt;Stack.Screen name="task/[id]" options={{ title: 'Détail de la tâche' }} /&gt;
+      &lt;/Stack&gt;
+    &lt;/TasksProvider&gt;
+  );
+}</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed">Une barre d'onglets avec des icônes apparaît : « Tâches » affiche la liste, « Importer » affiche l'écran provisoire. « Détails » ouvre toujours l'écran de détail, au-dessus des onglets.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Changez d'onglet puis revenez : le texte tapé dans le champ est toujours là.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>L'écran de détail a une flèche de retour et n'a pas de barre d'onglets.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">(tabs)</code> est un groupe : il organise les fichiers sans apparaître dans l'adresse. La pile racine contient les onglets, donc l'écran de détail s'ouvre par-dessus. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tabBarIcon</code> reçoit la couleur de l'onglet, active ou non : le test <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">typeof color === 'string'</code> garantit à TypeScript que c'est un texte.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li>L'application ne démarre pas ou signale un conflit de routes : il reste un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">index.tsx</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code>.</li>
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve module ../components/TaskItem</code> signifie que les imports n'ont pas été mis à jour après le déplacement.</li>
+<li>VS Code propose parfois un import automatique du type 'src/...' : remplacez-le par le chemin relatif indiqué.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-6" class="step-panel" data-title="Cours — Le code asynchrone">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Comprendre Promise, async/await et les trois états d'une requête.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-hourglass-half text-brand" aria-hidden="true"></i>
+Attendre sans bloquer
+</h3>
+<p class="text-gray-700 leading-relaxed mb-4">Une requête réseau prend du temps et l'application ne doit pas se figer. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">fetch</code> renvoie une Promise : une valeur qui arrivera plus tard.</p>
+<p class="text-sm text-gray-600 mb-2">Exemple à lire</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-ts">async function loadTitle(): Promise&lt;string&gt; {
+  const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+  const todo: { title: string } = await response.json();
+  return todo.title;
+}</code></pre>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left border border-gray-200">
+<thead class="bg-gray-100 text-gray-700">
+<tr>
+<th scope="col" class="px-3 py-2">Mot</th>
+<th scope="col" class="px-3 py-2">Rôle</th>
+</tr>
+</thead>
+<tbody class="text-gray-700">
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">async</code></th>
+<td class="px-3 py-2">marque une fonction qui peut attendre ; elle renvoie toujours une Promise.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">await</code></th>
+<td class="px-3 py-2">met la fonction en pause jusqu'à l'arrivée de la valeur, sans bloquer l'application.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">response.ok</code></th>
+<td class="px-3 py-2">vaut vrai pour un code HTTP de 200 à 299 ; fetch n'échoue pas pour un code 404 ou 500.</td>
+</tr>
+<tr class="border-t border-gray-200">
+<th scope="row" class="px-3 py-2 font-medium"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">throw</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">try...catch</code></th>
+<td class="px-3 py-2">throw lance une erreur ; catch la récupère pour afficher un message au lieu de planter.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-signal text-brand" aria-hidden="true"></i>
+Trois états
+</h3>
+<figure class="mb-0">
+<div class="flex flex-col items-center gap-2 mb-3">
+<p class="rounded-full bg-gray-900 text-white text-sm font-medium px-4 py-1">Appui sur « Importer »</p>
+<i class="fa-solid fa-arrow-down text-gray-600" aria-hidden="true"></i>
+</div>
+<div class="grid sm:grid-cols-3 gap-3">
+<div class="rounded border-l-4 border-blue-500 bg-blue-50 p-3 min-w-0">
+<p class="font-medium text-gray-900 flex items-center gap-2"><i class="fa-solid fa-spinner text-blue-500" aria-hidden="true"></i> Chargement</p>
+<p class="text-sm text-gray-700 mt-1">Un indicateur d'attente est affiché ; le bouton est désactivé.</p>
+</div>
+<div class="rounded border-l-4 border-green-500 bg-green-50 p-3 min-w-0">
+<p class="font-medium text-gray-900 flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-600" aria-hidden="true"></i> Succès</p>
+<p class="text-sm text-gray-700 mt-1">Les données reçues sont ajoutées à la liste.</p>
+</div>
+<div class="rounded border-l-4 border-rose-500 bg-rose-50 p-3 min-w-0">
+<p class="font-medium text-gray-900 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-rose-500" aria-hidden="true"></i> Erreur</p>
+<p class="text-sm text-gray-700 mt-1">Un message explique l'échec ; le bouton « Réessayer » relance la requête.</p>
+</div>
+</div>
+<figcaption class="text-sm text-gray-600 mt-2">Figure 2.3 — Un écran qui charge des données affiche toujours l'un de ces trois états.</figcaption>
+</figure>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Quiz éclair
+</h3>
+<div class="quiz-question mb-6" id="quiz-c02-q04" data-answer="b">
+<p class="font-medium text-gray-900 mb-3"><span class="inline-block rounded-full bg-gray-900 text-white text-xs font-bold px-2.5 py-0.5 mr-2 align-middle">Question 4 / 7</span>Avec le code <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">console.log('A'); fetch(url).then(() =&gt; console.log('B')); console.log('C');</code>, dans quel ordre s'affichent les lettres ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 4">
+<button type="button" class="quiz-option" data-option="a"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">A</span>A, B, C</button>
+<button type="button" class="quiz-option" data-option="b"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">B</span>A, C, B</button>
+<button type="button" class="quiz-option" data-option="c"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">C</span>B, A, C</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>fetch ne bloque pas : C s'affiche tout de suite, B seulement quand la réponse arrive.</p>
+</div>
+<div class="quiz-question mb-6" id="quiz-c02-q05" data-answer="a">
+<p class="font-medium text-gray-900 mb-3"><span class="inline-block rounded-full bg-gray-900 text-white text-xs font-bold px-2.5 py-0.5 mr-2 align-middle">Question 5 / 7</span>Pourquoi tester response.ok après fetch ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 5">
+<button type="button" class="quiz-option" data-option="a"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">A</span>fetch ne déclenche pas d'erreur pour une réponse 404 ou 500</button>
+<button type="button" class="quiz-option" data-option="b"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">B</span>pour attendre la fin du téléchargement</button>
+<button type="button" class="quiz-option" data-option="c"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">C</span>c'est obligatoire pour lire le JSON</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>fetch échoue seulement si le réseau est inaccessible ; un code HTTP d'erreur arrive comme une réponse normale, à vérifier avec response.ok.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+        </section>
+
+        <section id="step-7" class="step-panel" data-title="Étape 4 — Importer des tâches depuis une API">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Télécharger 5 tâches depuis une API de test, avec les états de chargement et d'erreur.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas. Enregistrez les fichiers, puis regardez le téléphone. Si le serveur est arrêté, relancez-le depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>.</p>
+<p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
+<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+├── app/
+│   ├── (tabs)/
+│   │   ├── _layout.tsx         (nouveau)
+│   │   ├── api.tsx             (nouveau)
+│   │   └── index.tsx           (déplacé)
+│   ├── _layout.tsx
+│   └── task/
+│       └── [id].tsx
+├── components/
+│   ├── Clock.tsx
+│   └── TaskItem.tsx
+└── context/
+    └── TasksContext.tsx</code>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-gray-700 leading-relaxed mb-3">Aucun nouveau fichier : ces deux fichiers sont modifiés.</p>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/context/TasksContext.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { createContext, useContext, useState, type ReactNode } from 'react';
+
+export type Task = { id: string; title: string; done: boolean };
+
+type TasksContextValue = {
+  tasks: Task[];
+  addTask: (title: string) =&gt; void;
+  toggleTask: (id: string) =&gt; void;
+  importTasks: (newTasks: Task[]) =&gt; void;
+};
+
+const INITIAL_TASKS: Task[] = [
+  { id: '1', title: 'Installer Node.js', done: true },
+  { id: '2', title: 'Créer le projet Expo', done: true },
+  { id: '3', title: 'Comprendre useState', done: false },
+];
+
+const TasksContext = createContext&lt;TasksContextValue | null&gt;(null);
+
+export function TasksProvider({ children }: { children: ReactNode }) {
+  const [tasks, setTasks] = useState&lt;Task[]&gt;(INITIAL_TASKS);
+
+  function addTask(title: string) {
+    setTasks((current) =&gt; [...current, { id: Date.now().toString(), title, done: false }]);
+  }
+
+  function toggleTask(id: string) {
+    setTasks((current) =&gt; current.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  function importTasks(newTasks: Task[]) {
+    setTasks((current) =&gt; [
+      ...current,
+      ...newTasks.filter((task) =&gt; !current.some((t) =&gt; t.id === task.id)),
+    ]);
+  }
+
+  return (
+    &lt;TasksContext.Provider value={{ tasks, addTask, toggleTask, importTasks }}&gt;
+      {children}
+    &lt;/TasksContext.Provider&gt;
+  );
+}
+
+export function useTasks(): TasksContextValue {
+  const value = useContext(TasksContext);
+  if (value === null) {
+    throw new Error('useTasks must be used inside TasksProvider');
+  }
+  return value;
+}</code></pre>
+</div>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/(tabs)/api.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import { useState } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTasks, type Task } from '../../context/TasksContext';
+
+type Todo = { id: number; title: string; completed: boolean };
+type Status = 'idle' | 'loading' | 'success' | 'error';
+
+const API_URL = 'https://jsonplaceholder.typicode.com/todos?_limit=5';
+
+export default function ImportScreen() {
+  const { importTasks } = useTasks();
+  const [status, setStatus] = useState&lt;Status&gt;('idle');
+  const [received, setReceived] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  async function loadTasks() {
+    setStatus('loading');
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const todos: Todo[] = await response.json();
+      const newTasks: Task[] = todos.map((todo) =&gt; ({
+        id: `api-${todo.id}`,
+        title: todo.title,
+        done: todo.completed,
+      }));
+      importTasks(newTasks);
+      setReceived(newTasks.length);
+      setStatus('success');
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Erreur inconnue');
+      setStatus('error');
+    }
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Importer des tâches&lt;/Text&gt;
+      &lt;Text style={styles.subtitle}&gt;Source : jsonplaceholder.typicode.com (données de test en latin)&lt;/Text&gt;
+      &lt;Pressable
+        style={[styles.button, status === 'loading' &amp;&amp; styles.buttonDisabled]}
+        onPress={loadTasks}
+        disabled={status === 'loading'}
+      &gt;
+        &lt;Text style={styles.buttonText}&gt;{status === 'error' ? 'Réessayer' : 'Importer 5 tâches'}&lt;/Text&gt;
+      &lt;/Pressable&gt;
+      {status === 'loading' &amp;&amp; &lt;ActivityIndicator size="large" /&gt;}
+      {status === 'success' &amp;&amp; (
+        &lt;Text style={styles.success}&gt;
+          {received} tâche(s) reçue(s). Les tâches déjà présentes ne sont pas ajoutées deux fois.
+        &lt;/Text&gt;
+      )}
+      {status === 'error' &amp;&amp; &lt;Text style={styles.error}&gt;Échec du chargement : {errorMessage}&lt;/Text&gt;}
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 24, gap: 12, backgroundColor: '#ffffff' },
+  title: { fontSize: 24, fontWeight: '700' },
+  subtitle: { fontSize: 16, color: '#495057' },
+  button: { backgroundColor: '#1f2430', paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
+  buttonDisabled: { opacity: 0.5 },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: '600' },
+  success: { fontSize: 16, color: '#2f9e44' },
+  error: { fontSize: 16, color: '#c92a2a' },
+});</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed">Un appui sur « Importer 5 tâches » affiche un indicateur d'attente, puis « 5 tâche(s) reçue(s) ». L'onglet Tâches liste cinq tâches de plus, avec des titres en latin.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Importer deux fois n'ajoute pas les tâches en double.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Activez le mode avion sur le téléphone et appuyez sur Importer : un message d'erreur et un bouton « Réessayer » apparaissent.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Réactivez le réseau et appuyez sur « Réessayer » : l'import réussit.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Ouvrez les détails d'une tâche importée.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le type <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Status</code> liste les seuls états possibles et l'écran affiche exactement l'un d'eux. Les identifiants importés commencent par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">api-</code> : ils ne peuvent pas entrer en collision avec les identifiants locaux.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Network request failed</code> signifie que le téléphone n'a pas accès à Internet.</li>
+<li>Rien ne se passe après l'appui : vérifiez que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onPress={loadTasks}</code> ne contient pas de parenthèses.</li>
+<li>VS Code propose parfois un import automatique du type 'src/...' : remplacez-le par le chemin relatif indiqué.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-8" class="step-panel" data-title="Étape 5 — Sauvegarder sur le téléphone">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">Garder les tâches après le redémarrage de l'application.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+Commandes
+</h3>
+<p class="text-gray-700 leading-relaxed mb-2">Arrêtez le serveur (Ctrl+C), puis :</p>
+<p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+<div class="code-block-wrapper mb-3">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx expo install @react-native-async-storage/async-storage
+npx expo start</code></pre>
+</div>
+<p class="text-gray-700 leading-relaxed mb-4">Utilisez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo install</code> et non <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm install</code> : cette commande choisit la version compatible avec votre projet.</p>
+<p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
+<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+├── app/
+│   ├── (tabs)/
+│   │   ├── _layout.tsx         (nouveau)
+│   │   ├── api.tsx             (nouveau)
+│   │   └── index.tsx           (déplacé)
+│   ├── _layout.tsx
+│   └── task/
+│       └── [id].tsx
+├── components/
+│   ├── Clock.tsx
+│   └── TaskItem.tsx
+└── context/
+    └── TasksContext.tsx</code>
+<p class="text-gray-700 leading-relaxed mb-3">Aucun nouveau fichier : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TasksContext.tsx</code> est modifié.</p>
+<p class="text-gray-700 leading-relaxed">Après avoir enregistré les fichiers, rechargez l'application : appuyez sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code> dans le terminal où tourne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+Code complet
+</h3>
+<p class="text-sm text-gray-600 mb-2">Remplacez tout le contenu du fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/context/TasksContext.tsx</code> :</p>
+<div class="code-block-wrapper mb-4">
+<button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+<pre><code class="language-tsx">import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+
+export type Task = { id: string; title: string; done: boolean };
+
+type TasksContextValue = {
+  tasks: Task[];
+  addTask: (title: string) =&gt; void;
+  toggleTask: (id: string) =&gt; void;
+  importTasks: (newTasks: Task[]) =&gt; void;
+};
+
+const INITIAL_TASKS: Task[] = [
+  { id: '1', title: 'Installer Node.js', done: true },
+  { id: '2', title: 'Créer le projet Expo', done: true },
+  { id: '3', title: 'Comprendre useState', done: false },
+];
+
+const STORAGE_KEY = 'club-tasks';
+
+const TasksContext = createContext&lt;TasksContextValue | null&gt;(null);
+
+export function TasksProvider({ children }: { children: ReactNode }) {
+  const [tasks, setTasks] = useState&lt;Task[]&gt;(INITIAL_TASKS);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() =&gt; {
+    async function load() {
+      try {
+        const json = await AsyncStorage.getItem(STORAGE_KEY);
+        if (json !== null) {
+          setTasks(JSON.parse(json) as Task[]);
+        }
+      } catch (error) {
+        console.warn('Lecture impossible', error);
+      } finally {
+        setLoaded(true);
+      }
+    }
+    load();
+  }, []);
+
+  useEffect(() =&gt; {
+    if (!loaded) return;
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)).catch((error) =&gt; {
+      console.warn('Sauvegarde impossible', error);
+    });
+  }, [tasks, loaded]);
+
+  function addTask(title: string) {
+    setTasks((current) =&gt; [...current, { id: Date.now().toString(), title, done: false }]);
+  }
+
+  function toggleTask(id: string) {
+    setTasks((current) =&gt; current.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  function importTasks(newTasks: Task[]) {
+    setTasks((current) =&gt; [
+      ...current,
+      ...newTasks.filter((task) =&gt; !current.some((t) =&gt; t.id === task.id)),
+    ]);
+  }
+
+  return (
+    &lt;TasksContext.Provider value={{ tasks, addTask, toggleTask, importTasks }}&gt;
+      {children}
+    &lt;/TasksContext.Provider&gt;
+  );
+}
+
+export function useTasks(): TasksContextValue {
+  const value = useContext(TasksContext);
+  if (value === null) {
+    throw new Error('useTasks must be used inside TasksProvider');
+  }
+  return value;
+}</code></pre>
+</div>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+Résultat attendu
+</h3>
+<p class="text-gray-700 leading-relaxed">Aucun changement visible au premier lancement.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Vérification
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Ajoutez une tâche et marquez-en une autre comme terminée, puis rechargez avec r : elles sont toujours là.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Fermez complètement Expo Go et rouvrez le projet : les tâches sont toujours là.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+À retenir
+</h3>
+<div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3">
+<i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+<p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> AsyncStorage stocke du texte : la liste est convertie avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">JSON.stringify</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">JSON.parse</code>. Le premier effet charge une seule fois (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[]</code>) ; le second sauvegarde à chaque changement de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">tasks</code>. Le drapeau <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">loaded</code> évite que la première sauvegarde remplace les tâches enregistrées par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">INITIAL_TASKS</code> avant la fin du chargement.</p>
+</div>
+<div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mt-3">
+<i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-rose-900">
+<p class="font-medium">Erreurs fréquentes</p>
+<ul class="mt-1 space-y-1">
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">AsyncStorage is null</code> ou une erreur de module natif signifie que le paquet a été installé avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm install</code> ou que le serveur n'a pas été relancé : arrêtez-le, lancez la commande <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo install</code>, puis redémarrez.</li>
+<li>Des tâches reviennent après une tentative de suppression : les données enregistrées sont toujours là (défi 4).</li>
+<li>VS Code propose parfois un import automatique du type 'src/...' : remplacez-le par le chemin relatif indiqué.</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-9" class="step-panel" data-title="Défi en équipe">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+Objectif
+</h3>
+<p class="text-gray-700 leading-relaxed">En salles de groupe de 3 ou 4 personnes, ajouter une fonctionnalité en 20 minutes et la présenter en 1 minute.</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-flag-checkered text-brand" aria-hidden="true"></i>
+Défis
+</h3>
+<ol class="list-decimal pl-5 space-y-3 text-gray-700">
+<li><span class="font-medium text-gray-900">Supprimer une tâche depuis l'écran de détail, puis revenir à la liste.</span><br><span class="text-sm text-gray-700">Indice : ajoutez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">deleteTask</code> au Context, utilisez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">filter</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">router.back()</code>.</span></li>
+<li><span class="font-medium text-gray-900">Modifier le titre d'une tâche dans l'écran de détail.</span><br><span class="text-sm text-gray-700">Indice : un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TextInput</code> contrôlé et une fonction <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">renameTask</code> dans le Context.</span></li>
+<li><span class="font-medium text-gray-900">Un troisième onglet « Terminées » qui affiche seulement les tâches terminées.</span><br><span class="text-sm text-gray-700">Indice : un nouveau fichier dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">(tabs)</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">filter</code>.</span></li>
+<li><span class="font-medium text-gray-900">Un bouton « Tout effacer » qui vide la liste et la sauvegarde.</span><br><span class="text-sm text-gray-700">Indice : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setTasks([])</code> suffit, la sauvegarde suit toute seule.</span></li>
+</ol>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mt-4">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800">
+<p class="font-medium">Organisation</p>
+<p class="mt-1">Choisissez un seul défi par équipe ; une personne partage son écran et code, les autres l'aident.</p>
+</div>
+</div>
+</div>
+        </section>
+
+        <section id="step-10" class="step-panel" data-title="Récapitulatif — quiz et suite">
+<div class="md-card p-6">
+<h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+Ce que vous savez faire
+</h3>
+<ul class="space-y-2 text-gray-700">
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Naviguer avec une pile et des liens.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Lire un paramètre d'adresse.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Partager l'état avec un Context.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Organiser des onglets.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Charger des données avec fetch et trois états.</span></li>
+<li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sauvegarder des données avec AsyncStorage.</span></li>
+</ul>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+Quiz final
+</h3>
+<div class="quiz-question mb-6" id="quiz-c02-q06" data-answer="b">
+<p class="font-medium text-gray-900 mb-3"><span class="inline-block rounded-full bg-gray-900 text-white text-xs font-bold px-2.5 py-0.5 mr-2 align-middle">Question 6 / 7</span>L'écran de détail doit lire et modifier la liste des tâches. Quelle solution avons-nous utilisée ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 6">
+<button type="button" class="quiz-option" data-option="a"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">A</span>copier la liste dans chaque écran</button>
+<button type="button" class="quiz-option" data-option="b"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">B</span>un Context fourni au-dessus de tous les écrans</button>
+<button type="button" class="quiz-option" data-option="c"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">C</span>passer toute la liste dans l'adresse de l'écran</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Le Provider garde l'état une seule fois ; chaque écran y accède avec useTasks.</p>
+</div>
+<div class="quiz-question mb-6" id="quiz-c02-q07" data-answer="a">
+<p class="font-medium text-gray-900 mb-3"><span class="inline-block rounded-full bg-gray-900 text-white text-xs font-bold px-2.5 py-0.5 mr-2 align-middle">Question 7 / 7</span>Pourquoi attendre loaded avant de sauvegarder ?</p>
+<div class="space-y-2" role="group" aria-label="Réponses à la question 7">
+<button type="button" class="quiz-option" data-option="a"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">A</span>sinon la première sauvegarde remplace les tâches enregistrées par la liste initiale</button>
+<button type="button" class="quiz-option" data-option="b"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">B</span>AsyncStorage refuse d'écrire au démarrage</button>
+<button type="button" class="quiz-option" data-option="c"><span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-900 text-xs font-bold mr-2">C</span>pour accélérer le démarrage</button>
+</div>
+<p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+<p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Le premier rendu affiche INITIAL_TASKS ; sans le drapeau, l'effet de sauvegarde écraserait les données avant leur lecture.</p>
+</div>
+<p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+</div>
+<div class="md-card p-6 mt-6">
+<h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+<i class="fa-solid fa-forward text-brand" aria-hidden="true"></i>
+Pour aller plus loin
+</h3>
+<ul class="list-disc pl-5 space-y-2 text-gray-700 mb-3">
+<li>Les development builds, pour les bibliothèques qui contiennent du code natif.</li>
+<li>EAS Build, pour produire une application installable.</li>
+<li>La documentation officielle : <a href="https://docs.expo.dev" target="_blank" rel="noopener" class="text-brand underline break-all">https://docs.expo.dev</a> et <a href="https://reactnative.dev" target="_blank" rel="noopener" class="text-brand underline break-all">https://reactnative.dev</a>.</li>
+</ul>
+</div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Prism core + autoloader (pinned 1.29.0) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script>
+  Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+</script>
+
+<!-- Navigation JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.step-panel'));
+  var stepIds = panels.map(function (p) { return p.id; });
+  var sidebarLinks = Array.prototype.slice.call(document.querySelectorAll('.step-link'));
+  var titleEl = document.getElementById('current-step-title');
+  var prevBtn = document.getElementById('prev-step');
+  var nextBtn = document.getElementById('next-step');
+  var progressBar = document.getElementById('progress-bar');
+  var sidebar = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebar-overlay');
+  var sidebarToggle = document.getElementById('sidebar-toggle');
+
+  var storageKey = 'codelab-progress:' + window.location.pathname;
+
+  function loadCompleted() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCompleted(list) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(list));
+    } catch (e) {
+      /* localStorage unavailable: navigation still works without persistence */
+    }
+  }
+
+  var completed = loadCompleted();
+
+  function indexOfStep(id) {
+    var idx = stepIds.indexOf(id);
+    return idx === -1 ? 0 : idx;
+  }
+
+  function markCompleted(idx) {
+    var id = stepIds[idx];
+    if (completed.indexOf(id) === -1) {
+      completed.push(id);
+      saveCompleted(completed);
+    }
+  }
+
+  function updateSidebarState(activeId) {
+    sidebarLinks.forEach(function (link) {
+      var id = link.getAttribute('data-step');
+      link.classList.toggle('is-active', id === activeId);
+      link.classList.toggle('is-completed', completed.indexOf(id) !== -1 && id !== activeId);
+    });
+  }
+
+  function closeMobileSidebar() {
+    if (sidebar) sidebar.classList.remove('is-open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('is-open');
+  }
+
+  function showStep(idx, options) {
+    options = options || {};
+    if (idx < 0) idx = 0;
+    if (idx > panels.length - 1) idx = panels.length - 1;
+
+    var id = stepIds[idx];
+
+    panels.forEach(function (panel, i) {
+      panel.classList.toggle('is-active', i === idx);
+    });
+
+    if (titleEl) {
+      titleEl.textContent = panels[idx].getAttribute('data-title') || panels[idx].id;
+    }
+
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.disabled = idx === panels.length - 1;
+
+    if (progressBar) {
+      var pct = ((idx + 1) / panels.length) * 100;
+      progressBar.style.width = pct + '%';
+    }
+
+    if (idx > 0) {
+      for (var i = 0; i < idx; i++) {
+        markCompleted(i);
+      }
+    }
+
+    updateSidebarState(id);
+
+    if (!options.skipHash) {
+      if (history.replaceState) {
+        history.replaceState(null, '', '#' + id);
+      } else {
+        window.location.hash = id;
+      }
+    }
+
+    document.getElementById('content').scrollTop = 0;
+    closeMobileSidebar();
+  }
+
+  function currentIndex() {
+    var hash = window.location.hash.replace('#', '');
+    return indexOfStep(hash);
+  }
+
+  // Sidebar links: native anchor navigation updates location.hash, which
+  // fires 'hashchange'; we just react to that in one place.
+  window.addEventListener('hashchange', function () {
+    showStep(currentIndex(), { skipHash: true });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      showStep(currentIndex() - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      showStep(currentIndex() + 1);
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+    if (e.key === 'ArrowLeft') {
+      showStep(currentIndex() - 1);
+    } else if (e.key === 'ArrowRight') {
+      showStep(currentIndex() + 1);
+    }
+  });
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function () {
+      sidebar.classList.add('is-open');
+      sidebarOverlay.classList.add('is-open');
+    });
+  }
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeMobileSidebar);
+  }
+
+  // Copy-to-clipboard for every code block.
+  Array.prototype.slice.call(document.querySelectorAll('.copy-btn')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var wrapper = btn.closest('.code-block-wrapper');
+      var codeEl = wrapper ? wrapper.querySelector('code') : null;
+      if (!codeEl) return;
+
+      var text = codeEl.textContent;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copié';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {
+          fallbackCopy(text);
+          done();
+        });
+      } else {
+        fallbackCopy(text);
+        done();
+      }
+    });
+  });
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    document.body.removeChild(ta);
+  }
+
+  // Initial render.
+  showStep(currentIndex(), { skipHash: true });
+  if (window.location.hash) {
+    // Normalize the hash (e.g. redirect #foo -> #step-1 if invalid).
+    history.replaceState(null, '', '#' + stepIds[currentIndex()]);
+  }
+
+  if (window.Prism) {
+    Prism.highlightAll();
+  }
+})();
+</script>
+
+<!-- Quiz reset buttons - do not modify when authoring a session.
+     Runs before the quiz script, which binds the actual reset to [data-quiz-reset]. -->
+<script>
+(function () {
+  'use strict';
+
+  if (!document.querySelector('.quiz-question')) return;
+
+  var IDLE = 'Réinitialiser les quiz';
+  var ARMED = 'Cliquez encore pour effacer les réponses';
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (score) {
+    var line = score.parentElement;
+    if (!line || !line.parentElement) return;
+
+    var row = document.createElement('div');
+    row.className = 'quiz-score-row';
+    line.parentElement.insertBefore(row, line);
+    row.appendChild(line);
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'quiz-reset-btn';
+    btn.setAttribute('data-quiz-reset', '');
+    btn.innerHTML = '<i class="fa-solid fa-rotate-left" aria-hidden="true"></i> <span aria-live="polite">' + IDLE + '</span>';
+    row.appendChild(btn);
+
+    var label = btn.querySelector('span');
+    var timer = null;
+
+    function disarm() {
+      window.clearTimeout(timer);
+      btn.removeAttribute('data-armed');
+      label.textContent = IDLE;
+    }
+
+    // First click arms the button; the second click reaches the quiz script, which resets.
+    btn.addEventListener('click', function (event) {
+      if (btn.getAttribute('data-armed') === 'true') return;
+      event.stopImmediatePropagation();
+      btn.setAttribute('data-armed', 'true');
+      label.textContent = ARMED;
+      timer = window.setTimeout(disarm, 5000);
+    });
+    btn.addEventListener('blur', disarm);
+  });
+})();
+</script>
+
+<!-- Quiz JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var questions = Array.prototype.slice.call(document.querySelectorAll('.quiz-question'));
+  if (!questions.length) return;
+
+  var storageKey = 'codelab-quiz:' + window.location.pathname;
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(state));
+    } catch (e) {
+      /* localStorage unavailable: the quiz still works without persistence */
+    }
+  }
+
+  var state = loadState();
+
+  function updateScores() {
+    var firstTry = 0;
+    questions.forEach(function (question) {
+      var entry = state[question.id];
+      if (entry && entry.done && entry.tries === 1) firstTry++;
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (el) {
+      el.textContent = firstTry + ' / ' + questions.length;
+    });
+  }
+
+  questions.forEach(function (question) {
+    var options = Array.prototype.slice.call(question.querySelectorAll('.quiz-option'));
+    var feedback = question.querySelector('.quiz-feedback');
+    var explain = question.querySelector('.quiz-explain');
+    var answer = question.getAttribute('data-answer');
+
+    function showFeedback(text) {
+      if (!feedback) return;
+      feedback.textContent = text;
+      feedback.hidden = false;
+    }
+
+    function finish() {
+      options.forEach(function (option) {
+        option.disabled = true;
+        if (option.getAttribute('data-option') === answer) {
+          option.classList.add('is-correct');
+        }
+      });
+      if (explain) explain.hidden = false;
+    }
+
+    if (state[question.id] && state[question.id].done) {
+      finish();
+      showFeedback('Bonne réponse.');
+    }
+
+    options.forEach(function (option) {
+      option.addEventListener('click', function () {
+        var entry = state[question.id] || { tries: 0, done: false };
+        if (entry.done) return;
+
+        entry.tries += 1;
+
+        if (option.getAttribute('data-option') === answer) {
+          entry.done = true;
+          showFeedback(entry.tries === 1 ? 'Bonne réponse du premier coup.' : 'Bonne réponse.');
+          finish();
+        } else {
+          option.classList.add('is-wrong');
+          option.disabled = true;
+          showFeedback('Pas encore. Relisez la question et réessayez.');
+        }
+
+        state[question.id] = entry;
+        saveState(state);
+        updateScores();
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-reset]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state = {};
+      saveState(state);
+      window.location.reload();
+    });
+  });
+
+  updateScores();
+})();
+</script>
+
+<!-- Theme JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+
+  var root = document.documentElement;
+  var order = ['auto', 'light', 'dark'];
+  var labels = { auto: 'automatique', light: 'clair', dark: 'sombre' };
+  var icons = { auto: 'fa-circle-half-stroke', light: 'fa-sun', dark: 'fa-moon' };
+
+  function current() {
+    var theme = root.getAttribute('data-theme');
+    return theme === 'light' || theme === 'dark' ? theme : 'auto';
+  }
+
+  function apply(theme) {
+    if (theme === 'auto') {
+      root.removeAttribute('data-theme');
+    } else {
+      root.setAttribute('data-theme', theme);
+    }
+    try {
+      if (theme === 'auto') {
+        localStorage.removeItem('codelab-theme');
+      } else {
+        localStorage.setItem('codelab-theme', theme);
+      }
+    } catch (e) {
+      /* storage unavailable: the choice lasts until the page is reloaded */
+    }
+    var next = order[(order.indexOf(theme) + 1) % order.length];
+    btn.querySelector('i').className = 'fa-solid ' + icons[theme];
+    btn.setAttribute('aria-label', 'Thème ' + labels[theme] + '. Passer au thème ' + labels[next]);
+    btn.title = 'Thème : ' + labels[theme];
+  }
+
+  btn.addEventListener('click', function () {
+    apply(order[(order.indexOf(current()) + 1) % order.length]);
+  });
+
+  apply(current());
+})();
+</script>
+
+<!-- Sidebar JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var btn = document.getElementById('sidebar-collapse');
+  if (!btn) return;
+
+  var root = document.documentElement;
+
+  function apply(collapsed) {
+    root.classList.toggle('sidebar-collapsed', collapsed);
+    var label = collapsed ? 'Afficher le menu des étapes' : 'Masquer le menu des étapes';
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    btn.setAttribute('aria-label', label);
+    btn.title = label;
+  }
+
+  btn.addEventListener('click', function () {
+    var collapsed = !root.classList.contains('sidebar-collapsed');
+    apply(collapsed);
+    try {
+      if (collapsed) {
+        localStorage.setItem('codelab-sidebar', 'collapsed');
+      } else {
+        localStorage.removeItem('codelab-sidebar');
+      }
+    } catch (e) {
+      /* storage unavailable: the choice lasts until the page is reloaded */
+    }
+  });
+
+  apply(root.classList.contains('sidebar-collapsed'));
+})();
+</script>
+
+</body>
+</html>
