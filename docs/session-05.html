@@ -891,16 +891,16 @@
               <p class="text-sm text-gray-600 mt-1">demande les produits au cache</p>
             </div>
             <div class="flex items-center justify-center text-gray-400"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></div>
-            <div class="flex flex-col md:flex-row md:items-stretch gap-3">
-            <div class="flex-1 min-w-0 rounded border border-gray-300 p-3 bg-white">
-              <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap">Cache de requêtes (QueryClient, en mémoire)</p>
-              <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib/queryClient.ts</code></p>
+            <div class="flex flex-row items-stretch gap-2 md:gap-3">
+            <div class="flex-1 min-w-0 rounded border border-gray-300 p-2 md:p-3 bg-white">
+              <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap [overflow-wrap:anywhere] text-sm md:text-base">Cache de requêtes (QueryClient, en mémoire)</p>
+              <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/lib/queryClient.ts</code></p>
               <p class="text-sm text-gray-600 mt-1">vidé à chaque redémarrage</p>
             </div>
-            <div class="flex flex-col items-center justify-center text-gray-500 text-xs text-center md:w-40 px-2"><i class="fa-solid fa-arrows-left-right hidden md:block" aria-hidden="true"></i><i class="fa-solid fa-arrows-up-down md:hidden" aria-hidden="true"></i><span class="mt-1">restaure au démarrage / réécrit à chaque changement</span></div>
-            <div class="flex-1 min-w-0 rounded border-2 border-brand p-3 bg-white">
-              <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap">Persisteur (AsyncStorage, sur le disque) <span class="text-xs font-medium bg-brand text-white rounded px-2 py-0.5">Nouveau en séance 05</span></p>
-              <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">shop-query-cache</code></p>
+            <div class="flex flex-col items-center justify-center text-gray-500 text-xs text-center w-20 shrink-0 md:w-40 px-1 md:px-2"><i class="fa-solid fa-arrows-left-right" aria-hidden="true"></i><span class="mt-1">restaure au démarrage / réécrit à chaque changement</span></div>
+            <div class="flex-1 min-w-0 rounded border-2 border-brand p-2 md:p-3 bg-white">
+              <p class="font-medium text-gray-900 flex items-center gap-2 flex-wrap [overflow-wrap:anywhere] text-sm md:text-base">Persisteur (AsyncStorage, sur le disque) <span class="text-xs font-medium bg-brand text-white rounded px-2 py-0.5">Nouveau en séance 05</span></p>
+              <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">shop-query-cache</code></p>
               <p class="text-sm text-gray-600 mt-1">survit au redémarrage</p>
             </div>
             </div>
@@ -3252,7 +3252,7 @@ const styles = StyleSheet.create({
           </h3>
           <ul class="space-y-2 text-gray-700 mb-4">
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Une route <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/reminders.tsx</code>, déclarée dans le <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Stack</code> avec le titre « Mes rappels », ouverte par un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Link</code> depuis l'onglet Compte.</span></li>
-            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un bouton « Rappel quotidien » programme une notification chaque jour à une heure fixe. Pour tester, choisissez l'heure et la minute qui suivent de deux minutes l'heure actuelle.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Un bouton « Rappel quotidien » programme une notification chaque jour à une heure fixe. Pour tester, choisissez une heure située deux minutes après l'heure actuelle.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La liste affiche le titre de chaque rappel programmé et un bouton « Annuler » ; après une annulation, la liste se met à jour.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La liste est lue avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useQuery</code> (clé <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">['reminders']</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">networkMode: 'always'</code>) et n'est pas écrite dans AsyncStorage : ajoutez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">'reminders'</code> à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">NOT_PERSISTED</code>.</span></li>
             <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib/notifications.ts</code> reste le seul fichier qui importe <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-notifications</code>.</span></li>
