@@ -813,7 +813,13 @@ Programme
 <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
 <div class="text-sm text-gray-800">
 <p class="font-medium">Avant la séance</p>
-<p class="mt-1"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Ouvrez votre projet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> et lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>. Si Expo Go indique que le projet n'est pas compatible avec sa version (Expo Go a été mis à jour vers le SDK 58), mettez le projet à jour une seule fois, puis suivez la page normalement : toutes les étapes fonctionnent sans changement.</p>
+<p class="mt-1"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Expo Go, installé depuis le store, fonctionne maintenant avec le SDK 58, et la séance 1 crée déjà un projet SDK 58. Cette page fonctionne sans changement sur les SDK 57 et 58.</p>
+<ul class="list-disc pl-5 mt-2 space-y-1">
+<li>Vous avez un projet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> de la séance 1 : lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>. S'il s'ouvre dans Expo Go, ne changez rien.</li>
+<li>Expo Go indique que le projet n'est pas compatible avec sa version : mettez le projet à jour une seule fois avec les commandes ci-dessous, puis suivez la page normalement.</li>
+<li>Nouvel étudiant, ou pas de projet : suivez « Point de départ » plus bas.</li>
+<li>Expo Go affiche encore le SDK 57 : mettez-le à jour depuis le store (sur iPhone, seule la version du store fonctionne).</li>
+</ul>
 </div>
 </div>
 <div class="mt-4">
@@ -824,7 +830,6 @@ Programme
 npx expo start --clear</code></pre>
 </div>
 <p class="text-gray-700 leading-relaxed mb-3 text-sm">Les guillemets autour de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--</code> sont nécessaires dans PowerShell et acceptés par Bash. L'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--legacy-peer-deps</code> évite un conflit de dépendances npm pendant la mise à jour.</p>
-<p class="text-gray-700 leading-relaxed">Si vous créez un nouveau projet, utilisez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-58</code> au lieu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">default@sdk-57</code>.</p>
 </div>
 </div>
 <div class="md-card p-6 mt-6">
@@ -832,7 +837,16 @@ npx expo start --clear</code></pre>
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
 Point de départ
 </h3>
-<p class="text-gray-700 leading-relaxed mb-4">Vous n'avez pas terminé la séance 1 ou vous étiez absent ? Créez le projet comme à l'Étape 2 de la <a href="club-01.html" class="text-brand underline">séance 1</a>, puis copiez ces trois fichiers.</p>
+<p class="text-gray-700 leading-relaxed mb-4">Vous n'avez pas terminé la séance 1, vous étiez absent ou vous êtes nouveau ? Créez le projet avec ces commandes, puis copiez les trois fichiers ci-dessous. (Vous pouvez aussi suivre l'Étape 2 de la <a href="club-01.html" class="text-brand underline">séance 1</a> : club-01.html.)</p>
+<p class="text-sm text-gray-600 mb-2">Créer le projet (Bash et PowerShell identique) :</p>
+<div class="code-block-wrapper mb-3">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx create-expo-app@latest club-tasks --template default@sdk-58
+cd club-tasks
+npm run reset-project
+npx expo start</code></pre>
+</div>
+<p class="text-gray-700 leading-relaxed mb-4 text-sm">Si <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> pose une question sur les fichiers d'exemple, répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>.</p>
 <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
 <div class="code-block-wrapper mb-4">
 <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
@@ -1997,9 +2011,9 @@ Commandes
 <code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
 ├── app/
 │   ├── (tabs)/
-│   │   ├── _layout.tsx         (nouveau)
-│   │   ├── api.tsx             (nouveau)
-│   │   └── index.tsx           (déplacé)
+│   │   ├── _layout.tsx
+│   │   ├── api.tsx             (modifié)
+│   │   └── index.tsx
 │   ├── _layout.tsx
 │   └── task/
 │       └── [id].tsx
@@ -2007,7 +2021,7 @@ Commandes
 │   ├── Clock.tsx
 │   └── TaskItem.tsx
 └── context/
-    └── TasksContext.tsx</code>
+    └── TasksContext.tsx        (modifié)</code>
 </div>
 <div class="md-card p-6 mt-6">
 <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
@@ -2211,9 +2225,9 @@ npx expo start</code></pre>
 <code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
 ├── app/
 │   ├── (tabs)/
-│   │   ├── _layout.tsx         (nouveau)
-│   │   ├── api.tsx             (nouveau)
-│   │   └── index.tsx           (déplacé)
+│   │   ├── _layout.tsx
+│   │   ├── api.tsx
+│   │   └── index.tsx
 │   ├── _layout.tsx
 │   └── task/
 │       └── [id].tsx
@@ -2221,7 +2235,7 @@ npx expo start</code></pre>
 │   ├── Clock.tsx
 │   └── TaskItem.tsx
 └── context/
-    └── TasksContext.tsx</code>
+    └── TasksContext.tsx        (modifié)</code>
 <p class="text-gray-700 leading-relaxed mb-3">Aucun nouveau fichier : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TasksContext.tsx</code> est modifié.</p>
 <p class="text-gray-700 leading-relaxed">Après avoir enregistré les fichiers, rechargez l'application : appuyez sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code> dans le terminal où tourne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
 </div>
