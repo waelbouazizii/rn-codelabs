@@ -823,13 +823,20 @@ Programme
 </div>
 </div>
 <div class="mt-4">
-<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go refuse le projet : mettre le projet à jour (Bash et PowerShell identique)</p>
+<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go refuse le projet : mettre le projet à jour. PowerShell (terminal de VS Code) :</p>
 <div class="code-block-wrapper mb-3">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
-<pre><code class="language-bash">npx expo install expo@^58.0.0 --fix '--' --legacy-peer-deps
+<pre><code class="language-powershell">npx expo install expo@^58.0.0 --fix '--' --legacy-peer-deps
 npx expo start --clear</code></pre>
 </div>
 <p class="text-gray-700 leading-relaxed mb-3 text-sm">Les guillemets autour de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--</code> sont nécessaires dans PowerShell et acceptés par Bash. L'option <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--legacy-peer-deps</code> évite un conflit de dépendances npm pendant la mise à jour.</p>
+<p class="text-sm text-gray-600 mb-2">Seulement si vous utilisez cmd.exe :</p>
+<div class="code-block-wrapper mb-3">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">npx expo install expo@^58.0.0 --fix -- --legacy-peer-deps
+npx expo start --clear</code></pre>
+</div>
+<p class="text-gray-700 leading-relaxed mb-3 text-sm">Dans cmd.exe, la ligne PowerShell ne fonctionne pas : utilisez celle-ci.</p>
 </div>
 </div>
 <div class="md-card p-6 mt-6">
@@ -847,6 +854,7 @@ npm run reset-project
 npx expo start</code></pre>
 </div>
 <p class="text-gray-700 leading-relaxed mb-4 text-sm">Si <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> pose une question sur les fichiers d'exemple, répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>.</p>
+<p class="text-gray-700 leading-relaxed mb-4">Créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code>. Remplacez le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>, puis créez les deux fichiers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TaskItem.tsx</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Clock.tsx</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code>.</p>
 <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> :</p>
 <div class="code-block-wrapper mb-4">
 <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
@@ -1874,7 +1882,7 @@ Vérification
 <p class="font-medium">Erreurs fréquentes</p>
 <ul class="mt-1 space-y-1">
 <li>L'application ne démarre pas ou signale un conflit de routes : il reste un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">index.tsx</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code>.</li>
-<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve module ../components/TaskItem</code> signifie que les imports n'ont pas été mis à jour après le déplacement.</li>
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve module ../components/TaskItem</code> (Metro, sur le téléphone ou dans le terminal) ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Cannot find module '../components/TaskItem' or its corresponding type declarations</code> (VS Code, soulignement rouge) signifie que les imports n'ont pas été mis à jour après le déplacement.</li>
 <li>VS Code propose parfois un import automatique du type 'src/...' : remplacez-le par le chemin relatif indiqué.</li>
 </ul>
 </div>

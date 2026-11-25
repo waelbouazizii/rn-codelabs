@@ -2066,7 +2066,7 @@ cd club-tasks
 npm run reset-project</code></pre>
 </div>
 <p class="text-gray-700 leading-relaxed mb-3">Pendant la création, ignorez les messages <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm audit</code> et la proposition de mettre à jour <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">create-expo</code> : ne lancez ni <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm audit fix</code>, ni les commandes <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm run android / ios / web</code> proposées à la fin.</p>
-<p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Do you want to move existing files to /example instead of deleting them? (Y/n)</code>. Tapez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code> puis Entrée : Entrée seule choisit Y et garde un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> inutile. Les fichiers de départ sont supprimés et il ne reste qu'un écran vide <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>. Ouvrez ensuite le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> dans VS Code.</p>
+<p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Do you want to move existing files to /example instead of deleting them? (Y/n)</code>. Tapez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code> puis Entrée : Entrée seule choisit Y et garde un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> inutile. Les fichiers de départ sont supprimés et il reste deux fichiers dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> : l'écran vide <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code>. Gardez les deux fichiers : ne supprimez pas <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">_layout.tsx</code>. Ouvrez ensuite le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> dans VS Code.</p>
 <p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
 <div class="code-block-wrapper mb-4">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
@@ -2102,7 +2102,7 @@ npm run reset-project</code></pre>
 <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
 Code complet
 </h3>
-<p class="text-gray-700 leading-relaxed">Aucun code à écrire : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> a créé un écran vide dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>.</p>
+<p class="text-gray-700 leading-relaxed">Aucun code à écrire : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> a créé un écran vide dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> et un fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code>. Gardez les deux fichiers.</p>
 </div>
 <div class="md-card p-6 mt-6">
 <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
@@ -2417,7 +2417,7 @@ Résultat et vérification
 <p class="font-medium">Erreurs fréquentes</p>
 <ul class="mt-1 space-y-1">
 <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Property 'title' is missing in type</code> (TypeScript) signifie qu'une prop obligatoire a été oubliée.</li>
-<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve module ../components/TaskItem</code> signifie que le nom du dossier ou du fichier est différent : vérifiez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/TaskItem.tsx</code>, majuscules comprises.</li>
+<li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Unable to resolve module ../components/TaskItem</code> (Metro, sur le téléphone ou dans le terminal) ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Cannot find module '../components/TaskItem' or its corresponding type declarations</code> (VS Code, soulignement rouge) signifie que le nom du dossier ou du fichier est différent : vérifiez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components/TaskItem.tsx</code>, majuscules comprises.</li>
 </ul>
 </div>
 </div>
@@ -2694,10 +2694,10 @@ const styles = StyleSheet.create({
 <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
 <pre><code class="language-tsx">import Clock from '../components/Clock';</code></pre>
 </div>
-<p class="text-sm text-gray-600 mb-2">Puis ajoutez cette ligne juste après la ligne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;</code> :</p>
+<p class="text-sm text-gray-600 mb-2">Puis ajoutez cette ligne sur la ligne juste après la ligne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">&lt;Text style={styles.title}&gt;Club Tasks&lt;/Text&gt;</code>, avec le même retrait (6 espaces) que cette ligne :</p>
 <div class="code-block-wrapper mb-4">
 <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
-<pre><code class="language-tsx">&lt;Clock /&gt;</code></pre>
+<pre><code class="language-tsx">      &lt;Clock /&gt;</code></pre>
 </div>
 <details>
 <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir le fichier complet à ce stade</summary>
