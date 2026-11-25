@@ -769,6 +769,10 @@
       <div class="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6">
 
         <section id="step-1" class="step-panel is-active" data-title="Bienvenue — programme et préparation">
+<style>
+  /* The copy button sits in a strip above the code, so it never covers a character. */
+  .code-block-wrapper > pre[class*="language-"] { border-top: 2.5rem solid transparent; padding-top: 0.25rem; }
+</style>
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -845,7 +849,13 @@ Programme
 <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
 <div class="text-sm text-gray-800">
 <p class="font-medium">Avant la séance</p>
-<p class="mt-1">Dépendance au SDK : ouvrez Expo Go, installé depuis le store, sur votre téléphone et lisez sa version de SDK. Cette page utilise le SDK 58 (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-58</code>). Si Expo Go affiche le SDK 57, utilisez la commande SDK 57 donnée à l'Étape 2. Sur iPhone, seule la version du store fonctionne : mettez Expo Go à jour depuis l'App Store au lieu d'installer autre chose.</p>
+<p class="mt-1"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Dépendance au SDK : ouvrez Expo Go, installé depuis le store, sur votre téléphone et lisez sa version de SDK. Cette page utilise le SDK 58 (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-58</code>).</p>
+<p class="font-medium mt-2">Expo Go affiche le SDK 57 ?</p>
+<ul class="list-disc pl-5 mt-1 space-y-1">
+<li><span class="font-medium">En priorité :</span> mettez Expo Go à jour depuis le store (App Store ou Play Store) pour qu'il affiche le SDK 58, puis utilisez la commande SDK 58 (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-58</code>). Sur iPhone, seule la version du store fonctionne.</li>
+<li><span class="font-medium">Seulement si la mise à jour est impossible</span> (ancien téléphone Android qui ne peut pas se mettre à jour) : créez le projet avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code>. Ce projet doit rester en SDK 57 pendant tout le club.</li>
+<li><span class="font-medium">Projet déjà créé en SDK 57, puis Expo Go mis à jour :</span> mettez le projet à jour une seule fois avec le bloc PowerShell ou le bloc cmd.exe situé au début de la <a href="club-02.html" class="text-brand underline">page de la séance 2</a>, puis continuez normalement.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1122,6 +1132,13 @@ Quiz éclair
   }
   #c01-layers .cl-tag-old { background: rgb(var(--rose-100)); color: rgb(var(--rose-800)); }
   #c01-layers .cl-tag { max-width: 100%; overflow-wrap: anywhere; }
+
+  /* Scene 7: inner tags never break inside a word. */
+  #c01-layers [data-scene="7"] .cl-inner .cl-tag { white-space: nowrap; overflow-wrap: normal; }
+  @media (max-width: 480px) {
+    #c01-layers [data-scene="7"] .cl-inner { display: grid; grid-template-columns: auto minmax(0, 1fr); row-gap: 0.25rem; }
+    #c01-layers [data-scene="7"] .cl-inner .cl-tag { grid-column: 2; justify-self: start; }
+  }
   @media (max-width: 639px) {
     #c01-layers .cl-hint { display: none; }
     #c01-layers .cl-compare .cl-icon { display: none; }
@@ -2072,18 +2089,27 @@ npm run reset-project</code></pre>
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
 <pre><code class="language-bash">npx expo start</code></pre>
 </div>
-<p class="text-sm text-gray-700 mb-2"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Les trois blocs suivants dépendent de la version d'Expo Go dans le store. Ils remplacent le premier bloc : arrêtez le serveur (Ctrl+C), revenez dans le dossier parent avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">cd ..</code>, supprimez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>, recréez le projet, puis lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
-<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go affiche SDK 57 et qu'un dossier club-tasks existe déjà : le supprimer (PowerShell)</p>
+<div class="text-sm text-gray-700 mb-2">
+<p><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> La commande à utiliser dépend de la version d'Expo Go sur votre téléphone.</p>
+<p class="font-medium mt-2">Expo Go affiche le SDK 57 ?</p>
+<ul class="list-disc pl-5 mt-1 space-y-1">
+<li><span class="font-medium">En priorité :</span> mettez Expo Go à jour depuis le store (App Store ou Play Store) pour qu'il affiche le SDK 58, puis utilisez la commande SDK 58 (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-58</code>). Sur iPhone, seule la version du store fonctionne.</li>
+<li><span class="font-medium">Seulement si la mise à jour est impossible</span> (ancien téléphone Android qui ne peut pas se mettre à jour) : créez le projet avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code>. Ce projet doit rester en SDK 57 pendant tout le club.</li>
+<li><span class="font-medium">Projet déjà créé en SDK 57, puis Expo Go mis à jour :</span> mettez le projet à jour une seule fois avec le bloc PowerShell ou le bloc cmd.exe situé au début de la <a href="club-02.html" class="text-brand underline">page de la séance 2</a>, puis continuez normalement.</li>
+</ul>
+<p class="mt-2">Les trois blocs suivants servent seulement si la mise à jour est impossible. Ils remplacent le premier bloc : arrêtez le serveur (Ctrl+C), revenez dans le dossier parent avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">cd ..</code>, supprimez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>, recréez le projet, puis lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+</div>
+<p class="text-sm text-gray-600 mb-2">Seulement si la mise à jour d'Expo Go est impossible et qu'un dossier club-tasks existe déjà : le supprimer (PowerShell)</p>
 <div class="code-block-wrapper mb-2">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
 <pre><code class="language-powershell">Remove-Item -Recurse -Force club-tasks</code></pre>
 </div>
-<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go affiche SDK 57 et qu'un dossier club-tasks existe déjà : le supprimer (Bash)</p>
+<p class="text-sm text-gray-600 mb-2">Seulement si la mise à jour d'Expo Go est impossible et qu'un dossier club-tasks existe déjà : le supprimer (Bash)</p>
 <div class="code-block-wrapper mb-2">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
 <pre><code class="language-bash">rm -rf club-tasks</code></pre>
 </div>
-<p class="text-sm text-gray-600 mb-2">Seulement si Expo Go affiche SDK 57 : créer le projet en SDK 57</p>
+<p class="text-sm text-gray-600 mb-2">Seulement si la mise à jour d'Expo Go est impossible : créer le projet en SDK 57</p>
 <div class="code-block-wrapper mb-4">
 <button class="copy-btn" aria-label="Copier la commande">Copier</button>
 <pre><code class="language-bash">npx create-expo-app@latest club-tasks --template default@sdk-57
@@ -2137,7 +2163,7 @@ Vérification
 <p class="font-medium">Erreurs fréquentes</p>
 <ul class="mt-1 space-y-1">
 <li>Si PowerShell refuse d'exécuter <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx</code> (scripts désactivés), lancez le bloc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Set-ExecutionPolicy</code> de l'Étape 1.</li>
-<li>Un message indiquant que le projet est incompatible avec cette version d'Expo Go signifie que le SDK du projet et celui d'Expo Go sont différents : recréez le projet avec le bon <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template</code>.</li>
+<li>Un message indiquant que le projet est incompatible avec cette version d'Expo Go signifie que le SDK du projet et celui d'Expo Go sont différents : suivez la règle « Expo Go affiche le SDK 57 ? » de la carte Commandes.</li>
 <li>Si le QR code charge sans fin, le téléphone n'atteint pas le PC (données mobiles, autre Wi-Fi, pare-feu) : utilisez le bloc du mode tunnel.</li>
 </ul>
 </div>

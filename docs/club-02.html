@@ -733,6 +733,14 @@
       <div class="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6">
 
         <section id="step-1" class="step-panel is-active" data-title="Bienvenue — programme et point de départ">
+<style>
+  /* The copy button sits in a strip above the code, so it never covers a character. */
+  .code-block-wrapper > pre[class*="language-"] { border-top: 2.5rem solid transparent; padding-top: 0.25rem; }
+  /* Folder trees: keep the markers visible on narrow phones. */
+  @media (max-width: 480px) {
+    code.file-tree { font-size: 0.6875rem; line-height: 1.6; padding: 0.5rem; }
+  }
+</style>
 <div class="md-card p-6">
 <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
@@ -815,10 +823,14 @@ Programme
 <p class="font-medium">Avant la séance</p>
 <p class="mt-1"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Expo Go, installé depuis le store, fonctionne maintenant avec le SDK 58, et la séance 1 crée déjà un projet SDK 58. Cette page fonctionne sans changement sur les SDK 57 et 58.</p>
 <ul class="list-disc pl-5 mt-2 space-y-1">
-<li>Vous avez un projet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> de la séance 1 : lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>. S'il s'ouvre dans Expo Go, ne changez rien.</li>
-<li>Expo Go indique que le projet n'est pas compatible avec sa version : mettez le projet à jour une seule fois avec les commandes ci-dessous, puis suivez la page normalement.</li>
+<li>Vous avez un projet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code> de la séance 1 : lancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>. Si Expo Go affiche le SDK 58 et que le projet s'ouvre, ne changez rien.</li>
 <li>Nouvel étudiant, ou pas de projet : suivez « Point de départ » plus bas.</li>
-<li>Expo Go affiche encore le SDK 57 : mettez-le à jour depuis le store (sur iPhone, seule la version du store fonctionne).</li>
+</ul>
+<p class="font-medium mt-2">Expo Go affiche le SDK 57 ?</p>
+<ul class="list-disc pl-5 mt-1 space-y-1">
+<li><span class="font-medium">En priorité :</span> mettez Expo Go à jour depuis le store (App Store ou Play Store) pour qu'il affiche le SDK 58, puis utilisez la commande SDK 58 (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-58</code>). Sur iPhone, seule la version du store fonctionne.</li>
+<li><span class="font-medium">Seulement si la mise à jour est impossible</span> (ancien téléphone Android qui ne peut pas se mettre à jour) : créez le projet avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">--template default@sdk-57</code>. Ce projet doit rester en SDK 57 pendant tout le club.</li>
+<li><span class="font-medium">Projet déjà créé en SDK 57, puis Expo Go mis à jour :</span> mettez le projet à jour une seule fois avec le bloc PowerShell ou le bloc cmd.exe situé au début de la <a href="club-02.html" class="text-brand underline">page de la séance 2</a>, puis continuez normalement.</li>
 </ul>
 </div>
 </div>
@@ -980,7 +992,7 @@ const styles = StyleSheet.create({
 });</code></pre>
 </div>
 <p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
-<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+<code class="file-tree block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
 ├── app/
 │   ├── _layout.tsx
 │   └── index.tsx
@@ -1202,7 +1214,7 @@ Commandes
 </h3>
 <p class="text-gray-700 leading-relaxed mb-4">Dans VS Code, créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/task</code>, puis le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">[id].tsx</code> à l'intérieur : le nom du fichier contient les crochets. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas.</p>
 <p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
-<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+<code class="file-tree block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
 ├── app/
 │   ├── _layout.tsx
 │   ├── index.tsx
@@ -1405,7 +1417,7 @@ Commandes
 </h3>
 <p class="text-gray-700 leading-relaxed mb-4">Dans VS Code, créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/context</code>, puis le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">TasksContext.tsx</code> à l'intérieur. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas.</p>
 <p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
-<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+<code class="file-tree block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
 ├── app/
 │   ├── _layout.tsx
 │   ├── index.tsx
@@ -1680,7 +1692,7 @@ npx expo start</code></pre>
 <p class="text-sm text-gray-800">Il ne doit plus rester de fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">index.tsx</code> directement dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> : deux <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">index.tsx</code> pour la même adresse empêchent l'application de démarrer.</p>
 </div>
 <p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
-<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+<code class="file-tree block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
 ├── app/
 │   ├── (tabs)/
 │   │   ├── _layout.tsx         (nouveau)
@@ -2016,7 +2028,7 @@ Commandes
 </h3>
 <p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le terminal : ne l'arrêtez pas. Enregistrez les fichiers, puis regardez le téléphone. Si le serveur est arrêté, relancez-le depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">club-tasks</code>.</p>
 <p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
-<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+<code class="file-tree block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
 ├── app/
 │   ├── (tabs)/
 │   │   ├── _layout.tsx
@@ -2230,7 +2242,7 @@ npx expo start</code></pre>
 </div>
 <p class="text-gray-700 leading-relaxed mb-4">Utilisez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo install</code> et non <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm install</code> : cette commande choisit la version compatible avec votre projet.</p>
 <p class="text-sm text-gray-600 mb-2">Arborescence attendue :</p>
-<code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
+<code class="file-tree block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-pre overflow-x-auto mb-4">src/
 ├── app/
 │   ├── (tabs)/
 │   │   ├── _layout.tsx
