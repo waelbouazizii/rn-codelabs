@@ -856,6 +856,25 @@ npx expo start --clear</code></pre>
 <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
 Point de départ
 </h3>
+<div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+<i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+<div class="text-sm text-gray-800 min-w-0 flex-1">
+<p class="font-medium">Vous n'avez pas fait la séance 1, ou votre projet ne marche pas ?</p>
+<p class="mt-1 mb-2">Récupérez le projet de départ :</p>
+<p class="text-sm text-gray-600 mb-2">Bash et PowerShell (identique) :</p>
+<div class="code-block-wrapper mb-3">
+<button class="copy-btn" aria-label="Copier la commande">Copier</button>
+<pre><code class="language-bash">git clone https://github.com/waelbouazizii/club-tasks-starter.git
+cd club-tasks-starter
+git checkout s1-etape-7
+npm install
+npx expo start</code></pre>
+</div>
+<p><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Expo Go doit afficher SDK 58. Le message <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">detached HEAD</code> est normal. Ensuite, suivez la page à partir de l'Étape 1.</p>
+<p class="mt-2">Ceux qui ont déjà un projet qui marche gardent le leur.</p>
+<p class="mt-2">Pour reprendre à une étape précise : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git checkout s2-etape-N</code> (N de 1 à 5). Arrêtez d'abord le serveur (Ctrl+C), puis, après le <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git checkout</code>, relancez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm install</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
+</div>
+</div>
 <p class="text-gray-700 leading-relaxed mb-4">Vous n'avez pas terminé la séance 1, vous étiez absent ou vous êtes nouveau ? Créez le projet avec ces commandes, puis copiez les trois fichiers ci-dessous. (Vous pouvez aussi suivre l'Étape 2 de la <a href="club-01.html" class="text-brand underline">séance 1</a> : club-01.html.)</p>
 <p class="text-sm text-gray-600 mb-2">Créer le projet (Bash et PowerShell identique) :</p>
 <div class="code-block-wrapper mb-3">
