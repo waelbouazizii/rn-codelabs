@@ -1783,13 +1783,6 @@ const styles = StyleSheet.create({
             <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
             <p class="text-sm text-rose-900"><span class="font-medium">Avant d'appuyer sur lecture :</span> Si vous lancez la simulation sans changer <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">prenom-nom</code>, votre ESP32 se connecte en tant que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">esp32-prenom-nom</code>, comme celui de tout camarade qui a fait la même erreur. Le broker déconnecte alors ces appareils à tour de rôle, et ils publient tous sur les mêmes topics : badges qui clignotent, mesures mélangées. Arrêtez la simulation, corrigez l'identifiant, relancez.</p>
           </div>
-          <p class="text-sm text-gray-600 mb-2"><span class="font-medium">Plan B (lien indisponible) :</span> recréez le projet à la main, puis lancez la simulation comme au point 3.</p>
-          <ol class="list-decimal pl-6 space-y-1 text-sm text-gray-600 mb-4">
-            <li>Ouvrez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">https://wokwi.com/projects/new/esp32</code> : un projet ESP32 vide s'ouvre, avec les onglets <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">sketch.ino</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">diagram.json</code>.</li>
-            <li>Onglet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">sketch.ino</code> : remplacez tout le contenu par votre fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">device/sketch.ino</code>.</li>
-            <li>Onglet <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">diagram.json</code> : remplacez tout le contenu par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">device/diagram.json</code>.</li>
-            <li>Ajoutez un fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">libraries.txt</code> avec le menu des fichiers (la flèche à côté des onglets, « New file... »), et collez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">device/libraries.txt</code>. S'il existe déjà, remplacez son contenu.</li>
-          </ol>
           <p class="text-gray-700 leading-relaxed mb-4">Aucune commande de terminal dans cette étape : observez le Terminal 1, où tourne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>.</p>
           </div>
           <div class="md-card p-6 mt-6">
@@ -3269,7 +3262,7 @@ Prénom Nom
 ## Lancer le projet
 
 1. npm install
-2. Ouvrir https://wokwi.com/projects/481765321571531777, remplacer prenom-nom par l'identifiant de device/sketch.ino, puis lancer la simulation (ou recréer le projet avec les trois fichiers de device/)
+2. Ouvrir https://wokwi.com/projects/481765321571531777, remplacer prenom-nom par l'identifiant de device/sketch.ino, puis lancer la simulation
 3. npx expo start, puis scanner le QR code avec Expo Go
 
 ## Captures d'écran
