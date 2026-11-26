@@ -1,0 +1,3094 @@
+<!DOCTYPE html>
+<!--
+  Codelab skeleton template - Développement multiplateforme avec React Native (Expo), IAM2
+
+  DO NOT edit the skeleton markup, the navigation JavaScript, the quiz CSS and
+  JavaScript, or the pinned asset versions below when authoring a session.
+  Copy this file to docs/session-XX.html and only touch:
+    - <title>, the session title in the sidebar and the header label
+    - the sidebar entries (section headings data-nav-section and step links)
+    - the <section class="step-panel" ...> blocks (edit, add, remove)
+  See CLAUDE.md and session-guidelines.md for the full rules.
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>Session 07 - Architecture, préparation à l'examen, atelier projet - IAM2 React Native</title>
+
+<!-- Tailwind Play CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Fonts: Roboto -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6.4.0 (pinned) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Prism 1.29.0 (pinned): core theme, language components load on demand via autoloader -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Roboto', 'sans-serif'],
+        },
+        colors: {
+          white: 'rgb(var(--c-white) / <alpha-value>)',
+          sidebar: {
+            DEFAULT: 'rgb(var(--c-sidebar) / <alpha-value>)',
+            hover: 'rgb(var(--c-sidebar-hover) / <alpha-value>)',
+          },
+          brand: {
+            DEFAULT: 'rgb(var(--c-brand) / <alpha-value>)',
+            dark: 'rgb(var(--c-brand-dark) / <alpha-value>)',
+          },
+          gray: {
+            50: 'rgb(var(--gray-50) / <alpha-value>)',
+            100: 'rgb(var(--gray-100) / <alpha-value>)',
+            200: 'rgb(var(--gray-200) / <alpha-value>)',
+            300: 'rgb(var(--gray-300) / <alpha-value>)',
+            400: 'rgb(var(--gray-400) / <alpha-value>)',
+            500: 'rgb(var(--gray-500) / <alpha-value>)',
+            600: 'rgb(var(--gray-600) / <alpha-value>)',
+            700: 'rgb(var(--gray-700) / <alpha-value>)',
+            800: 'rgb(var(--gray-800) / <alpha-value>)',
+            900: 'rgb(var(--gray-900) / <alpha-value>)',
+          },
+          blue: {
+            50: 'rgb(var(--blue-50) / <alpha-value>)',
+            100: 'rgb(var(--blue-100) / <alpha-value>)',
+            200: 'rgb(var(--blue-200) / <alpha-value>)',
+            300: 'rgb(var(--blue-300) / <alpha-value>)',
+            400: 'rgb(var(--blue-400) / <alpha-value>)',
+            500: 'rgb(var(--blue-500) / <alpha-value>)',
+            600: 'rgb(var(--blue-600) / <alpha-value>)',
+            700: 'rgb(var(--blue-700) / <alpha-value>)',
+            800: 'rgb(var(--blue-800) / <alpha-value>)',
+            900: 'rgb(var(--blue-900) / <alpha-value>)',
+          },
+          indigo: {
+            50: 'rgb(var(--indigo-50) / <alpha-value>)',
+            100: 'rgb(var(--indigo-100) / <alpha-value>)',
+            200: 'rgb(var(--indigo-200) / <alpha-value>)',
+            300: 'rgb(var(--indigo-300) / <alpha-value>)',
+            400: 'rgb(var(--indigo-400) / <alpha-value>)',
+            500: 'rgb(var(--indigo-500) / <alpha-value>)',
+            600: 'rgb(var(--indigo-600) / <alpha-value>)',
+            700: 'rgb(var(--indigo-700) / <alpha-value>)',
+            800: 'rgb(var(--indigo-800) / <alpha-value>)',
+            900: 'rgb(var(--indigo-900) / <alpha-value>)',
+          },
+          rose: {
+            50: 'rgb(var(--rose-50) / <alpha-value>)',
+            100: 'rgb(var(--rose-100) / <alpha-value>)',
+            200: 'rgb(var(--rose-200) / <alpha-value>)',
+            300: 'rgb(var(--rose-300) / <alpha-value>)',
+            400: 'rgb(var(--rose-400) / <alpha-value>)',
+            500: 'rgb(var(--rose-500) / <alpha-value>)',
+            600: 'rgb(var(--rose-600) / <alpha-value>)',
+            700: 'rgb(var(--rose-700) / <alpha-value>)',
+            800: 'rgb(var(--rose-800) / <alpha-value>)',
+            900: 'rgb(var(--rose-900) / <alpha-value>)',
+          },
+          red: {
+            50: 'rgb(var(--red-50) / <alpha-value>)',
+            100: 'rgb(var(--red-100) / <alpha-value>)',
+            200: 'rgb(var(--red-200) / <alpha-value>)',
+            300: 'rgb(var(--red-300) / <alpha-value>)',
+            400: 'rgb(var(--red-400) / <alpha-value>)',
+            500: 'rgb(var(--red-500) / <alpha-value>)',
+            600: 'rgb(var(--red-600) / <alpha-value>)',
+            700: 'rgb(var(--red-700) / <alpha-value>)',
+            800: 'rgb(var(--red-800) / <alpha-value>)',
+            900: 'rgb(var(--red-900) / <alpha-value>)',
+          },
+          amber: {
+            50: 'rgb(var(--amber-50) / <alpha-value>)',
+            100: 'rgb(var(--amber-100) / <alpha-value>)',
+            200: 'rgb(var(--amber-200) / <alpha-value>)',
+            300: 'rgb(var(--amber-300) / <alpha-value>)',
+            400: 'rgb(var(--amber-400) / <alpha-value>)',
+            500: 'rgb(var(--amber-500) / <alpha-value>)',
+            600: 'rgb(var(--amber-600) / <alpha-value>)',
+            700: 'rgb(var(--amber-700) / <alpha-value>)',
+            800: 'rgb(var(--amber-800) / <alpha-value>)',
+            900: 'rgb(var(--amber-900) / <alpha-value>)',
+          },
+          green: {
+            50: 'rgb(var(--green-50) / <alpha-value>)',
+            100: 'rgb(var(--green-100) / <alpha-value>)',
+            200: 'rgb(var(--green-200) / <alpha-value>)',
+            300: 'rgb(var(--green-300) / <alpha-value>)',
+            400: 'rgb(var(--green-400) / <alpha-value>)',
+            500: 'rgb(var(--green-500) / <alpha-value>)',
+            600: 'rgb(var(--green-600) / <alpha-value>)',
+            700: 'rgb(var(--green-700) / <alpha-value>)',
+            800: 'rgb(var(--green-800) / <alpha-value>)',
+            900: 'rgb(var(--green-900) / <alpha-value>)',
+          },
+        },
+      },
+    },
+  };
+</script>
+
+<meta name="color-scheme" content="light dark">
+<!-- Sidebar: a collapsed menu (desktop only) is restored before the first paint -->
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem('codelab-sidebar') === 'collapsed') {
+        document.documentElement.classList.add('sidebar-collapsed');
+      }
+    } catch (e) { /* storage unavailable: the menu stays open */ }
+  })();
+</script>
+<!-- Theme: a saved choice is applied before the first paint; otherwise the system theme is used -->
+<script>
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('codelab-theme'); } catch (e) { /* storage unavailable: follow the system */ }
+    if (theme === 'light' || theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  })();
+</script>
+
+
+<style>
+  /* Theme tokens: light by default, dark when the system asks for it or the
+     theme button forces it. Values are "R G B" so Tailwind can add opacity. */
+  :root {
+    color-scheme: light;
+    --c-white: 255 255 255;
+    --c-ink: 31 36 48;
+    --c-brand: 7 112 147;
+    --c-brand-dark: 5 92 120;
+    --c-sidebar: 32 35 42;
+    --c-sidebar-hover: 44 49 60;
+    --gray-50: 249 250 251;
+    --gray-100: 243 244 246;
+    --gray-200: 229 231 235;
+    --gray-300: 209 213 219;
+    --gray-400: 156 163 175;
+    --gray-500: 107 114 128;
+    --gray-600: 75 85 99;
+    --gray-700: 55 65 81;
+    --gray-800: 31 41 55;
+    --gray-900: 17 24 39;
+    --blue-50: 239 246 255;
+    --blue-100: 219 234 254;
+    --blue-200: 191 219 254;
+    --blue-300: 147 197 253;
+    --blue-400: 96 165 250;
+    --blue-500: 59 130 246;
+    --blue-600: 37 99 235;
+    --blue-700: 29 78 216;
+    --blue-800: 30 64 175;
+    --blue-900: 30 58 138;
+    --indigo-50: 238 242 255;
+    --indigo-100: 224 231 255;
+    --indigo-200: 199 210 254;
+    --indigo-300: 165 180 252;
+    --indigo-400: 129 140 248;
+    --indigo-500: 99 102 241;
+    --indigo-600: 79 70 229;
+    --indigo-700: 67 56 202;
+    --indigo-800: 55 48 163;
+    --indigo-900: 49 46 129;
+    --rose-50: 255 241 242;
+    --rose-100: 255 228 230;
+    --rose-200: 254 205 211;
+    --rose-300: 253 164 175;
+    --rose-400: 251 113 133;
+    --rose-500: 244 63 94;
+    --rose-600: 225 29 72;
+    --rose-700: 190 18 60;
+    --rose-800: 159 18 57;
+    --rose-900: 136 19 55;
+    --red-50: 254 242 242;
+    --red-100: 254 226 226;
+    --red-200: 254 202 202;
+    --red-300: 252 165 165;
+    --red-400: 248 113 113;
+    --red-500: 239 68 68;
+    --red-600: 220 38 38;
+    --red-700: 185 28 28;
+    --red-800: 153 27 27;
+    --red-900: 127 29 29;
+    --amber-50: 255 251 235;
+    --amber-100: 254 243 199;
+    --amber-200: 253 230 138;
+    --amber-300: 252 211 77;
+    --amber-400: 251 191 36;
+    --amber-500: 245 158 11;
+    --amber-600: 217 119 6;
+    --amber-700: 180 83 9;
+    --amber-800: 146 64 14;
+    --amber-900: 120 53 15;
+    --green-50: 240 253 244;
+    --green-100: 220 252 231;
+    --green-200: 187 247 208;
+    --green-300: 134 239 172;
+    --green-400: 74 222 128;
+    --green-500: 34 197 94;
+    --green-600: 22 163 74;
+    --green-700: 21 128 61;
+    --green-800: 22 101 52;
+    --green-900: 20 83 45;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --c-white: 38 42 51;
+      --c-ink: 230 232 235;
+      --c-brand: 88 196 220;
+      --c-brand-dark: 125 211 230;
+      --c-sidebar: 22 24 29;
+      --c-sidebar-hover: 36 40 48;
+      --gray-50: 27 30 36;
+      --gray-100: 48 53 63;
+      --gray-200: 58 64 76;
+      --gray-300: 74 81 96;
+      --gray-400: 107 114 128;
+      --gray-500: 139 147 160;
+      --gray-600: 163 171 181;
+      --gray-700: 196 201 208;
+      --gray-800: 216 220 225;
+      --gray-900: 230 232 235;
+      --blue-50: 41 54 78;
+      --blue-100: 43 63 98;
+      --blue-200: 45 72 117;
+      --blue-300: 48 86 148;
+      --blue-400: 96 165 250;
+      --blue-500: 96 165 250;
+      --blue-600: 147 197 253;
+      --blue-700: 147 197 253;
+      --blue-800: 191 219 254;
+      --blue-900: 219 234 254;
+      --indigo-50: 47 50 78;
+      --indigo-100: 53 56 97;
+      --indigo-200: 59 62 116;
+      --indigo-300: 68 72 146;
+      --indigo-400: 129 140 248;
+      --indigo-500: 129 140 248;
+      --indigo-600: 165 180 252;
+      --indigo-700: 165 180 252;
+      --indigo-800: 199 210 254;
+      --indigo-900: 224 231 255;
+      --rose-50: 67 45 57;
+      --rose-100: 87 47 61;
+      --rose-200: 108 49 66;
+      --rose-300: 141 52 72;
+      --rose-400: 251 113 133;
+      --rose-500: 251 113 133;
+      --rose-600: 253 164 175;
+      --rose-700: 253 164 175;
+      --rose-800: 254 205 211;
+      --rose-900: 255 228 230;
+      --red-50: 66 46 53;
+      --red-100: 86 48 55;
+      --red-200: 106 51 57;
+      --red-300: 138 55 60;
+      --red-400: 248 113 113;
+      --red-500: 248 113 113;
+      --red-600: 252 165 165;
+      --red-700: 252 165 165;
+      --red-800: 254 202 202;
+      --red-900: 254 226 226;
+      --amber-50: 67 58 45;
+      --amber-100: 88 70 41;
+      --amber-200: 108 81 37;
+      --amber-300: 142 100 31;
+      --amber-400: 251 191 36;
+      --amber-500: 251 191 36;
+      --amber-600: 252 211 77;
+      --amber-700: 252 211 77;
+      --amber-800: 253 230 138;
+      --amber-900: 254 243 199;
+      --green-50: 37 64 57;
+      --green-100: 37 79 61;
+      --green-200: 37 95 66;
+      --green-300: 36 120 72;
+      --green-400: 74 222 128;
+      --green-500: 74 222 128;
+      --green-600: 134 239 172;
+      --green-700: 134 239 172;
+      --green-800: 187 247 208;
+      --green-900: 220 252 231;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --c-white: 38 42 51;
+    --c-ink: 230 232 235;
+    --c-brand: 88 196 220;
+    --c-brand-dark: 125 211 230;
+    --c-sidebar: 22 24 29;
+    --c-sidebar-hover: 36 40 48;
+    --gray-50: 27 30 36;
+    --gray-100: 48 53 63;
+    --gray-200: 58 64 76;
+    --gray-300: 74 81 96;
+    --gray-400: 107 114 128;
+    --gray-500: 139 147 160;
+    --gray-600: 163 171 181;
+    --gray-700: 196 201 208;
+    --gray-800: 216 220 225;
+    --gray-900: 230 232 235;
+    --blue-50: 41 54 78;
+    --blue-100: 43 63 98;
+    --blue-200: 45 72 117;
+    --blue-300: 48 86 148;
+    --blue-400: 96 165 250;
+    --blue-500: 96 165 250;
+    --blue-600: 147 197 253;
+    --blue-700: 147 197 253;
+    --blue-800: 191 219 254;
+    --blue-900: 219 234 254;
+    --indigo-50: 47 50 78;
+    --indigo-100: 53 56 97;
+    --indigo-200: 59 62 116;
+    --indigo-300: 68 72 146;
+    --indigo-400: 129 140 248;
+    --indigo-500: 129 140 248;
+    --indigo-600: 165 180 252;
+    --indigo-700: 165 180 252;
+    --indigo-800: 199 210 254;
+    --indigo-900: 224 231 255;
+    --rose-50: 67 45 57;
+    --rose-100: 87 47 61;
+    --rose-200: 108 49 66;
+    --rose-300: 141 52 72;
+    --rose-400: 251 113 133;
+    --rose-500: 251 113 133;
+    --rose-600: 253 164 175;
+    --rose-700: 253 164 175;
+    --rose-800: 254 205 211;
+    --rose-900: 255 228 230;
+    --red-50: 66 46 53;
+    --red-100: 86 48 55;
+    --red-200: 106 51 57;
+    --red-300: 138 55 60;
+    --red-400: 248 113 113;
+    --red-500: 248 113 113;
+    --red-600: 252 165 165;
+    --red-700: 252 165 165;
+    --red-800: 254 202 202;
+    --red-900: 254 226 226;
+    --amber-50: 67 58 45;
+    --amber-100: 88 70 41;
+    --amber-200: 108 81 37;
+    --amber-300: 142 100 31;
+    --amber-400: 251 191 36;
+    --amber-500: 251 191 36;
+    --amber-600: 252 211 77;
+    --amber-700: 252 211 77;
+    --amber-800: 253 230 138;
+    --amber-900: 254 243 199;
+    --green-50: 37 64 57;
+    --green-100: 37 79 61;
+    --green-200: 37 95 66;
+    --green-300: 36 120 72;
+    --green-400: 74 222 128;
+    --green-500: 74 222 128;
+    --green-600: 134 239 172;
+    --green-700: 134 239 172;
+    --green-800: 187 247 208;
+    --green-900: 220 252 231;
+  }
+  /* Always-dark areas keep white text, light grays and the React cyan accent. */
+  #sidebar, .on-dark {
+    --c-white: 255 255 255;
+    --c-brand: 97 218 251;
+    --c-brand-dark: 88 196 220;
+    --gray-50: 249 250 251;
+    --gray-100: 243 244 246;
+    --gray-200: 229 231 235;
+    --gray-300: 209 213 219;
+    --gray-400: 156 163 175;
+    --gray-500: 156 163 175;
+    --gray-600: 75 85 99;
+    --gray-700: 55 65 81;
+    --gray-800: 31 41 55;
+    --gray-900: 17 24 39;
+  }
+
+  /* Inline SVG figures: their fixed colours follow the theme. */
+  svg [fill="#ffffff"] { fill: rgb(var(--c-white)); }
+  svg [fill="#1f2430"] { fill: rgb(var(--c-ink)); }
+  svg [stroke="#1f2430"] { stroke: rgb(var(--c-ink)); }
+  svg [fill="#374151"] { fill: rgb(var(--gray-700)); }
+  svg [fill="#f1f3f5"],
+  svg [fill="#f3f4f6"] { fill: rgb(var(--gray-100)); }
+  svg [stroke="#9ca3af"] { stroke: rgb(var(--gray-400)); }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Roboto', sans-serif; }
+
+  /* Sidebar */
+  #sidebar {
+    transition: transform 0.25s ease-in-out;
+  }
+  #sidebar::-webkit-scrollbar { width: 6px; }
+  #sidebar::-webkit-scrollbar-thumb { background: #3a4052; border-radius: 4px; }
+
+  .step-link { position: relative; }
+  .step-link.is-active {
+    background-color: rgba(97, 218, 251, 0.12);
+    border-left: 3px solid #61dafb;
+    color: #ffffff;
+  }
+  .step-link .step-marker {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+  }
+  .step-link.is-completed .step-marker .marker-number { display: none; }
+  .step-link.is-completed .step-marker .marker-check { display: flex; }
+  .step-link .step-marker .marker-check { display: none; }
+
+  /* Progress bar */
+  #progress-track {
+    height: 4px;
+    background: rgb(var(--gray-200));
+  }
+  #progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, rgb(var(--c-brand)), #61dafb);
+    width: 0%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.is-active { display: block; }
+
+  /* Content cards */
+  .md-card {
+    background: rgb(var(--c-white));
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.06);
+    border: 1px solid rgb(var(--gray-200));
+  }
+
+  /* Code blocks + copy button */
+  .code-block-wrapper { position: relative; }
+  .code-block-wrapper pre[class*="language-"] {
+    margin: 0;
+    border: 1px solid rgb(var(--gray-200));
+    border-radius: 0.5rem;
+    max-height: 32rem;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.375rem;
+    background: rgba(255,255,255,0.1);
+    color: #d4d4d4;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
+  /* Desktop sidebar collapse (the mobile menu keeps its own overlay) */
+  @media (min-width: 768px) {
+    html.sidebar-collapsed #sidebar { display: none; }
+  }
+
+  /* Quiz reset button, added next to each score line */
+  .quiz-score-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+  .quiz-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8125rem;
+    border: 1px solid rgb(var(--gray-300));
+    border-radius: 0.375rem;
+    background: rgb(var(--c-white));
+    color: rgb(var(--gray-600));
+    cursor: pointer;
+  }
+  .quiz-reset-btn:hover { background: rgb(var(--gray-50)); color: rgb(var(--gray-900)); }
+  .quiz-reset-btn:focus-visible { outline: 2px solid rgb(var(--c-brand)); outline-offset: 2px; }
+  .quiz-reset-btn[data-armed="true"] {
+    border-color: rgb(var(--rose-600));
+    background: rgb(var(--rose-50));
+    color: rgb(var(--rose-800));
+  }
+
+  /* Mobile sidebar */
+  @media (max-width: 767px) {
+    #sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 40;
+      transform: translateX(-100%);
+      width: 85vw;
+      max-width: 20rem;
+    }
+    #sidebar.is-open { transform: translateX(0); }
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 30;
+    }
+    #sidebar-overlay.is-open { display: block; }
+  }
+
+  /* Quiz */
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid rgb(var(--gray-300));
+    border-radius: 0.375rem;
+    background: rgb(var(--c-white));
+    color: inherit;
+    cursor: pointer;
+  }
+  .quiz-option:hover:not(:disabled) { background: rgb(var(--gray-50)); }
+  .quiz-option:focus-visible { outline: 2px solid rgb(var(--c-brand)); outline-offset: 2px; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-option.is-correct { border-color: rgb(var(--green-600)); background: rgb(var(--green-50)); }
+  .quiz-option.is-wrong { border-color: rgb(var(--rose-600)); background: rgb(var(--rose-50)); }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Mobile overlay -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="bg-sidebar text-gray-300 w-72 flex-shrink-0 flex flex-col overflow-y-auto">
+    <div class="px-5 py-5 border-b border-white/10">
+      <p class="text-xs uppercase tracking-wide text-gray-400">IAM2 - React Native</p>
+      <h1 class="text-white font-medium text-base mt-1">Développement multiplateforme avec React Native (Expo)</h1>
+      <p class="text-xs text-gray-400 mt-1" id="sidebar-session-title">Session 07 - Architecture, préparation à l'examen, atelier projet</p>
+    </div>
+    <nav class="flex-1 py-2" aria-label="Étapes du codelab">
+      <ul id="step-nav-list">
+        <li data-nav-section="cours" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Cours (90 min)</li>
+        <li>
+          <a href="#step-1" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-1">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">1</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Prérequis &amp; objectifs</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-2" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-2">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">2</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Architecture en couches</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-3" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-3">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">3</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Où placer l&#x27;état</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-4" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-4">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">4</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Comparer les sources de données</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-5" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-5">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">5</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Revue de l&#x27;examen (S1 à S6)</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-6" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-6">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">6</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Limites d&#x27;Expo Go et production</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-7" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-7">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">7</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Cours — Cahier des charges du projet</span>
+          </a>
+        </li>
+        <li data-nav-section="atelier" class="px-5 pt-4 pb-1 text-xs uppercase tracking-wide text-gray-500">Atelier (90 min)</li>
+        <li>
+          <a href="#step-8" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-8">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">8</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 1 — Créer le projet et l&#x27;arborescence</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-9" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-9">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">9</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 2 — Cadrer l&#x27;idée</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-10" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-10">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">10</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 3 — Modéliser les données</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-11" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-11">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">11</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 4 — Première tranche verticale</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-12" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-12">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">12</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Étape 5 — Documenter l&#x27;architecture</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-13" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-13">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">13</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Défi — Échanger la source de données</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-14" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-14">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">14</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Checklist d&#x27;évaluation</span>
+          </a>
+        </li>
+        <li>
+          <a href="#step-15" class="step-link flex items-center gap-3 px-5 py-3 hover:bg-sidebar-hover" data-step="step-15">
+            <span class="step-marker rounded-full bg-white/10 flex items-center justify-center text-xs">
+              <span class="marker-number">15</span>
+              <i class="marker-check fa-solid fa-check items-center justify-center text-brand" aria-hidden="true"></i>
+            </span>
+            <span>Livrable — lancement du projet</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="px-5 py-4 border-t border-white/10 text-xs text-gray-500">
+      <a href="index.html" class="hover:text-gray-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour au sommaire</a>
+    </div>
+  </aside>
+
+  <!-- Main column -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-4">
+      <button id="sidebar-toggle" class="md:hidden text-gray-600 hover:text-gray-900" aria-label="Ouvrir le menu des étapes">
+        <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+      </button>
+      <button id="sidebar-collapse" type="button" class="hidden md:inline-flex items-center px-2.5 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm" aria-label="Masquer le menu des étapes" aria-controls="sidebar" aria-expanded="true" title="Masquer le menu des étapes">
+        <i class="fa-solid fa-table-columns" aria-hidden="true"></i>
+      </button>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs text-gray-500">Session 07 - IAM2 React Native</p>
+        <h2 id="current-step-title" class="font-medium text-gray-900 truncate">Prérequis &amp; objectifs</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" type="button" class="px-2.5 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm" aria-label="Thème automatique. Passer au thème clair" title="Thème : automatique">
+          <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+        </button>
+        <button id="prev-step" class="px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape précédente">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Précédent</span>
+        </button>
+        <button id="next-step" class="px-3 py-2 rounded-md bg-brand text-white hover:bg-brand-dark disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-2" aria-label="Étape suivante">
+          <span class="hidden sm:inline">Suivant</span>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress bar -->
+    <div id="progress-track" class="w-full">
+      <div id="progress-bar"></div>
+    </div>
+
+    <!-- Content -->
+    <main id="content" class="flex-1 overflow-y-auto">
+      <div class="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6">
+
+        <!-- Step 1 -->
+        <section id="step-1" class="step-panel is-active" data-title="Prérequis &amp; objectifs">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Depuis six séances, chaque atelier a ajouté une source de données : SQLite (séance 02), une API REST (séance 03), Firestore (séance 04), un cache persistant et des notifications (séance 05), un appareil MQTT (séance 06). Cette dernière séance les range dans une seule architecture, prépare l'examen écrit, puis lance votre projet final. L'atelier ne construit pas de mini-application : vous créez le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code> de votre dépôt, vous faites valider votre idée et vous livrez un premier écran qui traverse toutes les couches.</p>
+          <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+            <div class="text-sm text-gray-800"><p class="font-medium">Avant la séance</p><p class="mt-1"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Dépendance au SDK : ouvrez Expo Go sur votre téléphone, installé depuis le store, et lisez la version de SDK qu'il prend en charge. Elle doit correspondre au SDK utilisé sur cette page : SDK 57, avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">--template default@sdk-57</code>. Sur iPhone, seule la version de l'App Store fonctionne : en cas d'écart, attendez la mise à jour de la page au lieu d'installer une autre version d'Expo Go. Vérifiez aussi que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo whoami</code> et Expo Go affichent le même compte Expo.</p></div>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-bullseye text-brand" aria-hidden="true"></i>
+            À la fin de la séance, vous savez
+          </h3>
+          <ol class="list-decimal pl-6 space-y-2 text-gray-700 mb-4">
+            <li>découper une application en couches : écran, hook, dépôt ou service, source de données ;</li>
+            <li>choisir où placer un état : composant, Context, cache TanStack Query, stockage persistant, avec Zustand comme option pour un état client partagé ;</li>
+            <li>comparer REST, SQLite, Firestore et MQTT selon la latence, le comportement hors ligne, la sécurité et le coût ;</li>
+            <li>répondre à des questions de type examen sur les séances 01 à 06 ;</li>
+            <li>expliquer les limites d'Expo Go et le chemin vers la production : development build, EAS Build, notifications distantes ;</li>
+            <li>cadrer et lancer votre projet final : arborescence, modèle de données et première tranche verticale.</li>
+          </ol>
+          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-gray-800">Idées fausses visées par la séance : « un écran peut interroger la base directement, c'est plus simple », « un Context ne relance que les composants concernés par le champ modifié », « Firestore garde un cache sur disque sur React Native » et « QoS 1 veut dire livré une seule fois ».</p>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+            Prérequis
+          </h3>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Séances 01 à 06 suivies : ce cours les relie et ne les réexplique pas.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Environnement de la séance 00 ; votre dépôt <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code> est cloné sur le PC.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le PC et le téléphone sont sur le même réseau Wi-Fi, et le téléphone a accès à Internet.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Une idée de projet en tête, même floue : vous la préciserez à l'Étape 2.</span></li>
+          </ul>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-clock text-brand" aria-hidden="true"></i>
+            Déroulement
+          </h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2">Partie</th>
+                  <th scope="col" class="px-3 py-2">Durée</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Cours</th>
+                  <td class="px-3 py-2 align-top">90 min</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Pause et changement de salle</th>
+                  <td class="px-3 py-2 align-top">10 min</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Atelier : étapes guidées</th>
+                  <td class="px-3 py-2 align-top">65 min</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Défi</th>
+                  <td class="px-3 py-2 align-top">15 min</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Livrable</th>
+                  <td class="px-3 py-2 align-top">10 min</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+        </section>
+
+        <!-- Step 2 -->
+        <section id="step-2" class="step-panel" data-title="Cours — Architecture en couches">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 20 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Nommer les quatre couches d'une application, savoir quel fichier a le droit d'importer quoi, et retrouver ces couches dans Compose et Flutter.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-brand" aria-hidden="true"></i>
+            Les quatre couches
+          </h3>
+          <figure class="mb-4">
+          <div class="flex flex-col gap-3">
+            <div class="flex-1 min-w-0 rounded border border-gray-300 p-3 bg-white">
+              <p class="font-medium text-gray-900">1. Écran</p>
+              <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code></p>
+              <p class="text-sm text-gray-600 mt-1">affiche l'état et transmet les gestes de l'utilisateur</p>
+            </div>
+            <div class="flex items-center justify-center text-gray-400"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></div>
+            <div class="flex-1 min-w-0 rounded border border-gray-300 p-3 bg-white">
+              <p class="font-medium text-gray-900">2. Hook</p>
+              <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features</code></p>
+              <p class="text-sm text-gray-600 mt-1">logique d'écran : état, chargement, actions</p>
+            </div>
+            <div class="flex items-center justify-center text-gray-400"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></div>
+            <div class="flex-1 min-w-0 rounded border border-gray-300 p-3 bg-white">
+              <p class="font-medium text-gray-900">3. Dépôt ou service</p>
+              <p class="mt-1"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib</code></p>
+              <p class="text-sm text-gray-600 mt-1">seul endroit qui parle SQL, HTTP, Firestore ou MQTT</p>
+            </div>
+            <div class="flex items-center justify-center text-gray-400"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></div>
+            <div class="rounded border border-gray-300 p-3 bg-white">
+              <p class="font-medium text-gray-900 mb-2">4. Sources de données</p>
+              <ul class="grid grid-cols-2 md:grid-cols-4 gap-2"><li class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700"><span class="block font-medium text-gray-900">SQLite</span>base locale</li><li class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700"><span class="block font-medium text-gray-900">API REST</span>serveur HTTP</li><li class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700"><span class="block font-medium text-gray-900">Firestore</span>base temps réel</li><li class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700"><span class="block font-medium text-gray-900">Broker MQTT</span>messages</li></ul>
+            </div>
+          </div>
+          <figcaption class="text-sm text-gray-600 mt-2">Figure 7.1 — Les dépendances descendent, jamais l'inverse : un écran connaît un hook, un hook connaît un dépôt ou un service, et seul celui-ci connaît la source de données.</figcaption>
+          </figure>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-code-compare text-brand" aria-hidden="true"></i>
+            Compose, Flutter et React Native
+          </h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full min-w-[560px] text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2"><span class="sr-only">Couche</span></th>
+                  <th scope="col" class="px-3 py-2">Compose</th>
+                  <th scope="col" class="px-3 py-2">Flutter</th>
+                  <th scope="col" class="px-3 py-2">React Native</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Écran</th>
+                  <td class="px-3 py-2 align-top">Composable d'écran</td>
+                  <td class="px-3 py-2 align-top">Widget de page</td>
+                  <td class="px-3 py-2 align-top">Fichier de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code></td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Logique d'écran</th>
+                  <td class="px-3 py-2 align-top">ViewModel + StateFlow</td>
+                  <td class="px-3 py-2 align-top">BLoC ou ChangeNotifier</td>
+                  <td class="px-3 py-2 align-top">Hook personnalisé (custom hook)</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Accès aux données</th>
+                  <td class="px-3 py-2 align-top">Repository</td>
+                  <td class="px-3 py-2 align-top">Repository</td>
+                  <td class="px-3 py-2 align-top">Module repo ou service</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Sources</th>
+                  <td class="px-3 py-2 align-top">Room, Retrofit, Firebase SDK</td>
+                  <td class="px-3 py-2 align-top">sqflite, dio, cloud_firestore</td>
+                  <td class="px-3 py-2 align-top">expo-sqlite, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">api&lt;T&gt;()</code>, Firebase JS SDK, MQTT.js</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Un écran qui ne connaît qu'un hook peut être relu et testé sans base ni réseau : il suffit de remplacer ce qui se trouve derrière le hook. Le même découpage permet de changer de source (SQLite vers REST, par exemple) en modifiant les couches basses, pendant que l'écran reste identique. Le défi de l'atelier en fait la démonstration.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Un écran de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> qui importe un module de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code> ou de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">firebase/firestore</code> saute deux couches. Le code fonctionne, mais la requête est liée à cet écran : le deuxième écran la recopie, et changer de source oblige à réécrire l'interface.</p>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+            Quiz éclair
+          </h3>
+          <div class="quiz-question mb-6" id="quiz-s07-q01" data-answer="b">
+            <p class="font-medium text-gray-900 mb-3">Un écran appelle <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">fetch</code> directement dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect</code>. Quel est le principal problème d'architecture ?</p>
+            <div class="space-y-2" role="group" aria-label="Réponses à la question 1">
+              <button type="button" class="quiz-option" data-option="a">Le code ne compile pas avec TypeScript strict.</button>
+              <button type="button" class="quiz-option" data-option="b">L'écran est couplé à la source de données : impossible de la tester ou de la remplacer (REST vers SQLite) sans réécrire l'écran.</button>
+              <button type="button" class="quiz-option" data-option="c"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">fetch</code> n'est pas disponible dans Expo Go.</button>
+            </div>
+            <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+            <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Le problème est le couplage, pas la syntaxe : le code compile et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">fetch</code> fonctionne dans Expo Go. Mais l'écran connaît l'URL, le format de la réponse et la gestion des erreurs ; remplacer la source ou le tester sans réseau oblige à le réécrire. En plus, depuis la séance 03, les données serveur passent par TanStack Query.</p>
+          </div>
+          <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 3 -->
+        <section id="step-3" class="step-panel" data-title="Cours — Où placer l&#x27;état">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 20 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Pour chaque donnée d'un écran, répondre à une question : qui en est le propriétaire, et combien de temps doit-elle vivre ?</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-table text-brand" aria-hidden="true"></i>
+            Aide-mémoire, à consulter pendant les étapes : où placer l'état
+          </h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full min-w-[600px] text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2">Type d'état</th>
+                  <th scope="col" class="px-3 py-2">Où</th>
+                  <th scope="col" class="px-3 py-2">Outil</th>
+                  <th scope="col" class="px-3 py-2">Équivalent Compose/Flutter</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">UI locale (champ de saisie, bascule)</th>
+                  <td class="px-3 py-2 align-top">Composant</td>
+                  <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code></td>
+                  <td class="px-3 py-2 align-top">remember, setState</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Partagé et rarement modifié (session, thème)</th>
+                  <td class="px-3 py-2 align-top">Racine</td>
+                  <td class="px-3 py-2 align-top">Context</td>
+                  <td class="px-3 py-2 align-top">CompositionLocal, Provider</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Données serveur</th>
+                  <td class="px-3 py-2 align-top">Cache de requêtes</td>
+                  <td class="px-3 py-2 align-top">TanStack Query</td>
+                  <td class="px-3 py-2 align-top">Flow + Retrofit, Riverpod FutureProvider</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Données persistantes</th>
+                  <td class="px-3 py-2 align-top">Disque</td>
+                  <td class="px-3 py-2 align-top">SQLite, SecureStore, AsyncStorage</td>
+                  <td class="px-3 py-2 align-top">Room, DataStore, sqflite, shared_preferences</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">État client partagé et très mis à jour (filtre, brouillon de panier)</th>
+                  <td class="px-3 py-2 align-top">Store global</td>
+                  <td class="px-3 py-2 align-top">Zustand (option, mention)</td>
+                  <td class="px-3 py-2 align-top">ViewModel + StateFlow, Riverpod</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Quand la valeur d'un Context change, React relance le rendu de tous les composants qui le consomment, même ceux qui ne lisent qu'un champ resté identique. C'est sans effet visible pour une session ou un thème, qui changent rarement. Pour un filtre modifié à chaque frappe, un état local ou un store avec sélection fine convient mieux.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Recopier une réponse d'API dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code> ou un Context crée une deuxième copie à synchroniser à la main. Les données serveur restent dans le cache de requêtes ; les écrans s'y abonnent avec la même clé.</p>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-eye text-brand" aria-hidden="true"></i>
+            Zustand, en aperçu
+          </h3>
+          <figure class="mb-4">
+          <code class="block bg-gray-900 text-gray-100 text-sm rounded p-3 whitespace-nowrap overflow-x-auto">import { create } from 'zustand';<br>type Filter = 'all' | 'todo' | 'done';<br>type UiState = { filter: Filter; setFilter: (f: Filter) =&gt; void };<br>export const useUiStore = create&lt;UiState&gt;()((set) =&gt; ({<br>&nbsp;&nbsp;filter: 'all',<br>&nbsp;&nbsp;setFilter: (filter) =&gt; set({ filter }),<br>}));</code>
+          <figcaption class="text-sm text-gray-600 mt-2">Figure 7.2 — Aperçu d'un store Zustand : un état client partagé tient dans un hook, sans Provider. Aperçu seulement, non installé dans les ateliers ; <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm install zustand</code> uniquement si vous le choisissez pour le projet (paquet JavaScript pur).</figcaption>
+          </figure>
+          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-gray-800"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Dépendance au SDK : compatibilité de Zustand avec Expo Go sur le SDK 57 non vérifiée en salle. Les ateliers n'en ont pas besoin ; si vous le choisissez pour le projet, essayez-le sur votre téléphone avant d'en dépendre.</p>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+            Quiz éclair
+          </h3>
+          <div class="quiz-question mb-6" id="quiz-s07-q02" data-answer="c">
+            <p class="font-medium text-gray-900 mb-3">Une liste de produits vient d'une API et s'affiche dans trois écrans. Où placer cet état ?</p>
+            <div class="space-y-2" role="group" aria-label="Réponses à la question 2">
+              <button type="button" class="quiz-option" data-option="a">Dans un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code> du composant racine, transmis par props.</button>
+              <button type="button" class="quiz-option" data-option="b">Dans un Context alimenté par <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useEffect</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">fetch</code>.</button>
+              <button type="button" class="quiz-option" data-option="c">Dans le cache TanStack Query, avec une clé de requête partagée.</button>
+            </div>
+            <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+            <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>C'est un état serveur : l'application n'en détient qu'une copie qui peut vieillir. Avec la même clé de requête, les trois écrans lisent le même cache, les requêtes simultanées sont dédoublonnées, et TanStack Query gère la fraîcheur, les erreurs et les nouvelles tentatives. Un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code> ou un Context vous obligerait à réécrire tout cela.</p>
+          </div>
+          <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 4 -->
+        <section id="step-4" class="step-panel" data-title="Cours — Comparer les sources de données">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 15 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Choisir une source de données à partir d'un besoin, en comparant le modèle, la latence, le comportement hors ligne, la sécurité et le coût.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-table text-brand" aria-hidden="true"></i>
+            Aide-mémoire, à consulter pendant les étapes : quatre sources de données
+          </h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full min-w-[720px] text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2">Critère</th>
+                  <th scope="col" class="px-3 py-2">REST + TanStack Query</th>
+                  <th scope="col" class="px-3 py-2">SQLite</th>
+                  <th scope="col" class="px-3 py-2">Firestore</th>
+                  <th scope="col" class="px-3 py-2">MQTT</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Modèle</th>
+                  <td class="px-3 py-2 align-top">Requête/réponse</td>
+                  <td class="px-3 py-2 align-top">Relationnel local</td>
+                  <td class="px-3 py-2 align-top">Base temps réel avec écouteurs</td>
+                  <td class="px-3 py-2 align-top">Publication/abonnement</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Latence</th>
+                  <td class="px-3 py-2 align-top">Un aller-retour réseau ; immédiate quand le cache répond</td>
+                  <td class="px-3 py-2 align-top">Très faible : aucun réseau</td>
+                  <td class="px-3 py-2 align-top">Réseau ; chaque changement est poussé vers les écouteurs</td>
+                  <td class="px-3 py-2 align-top">Réseau ; chaque message est poussé dès sa publication</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Hors ligne</th>
+                  <td class="px-3 py-2 align-top">Cache à persister (séance 05)</td>
+                  <td class="px-3 py-2 align-top">Total</td>
+                  <td class="px-3 py-2 align-top">Cache en mémoire seulement sur React Native, perdu au redémarrage</td>
+                  <td class="px-3 py-2 align-top">Dernier état retenu seulement, reçu à la reconnexion ; dépend du broker</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Sécurité</th>
+                  <td class="px-3 py-2 align-top">Jeton Bearer gardé dans SecureStore</td>
+                  <td class="px-3 py-2 align-top">Fichier local sur l'appareil</td>
+                  <td class="px-3 py-2 align-top">Règles de sécurité</td>
+                  <td class="px-3 py-2 align-top">Broker privé avec identifiants ; le préfixe de topics range, il ne protège pas</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Coût et limites</th>
+                  <td class="px-3 py-2 align-top">Dépend de l'API</td>
+                  <td class="px-3 py-2 align-top">Aucun</td>
+                  <td class="px-3 py-2 align-top">Quotas du plan Spark</td>
+                  <td class="px-3 py-2 align-top">Broker gratuit limité</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Cas d'usage</th>
+                  <td class="px-3 py-2 align-top">Catalogue</td>
+                  <td class="px-3 py-2 align-top">Dépenses personnelles</td>
+                  <td class="px-3 py-2 align-top">Tableau partagé entre deux téléphones</td>
+                  <td class="px-3 py-2 align-top">Télémétrie d'un ESP32</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Aucune source ne gagne partout, et une même application en combine souvent plusieurs : un catalogue venu d'une API, un panier dans SQLite, des données partagées dans Firestore. Grâce aux couches du premier panneau, chaque source reste derrière son dépôt ou son service.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> « QoS 1 signifie livré une seule fois » est faux : QoS 1 garantit au moins une livraison, des doublons restent possibles. Le récepteur doit supporter de traiter deux fois le même message ; « exactement une fois » correspond à QoS 2.</p>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+            Quiz éclair
+          </h3>
+          <div class="quiz-question mb-6" id="quiz-s07-q03" data-answer="a">
+            <p class="font-medium text-gray-900 mb-3">Un ESP32 publie son statut en retained avec un LWT <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">offline</code>. L'application se connecte une heure plus tard et s'abonne. Que reçoit-elle ?</p>
+            <div class="space-y-2" role="group" aria-label="Réponses à la question 3">
+              <button type="button" class="quiz-option" data-option="a">Immédiatement le dernier message retained du topic.</button>
+              <button type="button" class="quiz-option" data-option="b">Rien jusqu'au prochain message publié.</button>
+              <button type="button" class="quiz-option" data-option="c">Tous les messages de la dernière heure.</button>
+            </div>
+            <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+            <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>Un topic ne garde qu'un seul message retenu : le dernier publié avec le drapeau retain. Le broker l'envoie dès l'abonnement. Si l'appareil a disparu entre-temps et que son testament est retenu lui aussi, comme en séance 06, ce dernier message est <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">offline</code>. L'historique de l'heure écoulée n'est pas conservé.</p>
+          </div>
+          <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 5 -->
+        <section id="step-5" class="step-panel" data-title="Cours — Revue de l&#x27;examen (S1 à S6)">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 20 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Les huit cartes suivantes sont de type examen. Répondez par écrit avant d'ouvrir la réponse : à l'examen, il faut justifier, pas seulement reconnaître.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-brand" aria-hidden="true"></i>
+            1. Prédire l'ordre des logs
+          </h3>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-tsx">import { useEffect, useState } from 'react';
+import { Button } from 'react-native';
+
+export function Clock() {
+  const [n, setN] = useState(0);
+  useEffect(() =&gt; {
+    console.log('effect', n);
+    return () =&gt; console.log('cleanup', n);
+  }, [n]);
+  return &lt;Button title="+" onPress={() =&gt; setN(n + 1)} /&gt;;
+}</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Quels messages s'affichent au montage, puis après deux appuis sur le bouton ? On suppose un seul montage.</p>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la réponse</summary>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2">Moment</th>
+                  <th scope="col" class="px-3 py-2">Messages, dans l'ordre</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Montage</th>
+                  <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">effect 0</code></td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Premier appui</th>
+                  <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">cleanup 0</code>, puis <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">effect 1</code></td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Deuxième appui</th>
+                  <td class="px-3 py-2 align-top"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">cleanup 1</code>, puis <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">effect 2</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Avant de relancer l'effet, React exécute le nettoyage de l'effet précédent, qui voit encore l'ancienne valeur de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>.</p>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-brand" aria-hidden="true"></i>
+            2. Écrire une migration v1 vers v2
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">La table <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">books</code> existe en version 1 sur des téléphones qui contiennent déjà des données. Écrivez la migration vers la version 2 qui ajoute la colonne <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">note TEXT</code> sans perte de données, avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PRAGMA user_version</code>.</p>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la réponse</summary>
+          <p class="text-gray-700 leading-relaxed mb-4">Le bloc attendu est celui de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">version === 1</code>, avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">DATABASE_VERSION</code> porté à 2. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ALTER TABLE</code> ajoute la colonne et conserve les lignes ; les anciennes ont <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">note</code> à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">NULL</code>.</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-ts">import type { SQLiteDatabase } from 'expo-sqlite';
+
+const DATABASE_VERSION = 2;
+
+export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise&lt;void&gt; {
+  const row = await db.getFirstAsync&lt;{ user_version: number }&gt;('PRAGMA user_version');
+  let version = row?.user_version ?? 0;
+  if (version &gt;= DATABASE_VERSION) return;
+  if (version === 0) {
+    await db.execAsync(`
+      PRAGMA journal_mode = 'wal';
+      CREATE TABLE IF NOT EXISTS books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        author TEXT NOT NULL,
+        status TEXT NOT NULL,
+        created_at INTEGER NOT NULL
+      );
+    `);
+    version = 1;
+  }
+  if (version === 1) {
+    await db.execAsync('ALTER TABLE books ADD COLUMN note TEXT;');
+    version = 2;
+  }
+  await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+}</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Une installation neuve passe par les deux blocs ; un téléphone en version 1 n'exécute que le second.</p>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-brand" aria-hidden="true"></i>
+            3. Écrire getNextPageParam
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Une API renvoie des pages de la forme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">{ products, total, skip, limit }</code>. Écrivez la valeur initiale du paramètre de page et la fonction <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">getNextPageParam</code> d'un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useInfiniteQuery</code>.</p>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la réponse</summary>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-ts">type ProductPage = { products: { id: number; title: string }[]; total: number; skip: number; limit: number };
+
+export const pagination = {
+  initialPageParam: 0,
+  getNextPageParam: (last: ProductPage) =&gt; (last.skip + last.limit &lt; last.total ? last.skip + last.limit : undefined),
+};</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">undefined</code> signifie qu'il n'y a pas de page suivante : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">hasNextPage</code> vaut alors <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">false</code>.</p>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-brand" aria-hidden="true"></i>
+            4. Trouver le bug
+          </h3>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-ts">import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { db } from '@/lib/firebase';
+
+type Book = { id: string; title: string; author: string; status: 'todo' | 'reading' | 'done' };
+
+export function useSharedBooks() {
+  const [books, setBooks] = useState&lt;Book[]&gt;([]);
+
+  useEffect(() =&gt; {
+    const q = query(collection(db, 'books'), orderBy('createdAt', 'desc'));
+    onSnapshot(q, (snap) =&gt; {
+      setBooks(snap.docs.map((d) =&gt; ({ id: d.id, ...(d.data() as Omit&lt;Book, 'id'&gt;) })));
+    });
+  }, []);
+
+  return books;
+}</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Ce hook affiche bien les livres. Où est le bug, et comment le corriger ?</p>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la réponse</summary>
+          <p class="text-gray-700 leading-relaxed mb-4">L'effet n'a pas de fonction de nettoyage : l'écouteur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onSnapshot</code> survit au démontage du composant. Chaque nouveau montage en ajoute un, ce qui consomme des lectures sur le quota et de la mémoire. La correction renvoie la fonction de désabonnement :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-ts">import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { db } from '@/lib/firebase';
+
+type Book = { id: string; title: string; author: string; status: 'todo' | 'reading' | 'done' };
+
+export function useSharedBooks() {
+  const [books, setBooks] = useState&lt;Book[]&gt;([]);
+
+  useEffect(() =&gt; {
+    const q = query(collection(db, 'books'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snap) =&gt; {
+      setBooks(snap.docs.map((d) =&gt; ({ id: d.id, ...(d.data() as Omit&lt;Book, 'id'&gt;) })));
+    });
+    return unsubscribe;
+  }, []);
+
+  return books;
+}</code></pre>
+          </div>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-brand" aria-hidden="true"></i>
+            5. Une configuration incohérente
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Une application configure <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">staleTime</code> à 30 secondes, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">gcTime</code> à 1 heure et la persistance du cache avec un <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">maxAge</code> de 1 jour. Qu'est-ce qui ne va pas ?</p>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la réponse</summary>
+          <p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">gcTime</code> doit être supérieur ou égal à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">maxAge</code>, sinon le cache est supprimé de la mémoire avant la restauration prévue : la copie persistée perd ces données bien avant 1 jour. Il faut porter <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">gcTime</code> à 1 jour au moins. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">staleTime</code> à 30 secondes ne pose pas de problème : il règle la fraîcheur, pas la durée de conservation.</p>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-brand" aria-hidden="true"></i>
+            6. Lire des règles Firestore
+          </h3>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier les règles">Copier</button>
+            <pre><code class="language-cpp">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /books/{bookId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null &amp;&amp; request.resource.data.ownerId == request.auth.uid;
+      allow update, delete: if request.auth != null &amp;&amp; resource.data.ownerId == request.auth.uid;
+    }
+  }
+}</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Avec ces règles, qui peut supprimer un document de la collection <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">books</code> ?</p>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la réponse</summary>
+          <p class="text-gray-700 leading-relaxed mb-4">Seul le propriétaire connecté : il faut <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">request.auth != null</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">resource.data.ownerId == request.auth.uid</code>, c'est-à-dire que l'<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">ownerId</code> stocké dans le document soit l'uid de la personne qui demande la suppression. Un autre utilisateur connecté peut lire le document, pas le supprimer.</p>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-brand" aria-hidden="true"></i>
+            7. MQTT : s'abonner après coup
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Un appareil publie son topic <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">status</code> en retained avec un LWT <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">offline</code>. L'application s'abonne à ce topic 1 heure plus tard. Que reçoit-elle ?</p>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la réponse</summary>
+          <p class="text-gray-700 leading-relaxed mb-4">Immédiatement le dernier message retenu du topic : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">online</code> si c'est la dernière valeur publiée par l'appareil, ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">offline</code> si le broker a depuis publié son testament retenu. Elle ne reçoit pas les messages intermédiaires.</p>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-brand" aria-hidden="true"></i>
+            8. Choisir la source de données
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Pour chaque besoin, choisissez SQLite, REST avec TanStack Query, Firestore ou MQTT, et justifiez en une ligne : suivi des capteurs d'un ESP32 ; liste de tâches partagée entre deux téléphones ; catalogue en lecture seule consultable hors ligne ; dépenses personnelles.</p>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la réponse</summary>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full min-w-[520px] text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2">Besoin</th>
+                  <th scope="col" class="px-3 py-2">Choix</th>
+                  <th scope="col" class="px-3 py-2">Justification</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Capteurs d'un ESP32</th>
+                  <td class="px-3 py-2 align-top">MQTT</td>
+                  <td class="px-3 py-2 align-top">L'appareil pousse de petits messages fréquents, et plusieurs abonnés peuvent les recevoir.</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Tâches partagées entre deux téléphones</th>
+                  <td class="px-3 py-2 align-top">Firestore</td>
+                  <td class="px-3 py-2 align-top">Les écouteurs temps réel synchronisent les deux appareils, et les règles protègent les écritures.</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Catalogue en lecture seule, consultable hors ligne</th>
+                  <td class="px-3 py-2 align-top">REST + TanStack Query + cache persisté</td>
+                  <td class="px-3 py-2 align-top">Les données viennent d'un serveur, et la dernière copie reste lisible après un redémarrage sans réseau.</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Dépenses personnelles</th>
+                  <td class="px-3 py-2 align-top">SQLite</td>
+                  <td class="px-3 py-2 align-top">Données privées et relationnelles, avec totaux et filtres, sans serveur.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+            Quiz éclair
+          </h3>
+          <div class="quiz-question mb-6" id="quiz-s07-q04" data-answer="b">
+            <p class="font-medium text-gray-900 mb-3">Sur React Native, l'utilisateur passe en mode avion, tue l'application puis la relance. Que voit-il des données Firestore (SDK JavaScript, configuration par défaut) ?</p>
+            <div class="space-y-2" role="group" aria-label="Réponses à la question 4">
+              <button type="button" class="quiz-option" data-option="a">Les dernières données, grâce à un cache IndexedDB.</button>
+              <button type="button" class="quiz-option" data-option="b">Aucune donnée Firestore : le cache est en mémoire seulement et a disparu au redémarrage.</button>
+              <button type="button" class="quiz-option" data-option="c">Les données, si <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onSnapshot</code> était actif avant la fermeture.</button>
+            </div>
+            <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+            <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>React Native n'a pas IndexedDB : le SDK JavaScript de Firestore ne garde qu'un cache en mémoire. Il disparaît avec le processus, qu'un écouteur ait été actif ou non. Pour relire ces données après un redémarrage hors ligne, il faut les copier soi-même sur le disque (SQLite, par exemple).</p>
+          </div>
+          <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 6 -->
+        <section id="step-6" class="step-panel" data-title="Cours — Limites d&#x27;Expo Go et production">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 10 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Savoir ce qui oblige à quitter Expo Go, et situer les outils qui mènent à une application publiée. Cette partie est théorique : aucun atelier ne l'applique et aucune commande n'est à lancer.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-mobile-screen-button text-brand" aria-hidden="true"></i>
+            Quand Expo Go ne suffit plus
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Expo Go est une application déjà compilée : elle contient un ensemble fixe de modules natifs, et votre code JavaScript s'exécute à l'intérieur. Sortent donc d'Expo Go : les bibliothèques natives qu'il n'inclut pas, par exemple <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">react-native-mmkv</code> ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">@react-native-firebase/*</code> ; les notifications push distantes, qui demandent des jetons et les services FCM (Android) ou APNs (Apple) ; et plus généralement toute dépendance qui exige une configuration native.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Un development build est votre propre Expo Go, avec vos modules natifs : on garde le rechargement rapide, mais on installe son application au lieu d'Expo Go. EAS Build est la construction des binaires dans le cloud d'Expo, sans chaîne de compilation native sur votre PC. La soumission aux stores envoie ensuite ces binaires à Google Play et à l'App Store, avec leurs comptes développeur et leur examen. Les mises à jour OTA (over the air) livrent un nouveau code JavaScript et de nouvelles ressources à une application déjà installée ; un changement de code natif demande toujours une nouvelle construction.</p>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full min-w-[640px] text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2">Étape</th>
+                  <th scope="col" class="px-3 py-2">Ce que c'est</th>
+                  <th scope="col" class="px-3 py-2">Ce qui est possible</th>
+                  <th scope="col" class="px-3 py-2">Ce qui change pour le développeur</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Expo Go</th>
+                  <td class="px-3 py-2 align-top">Application prête à l'emploi, installée depuis le store</td>
+                  <td class="px-3 py-2 align-top">Tout ce qu'incluent ses modules natifs ; notifications locales</td>
+                  <td class="px-3 py-2 align-top">Rien à compiler : on scanne un QR code</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Development build</th>
+                  <td class="px-3 py-2 align-top">Votre propre application de développement</td>
+                  <td class="px-3 py-2 align-top">Tout module natif et sa configuration, notifications distantes comprises</td>
+                  <td class="px-3 py-2 align-top">Il faut reconstruire après un changement natif</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">EAS Build</th>
+                  <td class="px-3 py-2 align-top">Service de construction des binaires dans le cloud</td>
+                  <td class="px-3 py-2 align-top">Produire les builds de développement et de production</td>
+                  <td class="px-3 py-2 align-top">Un compte Expo, une configuration de build et des identifiants de signature ; quotas selon l'offre</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Store</th>
+                  <td class="px-3 py-2 align-top">Google Play et App Store</td>
+                  <td class="px-3 py-2 align-top">Distribuer au public ; mises à jour OTA ensuite pour le JavaScript</td>
+                  <td class="px-3 py-2 align-top">Comptes développeur, fiches, examen avant publication et numéros de version</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-gray-800"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Dépendance au SDK : le comportement exact des notifications distantes dans Expo Go est à vérifier avant le cours : il a changé entre versions du SDK et peut différer entre Android et iOS. Les ateliers n'utilisent que des notifications locales.</p>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-brand" aria-hidden="true"></i>
+            Quiz éclair
+          </h3>
+          <div class="quiz-question mb-6" id="quiz-s07-q05" data-answer="c">
+            <p class="font-medium text-gray-900 mb-3">Pourquoi les notifications push distantes sont-elles exclues des ateliers ?</p>
+            <div class="space-y-2" role="group" aria-label="Réponses à la question 5">
+              <button type="button" class="quiz-option" data-option="a">Expo Go est trop lent pour les recevoir.</button>
+              <button type="button" class="quiz-option" data-option="b">Le service de notification d'Expo les refuse pour les comptes gratuits.</button>
+              <button type="button" class="quiz-option" data-option="c">Elles dépendent d'une configuration native (FCM, APNs) qui exige un development build.</button>
+            </div>
+            <p class="quiz-feedback text-sm font-medium text-gray-900 mt-3" aria-live="polite" hidden></p>
+            <p class="quiz-explain text-sm text-gray-700 mt-1" hidden>La limite est native, pas une question de vitesse ni d'offre : une notification distante passe par FCM ou APNs, configurés dans votre propre binaire. <span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Le comportement exact d'Expo Go sur ce point dépend de la version du SDK.</p>
+          </div>
+          <p class="text-sm text-gray-600">Score de la session : <span data-quiz-score>0 / 0</span> (bonnes réponses au premier essai)</p>
+          </div>
+        </section>
+
+        <!-- Step 7 -->
+        <section id="step-7" class="step-panel" data-title="Cours — Cahier des charges du projet">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 5 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Connaître les exigences du projet final avant de choisir votre idée à l'atelier. Une application originale, sur un thème que vous choisissez.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-list text-brand" aria-hidden="true"></i>
+            Exigences
+          </h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full min-w-[600px] text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2">Exigence</th>
+                  <th scope="col" class="px-3 py-2">Où elle apparaît dans l'application</th>
+                  <th scope="col" class="px-3 py-2">Source de données</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Connexion avec Firebase Auth</th>
+                  <td class="px-3 py-2 align-top">Écran de connexion et garde d'accès dans le layout racine</td>
+                  <td class="px-3 py-2 align-top">Firebase Auth</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Une collection Firestore avec des règles de sécurité</th>
+                  <td class="px-3 py-2 align-top">Un écran qui lit et écrit des données partagées ou liées au compte</td>
+                  <td class="px-3 py-2 align-top">Firestore</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Une API REST consommée avec TanStack Query</th>
+                  <td class="px-3 py-2 align-top">Un écran de liste ou de détail avec chargement, erreur et vide</td>
+                  <td class="px-3 py-2 align-top">API publique ou DummyJSON</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Une table SQLite avec une migration</th>
+                  <td class="px-3 py-2 align-top">Un écran qui enregistre des données locales</td>
+                  <td class="px-3 py-2 align-top">SQLite</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Redémarrage hors ligne d'au moins un écran</th>
+                  <td class="px-3 py-2 align-top">Cet écran s'ouvre en mode avion après fermeture de l'application</td>
+                  <td class="px-3 py-2 align-top">Cache de requêtes persisté ou SQLite</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Une notification locale planifiée</th>
+                  <td class="px-3 py-2 align-top">Une action de rappel, par exemple un bouton</td>
+                  <td class="px-3 py-2 align-top">Aucune : planifiée sur le téléphone</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Bonus : une fonction MQTT (facultatif)</th>
+                  <td class="px-3 py-2 align-top">Un écran de mesures ou de commande</td>
+                  <td class="px-3 py-2 align-top">Broker MQTT</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-flag-checkered text-brand" aria-hidden="true"></i>
+            Format et remise
+          </h3>
+          <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
+            <li>De 3 à 6 écrans.</li>
+            <li>Un README avec un diagramme d'architecture, les règles de sécurité, des captures d'écran et les limites connues.</li>
+            <li>Remise 10 jours après la séance, avec le tag <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project-submit</code>.</li>
+            <li>Votre idée est validée individuellement par l'enseignant pendant l'atelier.</li>
+          </ul>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Chaque exigence correspond à une séance : le projet ne demande aucune notion nouvelle. La difficulté est de choisir une idée où ces six besoins sont naturels, puis de les ranger dans les couches vues aujourd'hui.</p>
+          </div>
+          </div>
+        </section>
+
+        <!-- Step 8 -->
+        <section id="step-8" class="step-panel" data-title="Étape 1 — Créer le projet et l&#x27;arborescence">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 10 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Créer le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code> de votre dépôt avec le SDK 57, préparer les dossiers des couches, protéger le futur fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> et afficher l'écran de départ sur le téléphone.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+            Commandes
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Ouvrez un terminal à la racine de votre dépôt <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">iam2-rn-prenom-nom</code>. La dernière commande demande s'il faut conserver les fichiers de démarrage : répondez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">n</code>, puis Entrée, pour les supprimer. La touche Entrée seule vaut <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Y</code>, qui les conserve.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx create-expo-app@latest project --template default@sdk-57
+cd project
+npm run reset-project</code></pre>
+          </div>
+          <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+            <div class="text-sm text-gray-800"><p><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Dépendance au SDK : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">--template default@sdk-57</code> crée le projet sur le SDK 57, celui que prend en charge l'Expo Go utilisé par cette page. Les questions de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> dépendent aussi de la version du modèle.</p></div>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Si vous avez répondu autrement, un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">example</code> existe à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code> : supprimez-le dans l'explorateur de VS Code.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Créez les dossiers des couches, dans le même terminal (dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>). Lancez le bloc qui correspond à votre terminal.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">mkdir -p src/features/books src/db src/lib src/components</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — PowerShell :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-powershell">New-Item -ItemType Directory -Force src/features/books, src/db, src/lib, src/components</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Ajoutez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code> au fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.gitignore</code> du projet, une seule fois :</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">echo ".env" &gt;&gt; .gitignore</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — PowerShell :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-powershell">Add-Content .gitignore ".env"</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">La commande suivante doit répondre <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code>, ce qui confirme que Git l'ignorera :</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">git check-ignore .env</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Créez le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> de la carte Code complet et enregistrez. Lancez ensuite le serveur et scannez le QR code (Android : depuis Expo Go ; iPhone : avec l'application Appareil photo).</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx expo start</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Seulement si le QR code ne se connecte pas : mode tunnel. Arrêtez d'abord le serveur avec Ctrl+C — Terminal 1 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx expo start --tunnel</code></pre>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+            Code complet
+          </h3>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project/.env.example</code> (nouveau, valeurs vides) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-bash">EXPO_PUBLIC_FIREBASE_API_KEY=
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+EXPO_PUBLIC_FIREBASE_APP_ID=</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">La configuration Web de Firebase n'est pas un secret : la sécurité vient des règles Firestore. Le fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code>, que vous créerez quand vous brancherez Firebase, reste local ; <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> est commité et indique les variables à renseigner.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+            Résultat attendu
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Les fichiers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> existent dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>, à côté des dossiers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/books</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code>. Le terminal affiche un QR code.</p>
+          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-gray-800"><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Dépendance au SDK : la sortie exacte de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">reset-project</code> dépend de la version du modèle. Si les noms de dossiers diffèrent de ceux de cette page, demandez à l'enseignant avant de continuer.</p>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+            Vérification
+          </h3>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">git check-ignore .env</code> affiche <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>L'explorateur de VS Code montre <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, après le scan du QR code, Expo Go affiche l'écran de départ presque vide, avec le texte <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">Edit src/app/index.tsx to edit this screen.</code></span></li>
+          </ul>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+            À retenir
+          </h3>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Les dossiers existent avant le code pour que chaque fichier ait dès le premier jour sa couche : les routes dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code>, les hooks dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features</code>, l'accès aux données dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib</code>. Git n'enregistre pas un dossier vide : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code> n'apparaîtront sur GitHub que lorsqu'ils contiendront un fichier.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Si Expo Go refuse d'ouvrir le projet avec un message indiquant que la version de SDK du projet n'est pas compatible avec l'application, comparez les deux versions. Sur Android, installez l'Expo Go qui correspond au SDK 57 ; sur iPhone, seule la version de l'App Store fonctionne : signalez l'écart à l'enseignant.</p>
+          </div>
+          </div>
+        </section>
+
+        <!-- Step 9 -->
+        <section id="step-9" class="step-panel" data-title="Étape 2 — Cadrer l&#x27;idée">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 10 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Écrire votre idée dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PROJECT.md</code>, vérifier que les six exigences obligatoires y ont une place naturelle, et la faire valider.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+            Commandes
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Aucune commande à lancer : le serveur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> de l'Étape 1 reste lancé dans le Terminal 1, et le projet reste ouvert sur le téléphone. Dans VS Code, créez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PROJECT.md</code> à la racine de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>, puis remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+            Code complet
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Remplacez chaque texte entre chevrons par vos réponses, et ajoutez une ligne par écran dans le tableau.</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project/PROJECT.md</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-bash"># Projet - &lt;titre&gt;
+
+## Idée en une phrase
+&lt;une phrase&gt;
+
+## Utilisateur cible et problème
+&lt;qui, quel problème&gt;
+
+## Écrans (3 à 6)
+| Écran | Rôle | Source de données |
+|---|---|---|
+| &lt;nom&gt; | &lt;rôle&gt; | &lt;SQLite / REST / Firestore&gt; |
+
+## Exigences obligatoires
+| Exigence | Réalisation prévue |
+|---|---|
+| Authentification Firebase | &lt;écran de connexion, méthode&gt; |
+| Collection Firestore et règles | &lt;collection, champs, qui lit et écrit&gt; |
+| API REST avec TanStack Query | &lt;API, endpoints&gt; |
+| Table SQLite et migration | &lt;table, première évolution prévue&gt; |
+| Redémarrage hors ligne d'un écran | &lt;quel écran, quel mécanisme&gt; |
+| Notification locale planifiée | &lt;quand, pourquoi&gt; |
+| Bonus MQTT (facultatif) | &lt;oui / non&gt; |
+
+## Validation
+Statut : à valider</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> (remplacez tout le contenu) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-tsx">import { StyleSheet, Text, View } from 'react-native';
+
+export default function HomeScreen() {
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.title}&gt;Mon projet&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  title: { fontSize: 24, fontWeight: '700' },
+});</code></pre>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+            Résultat attendu
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PROJECT.md</code> est rempli et le téléphone affiche « Mon projet » au centre de l'écran. Avant d'appeler l'enseignant, contrôlez votre idée : chacune des six exigences doit y avoir un rôle naturel.</p>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full min-w-[600px] text-sm text-left border border-gray-200">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th scope="col" class="px-3 py-2">Exigence</th>
+                  <th scope="col" class="px-3 py-2">Question à vous poser</th>
+                  <th scope="col" class="px-3 py-2">Signe d'une fonction artificielle</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Authentification Firebase</th>
+                  <td class="px-3 py-2 align-top">Pourquoi l'utilisateur doit-il avoir un compte ?</td>
+                  <td class="px-3 py-2 align-top">La connexion ne change rien à ce qu'il voit</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Collection Firestore et règles</th>
+                  <td class="px-3 py-2 align-top">Quelles données sont partagées ou suivent le compte ?</td>
+                  <td class="px-3 py-2 align-top">La collection ne sert à aucun écran utile</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">API REST avec TanStack Query</th>
+                  <td class="px-3 py-2 align-top">Quelles données viennent d'un serveur existant ?</td>
+                  <td class="px-3 py-2 align-top">L'API choisie n'a aucun lien avec le thème</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Table SQLite et migration</th>
+                  <td class="px-3 py-2 align-top">Qu'est-ce qui doit rester sur le téléphone ?</td>
+                  <td class="px-3 py-2 align-top">La table recopie Firestore sans raison</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Redémarrage hors ligne d'un écran</th>
+                  <td class="px-3 py-2 align-top">Quel écran sert sans réseau ?</td>
+                  <td class="px-3 py-2 align-top">Personne n'ouvrirait cet écran hors ligne</td>
+                </tr>
+                <tr class="border-t border-gray-200">
+                  <th scope="row" class="px-3 py-2 font-medium align-top">Notification locale planifiée</th>
+                  <td class="px-3 py-2 align-top">À quel moment un rappel aide-t-il ?</td>
+                  <td class="px-3 py-2 align-top">Un bouton de notification sans motif</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Si une exigence force une fonction artificielle, changez d'idée maintenant : c'est le moment le moins coûteux.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Quand <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PROJECT.md</code> est complet, levez la main. L'enseignant circule pendant les étapes 2 à 4 : continuez à l'Étape 3 en attendant. Après son accord oral, remplacez « à valider » par « validé » dans le fichier.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+            Vérification
+          </h3>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PROJECT.md</code> ne contient plus aucun texte entre chevrons, et le tableau des écrans compte de 3 à 6 lignes.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>, remplacez « Mon projet » par le nom de votre projet et enregistrez : le téléphone affiche le nouveau texte sans redémarrer l'application (Fast Refresh).</span></li>
+          </ul>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+            À retenir
+          </h3>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Une page écrite avant le code force à choisir les écrans et leurs sources. L'enseignant peut ainsi repérer en quelques minutes une idée trop grande ou une exigence sans usage, avant que vous n'ayez écrit des heures de code.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Plus de 6 écrans : l'idée est trop large, gardez le parcours principal. L'écran rouge <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">Text strings must be rendered within a &lt;Text&gt; component.</code> signifie que le nom du projet a été écrit en dehors de la balise <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Text</code>.</p>
+          </div>
+          </div>
+        </section>
+
+        <!-- Step 10 -->
+        <section id="step-10" class="step-panel" data-title="Étape 3 — Modéliser les données">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 15 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Créer la table SQLite de votre entité principale avec une migration, écrire son dépôt, et décrire le modèle Firestore et ses règles. Les exemples utilisent l'entité <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Book</code> (titre, auteur, statut).</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+            Commandes
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Dans le Terminal 1, arrêtez le serveur avec Ctrl+C, puis installez expo-sqlite et relancez :</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 1 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx expo install expo-sqlite
+npx expo start</code></pre>
+          </div>
+          <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+            <div class="text-sm text-gray-800"><p><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Dépendance au SDK : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo install</code> choisit la version d'<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-sqlite</code> qui correspond au SDK 57 du projet. N'utilisez pas <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npm install</code> pour un module Expo.</p></div>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Créez les fichiers de la carte Code complet dans l'ordre donné et enregistrez. Ouvrez ensuite un second terminal dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code> et vérifiez les types :</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+            Code complet
+          </h3>
+          <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+            <div class="text-sm text-gray-800"><p>Remplacez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">books</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Book</code> par votre entité et ses colonnes, dans les quatre fichiers à la fois. Faites-le avant d'enregistrer <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">_layout.tsx</code>, qui lance la migration sur le téléphone. Les étapes suivantes gardent les noms <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">Book</code> : adaptez-les de la même façon.</p></div>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db/migrations.ts</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import type { SQLiteDatabase } from 'expo-sqlite';
+
+const DATABASE_VERSION = 1;
+
+export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise&lt;void&gt; {
+  const row = await db.getFirstAsync&lt;{ user_version: number }&gt;('PRAGMA user_version');
+  let version = row?.user_version ?? 0;
+  if (version &gt;= DATABASE_VERSION) return;
+  if (version === 0) {
+    await db.execAsync(`
+      PRAGMA journal_mode = 'wal';
+      CREATE TABLE IF NOT EXISTS books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        author TEXT NOT NULL,
+        status TEXT NOT NULL,
+        created_at INTEGER NOT NULL
+      );
+    `);
+    version = 1;
+  }
+  await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+}</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db/bookRepo.ts</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import type { SQLiteDatabase } from 'expo-sqlite';
+
+export type BookStatus = 'todo' | 'reading' | 'done';
+export type Book = { id: number; title: string; author: string; status: BookStatus; created_at: number };
+export type NewBook = Pick&lt;Book, 'title' | 'author' | 'status'&gt;;
+
+export const bookRepo = (db: SQLiteDatabase) =&gt; ({
+  all: () =&gt; db.getAllAsync&lt;Book&gt;('SELECT * FROM books ORDER BY created_at DESC'),
+  add: (b: NewBook) =&gt;
+    db.runAsync(
+      'INSERT INTO books (title, author, status, created_at) VALUES (?, ?, ?, ?)',
+      b.title,
+      b.author,
+      b.status,
+      Date.now(),
+    ),
+  remove: (id: number) =&gt; db.runAsync('DELETE FROM books WHERE id = ?', id),
+});</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/_layout.tsx</code> (remplacez tout le contenu) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-tsx">import { Stack } from 'expo-router';
+import { SQLiteProvider } from 'expo-sqlite';
+import { migrateDbIfNeeded } from '@/db/migrations';
+
+export default function RootLayout() {
+  return (
+    &lt;SQLiteProvider databaseName="project.db" onInit={migrateDbIfNeeded}&gt;
+      &lt;Stack&gt;
+        &lt;Stack.Screen name="index" options={{ title: 'Livres' }} /&gt;
+      &lt;/Stack&gt;
+    &lt;/SQLiteProvider&gt;
+  );
+}</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project/DATA-MODEL.md</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-bash"># Modèle de données
+
+## SQLite (version 1)
+Table books : id, title, author, status (todo | reading | done), created_at.
+
+## Firestore
+Collection books : title, author, status, ownerId, createdAt (serverTimestamp).
+
+## Règles de sécurité (brouillon)
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /books/{bookId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null &amp;&amp; request.resource.data.ownerId == request.auth.uid;
+      allow update, delete: if request.auth != null &amp;&amp; resource.data.ownerId == request.auth.uid;
+    }
+  }
+}</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Le brouillon de règles est écrit maintenant ; vous le publierez et le testerez plus tard, avec la méthode de la séance 04.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+            Résultat attendu
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">L'application s'ouvre avec le titre « Livres » (ou le titre que vous avez choisi) et le texte de l'Étape 2. La base <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project.db</code> est créée et la table existe : aucun écran rouge n'apparaît.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+            Vérification
+          </h3>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> se termine sans aucun message.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, l'application affiche le titre « Livres » sans écran rouge : la migration s'est exécutée.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">DATA-MODEL.md</code> nomme les mêmes colonnes que votre migration.</span></li>
+          </ul>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+            À retenir
+          </h3>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">user_version</code> retient la version du schéma présente sur chaque téléphone. Modifier une migration déjà exécutée ne change rien : la base est déjà en version 1 et le bloc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">version === 0</code> ne s'exécute plus. Pour faire évoluer le schéma, incrémentez la version : passez <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">DATABASE_VERSION</code> à 2 et ajoutez un bloc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">version === 1</code>, comme dans la revue d'examen.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Un écran rouge qui cite une erreur SQL, par exemple avec <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">syntax error</code>, vient du texte de la migration. Un message qui contient <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">no such column</code> ou <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">has no column named</code>, à partir de l'Étape 4, signale qu'un nom de colonne diffère entre la migration et le dépôt : corrigez le dépôt, ou incrémentez la version si c'est le schéma qui doit changer.</p>
+          </div>
+          </div>
+        </section>
+
+        <!-- Step 11 -->
+        <section id="step-11" class="step-panel" data-title="Étape 4 — Première tranche verticale">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 20 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Relier un écran à SQLite en passant par un hook et le dépôt : ajouter un élément, l'afficher dans une liste, le supprimer, et le retrouver après la fermeture de l'application.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+            Commandes
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Le serveur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code> reste lancé dans le Terminal 1 : enregistrez chaque fichier et observez le téléphone. La vérification des types est facultative pendant que vous écrivez :</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx tsc --noEmit</code></pre>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+            Code complet
+          </h3>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/books/useBooks.ts</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import { useSQLiteContext } from 'expo-sqlite';
+import { useEffect, useState } from 'react';
+import { bookRepo, type Book, type NewBook } from '@/db/bookRepo';
+
+export function useBooks() {
+  const db = useSQLiteContext();
+  const [books, setBooks] = useState&lt;Book[]&gt;([]);
+
+  useEffect(() =&gt; {
+    let active = true;
+    bookRepo(db)
+      .all()
+      .then((rows) =&gt; {
+        if (active) setBooks(rows);
+      });
+    return () =&gt; {
+      active = false;
+    };
+  }, [db]);
+
+  async function add(book: NewBook) {
+    const repo = bookRepo(db);
+    await repo.add(book);
+    setBooks(await repo.all());
+  }
+
+  async function remove(id: number) {
+    const repo = bookRepo(db);
+    await repo.remove(id);
+    setBooks(await repo.all());
+  }
+
+  return { books, add, remove };
+}</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> (remplacez tout le contenu) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-tsx">import { useState } from 'react';
+import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useBooks } from '@/features/books/useBooks';
+
+export default function BooksScreen() {
+  const { books, add, remove } = useBooks();
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const canSubmit = title.trim().length &gt; 0 &amp;&amp; author.trim().length &gt; 0;
+
+  async function onAdd() {
+    if (!canSubmit) return;
+    await add({ title: title.trim(), author: author.trim(), status: 'todo' });
+    setTitle('');
+    setAuthor('');
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;TextInput style={styles.input} placeholder="Titre" value={title} onChangeText={setTitle} /&gt;
+      &lt;TextInput style={styles.input} placeholder="Auteur" value={author} onChangeText={setAuthor} /&gt;
+      &lt;Button title="Ajouter" onPress={onAdd} disabled={!canSubmit} /&gt;
+      &lt;FlatList
+        data={books}
+        keyExtractor={(b) =&gt; String(b.id)}
+        ListEmptyComponent={&lt;Text style={styles.empty}&gt;Aucun livre pour le moment.&lt;/Text&gt;}
+        renderItem={({ item }) =&gt; (
+          &lt;View style={styles.row}&gt;
+            &lt;Text style={styles.rowText}&gt;
+              {item.title} - {item.author}
+            &lt;/Text&gt;
+            &lt;Button title="Supprimer" onPress={() =&gt; remove(item.id)} /&gt;
+          &lt;/View&gt;
+        )}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16, gap: 8 },
+  input: { borderWidth: 1, borderColor: '#999', borderRadius: 6, padding: 10 },
+  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 6 },
+  rowText: { flex: 1, marginRight: 8 },
+  empty: { textAlign: 'center', marginTop: 16 },
+});</code></pre>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+            Résultat attendu
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Deux champs « Titre » et « Auteur », un bouton « Ajouter » inactif tant qu'un champ est vide, puis la liste des livres du plus récent au plus ancien. Sans livre, le texte « Aucun livre pour le moment. » s'affiche.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+            Vérification
+          </h3>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, ajoutez deux livres : ils apparaissent dans la liste et les champs se vident.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Fermez Expo Go depuis le sélecteur d'applications, rouvrez-le et relancez le projet : les deux livres sont toujours là.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Appuyez sur « Supprimer » sur l'un d'eux : il disparaît de la liste.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>À la relecture, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> n'importe rien de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@/db</code> et ne contient aucune requête SQL.</span></li>
+          </ul>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+            À retenir
+          </h3>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> La tranche verticale traverse toutes les couches (écran, hook, dépôt, SQLite) avant d'ajouter d'autres écrans : les problèmes de liaison apparaissent tant qu'il y a peu de code. Plus tard, la même tranche recevra Firestore (modèles de la séance 04) et TanStack Query (modèles de la séance 03) derrière d'autres hooks ; pas pendant cette séance.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Oublier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">async</code> devant une fonction qui utilise <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">await</code>, comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">onAdd</code>, donne avec tsc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">error TS1308: 'await' expressions are only allowed within async functions and at the top levels of modules.</code> et, dans l'application, une erreur de syntaxe contenant <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">Unexpected reserved word 'await'</code>. L'écran ne doit rien importer de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@/db</code> : s'il lui faut une donnée, c'est le hook qui la fournit.</p>
+          </div>
+          </div>
+        </section>
+
+        <!-- Step 12 -->
+        <section id="step-12" class="step-panel" data-title="Étape 5 — Documenter l&#x27;architecture">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 10 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Remplacer le README du modèle par celui de votre projet, avec le diagramme d'architecture, la capture de la première tranche et la sortie d'expo-doctor.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+            Commandes
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Le serveur reste lancé dans le Terminal 1. Dans le Terminal 2, depuis le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>, lancez les deux vérifications et gardez la sortie de la seconde.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx tsc --noEmit
+npx expo-doctor@latest</code></pre>
+          </div>
+          <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-circle-info text-blue-500 mt-1" aria-hidden="true"></i>
+            <div class="text-sm text-gray-800"><p><span class="text-xs font-medium bg-amber-100 text-amber-900 rounded px-2 py-0.5">[SDK]</span> Dépendance au SDK : <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">expo-doctor</code> compare les versions des paquets au SDK 57 du projet ; ses contrôles évoluent avec les versions.</p></div>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Seulement si expo-doctor signale des versions de paquets incompatibles avec le SDK — Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">npx expo install --fix</code></pre>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-code text-brand" aria-hidden="true"></i>
+            Code complet
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Remplacez tout le contenu de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code> dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>, complétez chaque texte entre chevrons et adaptez le diagramme à vos sources.</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project/README.md</code> (remplacez tout le contenu) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-bash"># &lt;Titre du projet&gt;
+
+## Description
+&lt;deux phrases&gt;
+
+## Architecture
+```mermaid
+flowchart TD
+  S[Écrans src/app] --&gt; H[Hooks src/features]
+  H --&gt; R[Dépôts src/db]
+  H --&gt; L[Services src/lib]
+  R --&gt; SQL[(SQLite)]
+  L --&gt; REST[API REST]
+  L --&gt; FB[Firebase]
+  FB --&gt; FS[(Firestore)]
+```
+
+## Captures
+![Écran principal](docs/slice.png)
+
+## Règles de sécurité
+Voir DATA-MODEL.md.
+
+## Version
+Expo SDK 57. Sortie de `npx expo-doctor@latest` : &lt;coller ici&gt;
+
+## Limites connues
+&lt;liste&gt;</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Sur le téléphone, faites une capture de l'écran de la tranche avec au moins un élément dans la liste. Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>, créez un dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">docs</code> (celui du projet, pas celui d'un site) et enregistrez la capture sous <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">project/docs/slice.png</code>.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-brand" aria-hidden="true"></i>
+            Résultat attendu
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Le README décrit le projet, contient le diagramme Mermaid, affiche la capture et reprend la sortie complète d'expo-doctor. L'aperçu Markdown de VS Code montre le texte et l'image ; GitHub dessine le diagramme Mermaid.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+            Vérification
+          </h3>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche rien.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La sortie de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">npx expo-doctor@latest</code> est collée dans la section Version.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La capture prise sur le téléphone est enregistrée sous <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">project/docs/slice.png</code> et apparaît dans l'aperçu du README.</span></li>
+          </ul>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+            À retenir
+          </h3>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le diagramme d'architecture fait partie des exigences notées du projet. Il sert aussi à vous : une flèche que vous ne pouvez pas dessiner de haut en bas signale un fichier qui dépend d'une couche qu'il ne devrait pas connaître.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Une image cassée dans l'aperçu vient presque toujours du chemin : le nom doit être exactement <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">slice.png</code>, dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">docs</code> à l'intérieur de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>. Un diagramme affiché comme du texte sur GitHub signale que les trois accents graves de début ou de fin du bloc <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">mermaid</code> ont disparu.</p>
+          </div>
+          </div>
+        </section>
+
+        <!-- Step 13 -->
+        <section id="step-13" class="step-panel" data-title="Défi — Échanger la source de données">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 15 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Sans guidage. Extrayez une interface <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">BookRepository</code>, écrivez deux implémentations (SQLite et mémoire), faites dépendre le hook de l'interface, et prouvez l'isolation en changeant une seule ligne, avec son import.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-compass text-brand" aria-hidden="true"></i>
+            Indices
+          </h3>
+          <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-4">
+            <li>L'interface vit dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features/books</code>.</li>
+            <li>Les implémentations vivent dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code>.</li>
+            <li>L'écran n'importe que depuis <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features</code>.</li>
+          </ul>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir la solution</summary>
+          <p class="text-gray-700 leading-relaxed mb-4">L'interface décrit ce que le hook attend ; elle vit avec la fonctionnalité.</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/books/BookRepository.ts</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import type { Book, NewBook } from '@/db/bookRepo';
+
+export interface BookRepository {
+  all(): Promise&lt;Book[]&gt;;
+  add(book: NewBook): Promise&lt;void&gt;;
+  remove(id: number): Promise&lt;void&gt;;
+}</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/db/sqliteBookRepo.ts</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import type { SQLiteDatabase } from 'expo-sqlite';
+import type { BookRepository } from '@/features/books/BookRepository';
+import { bookRepo } from '@/db/bookRepo';
+
+export function createSqliteBookRepo(db: SQLiteDatabase): BookRepository {
+  const repo = bookRepo(db);
+  return {
+    all: () =&gt; repo.all(),
+    add: async (b) =&gt; {
+      await repo.add(b);
+    },
+    remove: async (id) =&gt; {
+      await repo.remove(id);
+    },
+  };
+}</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/db/memoryBookRepo.ts</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import type { Book } from '@/db/bookRepo';
+import type { BookRepository } from '@/features/books/BookRepository';
+
+export function createMemoryBookRepo(): BookRepository {
+  let rows: Book[] = [];
+  let nextId = 1;
+  return {
+    all: async () =&gt; [...rows],
+    add: async (b) =&gt; {
+      rows = [{ id: nextId++, created_at: Date.now(), ...b }, ...rows];
+    },
+    remove: async (id) =&gt; {
+      rows = rows.filter((r) =&gt; r.id !== id);
+    },
+  };
+}</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Un seul hook choisit l'implémentation. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code> garde le même dépôt entre les rendus.</p>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/books/useBookRepository.ts</code> (nouveau) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import { useSQLiteContext } from 'expo-sqlite';
+import { useState } from 'react';
+import { createSqliteBookRepo } from '@/db/sqliteBookRepo';
+import type { BookRepository } from '@/features/books/BookRepository';
+
+export function useBookRepository(): BookRepository {
+  const db = useSQLiteContext();
+  const [repo] = useState(() =&gt; createSqliteBookRepo(db));
+  return repo;
+}</code></pre>
+          </div>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/books/useBooks.ts</code> (remplacez tout le contenu) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import { useEffect, useState } from 'react';
+import type { Book, NewBook } from '@/db/bookRepo';
+import type { BookRepository } from '@/features/books/BookRepository';
+
+export function useBooks(repo: BookRepository) {
+  const [books, setBooks] = useState&lt;Book[]&gt;([]);
+
+  useEffect(() =&gt; {
+    let active = true;
+    repo.all().then((rows) =&gt; {
+      if (active) setBooks(rows);
+    });
+    return () =&gt; {
+      active = false;
+    };
+  }, [repo]);
+
+  async function add(book: NewBook) {
+    await repo.add(book);
+    setBooks(await repo.all());
+  }
+
+  async function remove(id: number) {
+    await repo.remove(id);
+    setBooks(await repo.all());
+  }
+
+  return { books, add, remove };
+}</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code>, ajoutez cet import juste au-dessus de la ligne qui importe <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useBooks</code> (ligne 3) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-tsx">import { useBookRepository } from '@/features/books/useBookRepository';</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Puis, dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">BooksScreen</code>, remplacez la première ligne du composant, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">const { books, add, remove } = useBooks();</code>, par ces deux lignes :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-tsx">  const repo = useBookRepository();
+  const { books, add, remove } = useBooks(repo);</code></pre>
+          </div>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir le fichier complet à ce stade</summary>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app/index.tsx</code> (complet) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-tsx">import { useState } from 'react';
+import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useBookRepository } from '@/features/books/useBookRepository';
+import { useBooks } from '@/features/books/useBooks';
+
+export default function BooksScreen() {
+  const repo = useBookRepository();
+  const { books, add, remove } = useBooks(repo);
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const canSubmit = title.trim().length &gt; 0 &amp;&amp; author.trim().length &gt; 0;
+
+  async function onAdd() {
+    if (!canSubmit) return;
+    await add({ title: title.trim(), author: author.trim(), status: 'todo' });
+    setTitle('');
+    setAuthor('');
+  }
+
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;TextInput style={styles.input} placeholder="Titre" value={title} onChangeText={setTitle} /&gt;
+      &lt;TextInput style={styles.input} placeholder="Auteur" value={author} onChangeText={setAuthor} /&gt;
+      &lt;Button title="Ajouter" onPress={onAdd} disabled={!canSubmit} /&gt;
+      &lt;FlatList
+        data={books}
+        keyExtractor={(b) =&gt; String(b.id)}
+        ListEmptyComponent={&lt;Text style={styles.empty}&gt;Aucun livre pour le moment.&lt;/Text&gt;}
+        renderItem={({ item }) =&gt; (
+          &lt;View style={styles.row}&gt;
+            &lt;Text style={styles.rowText}&gt;
+              {item.title} - {item.author}
+            &lt;/Text&gt;
+            &lt;Button title="Supprimer" onPress={() =&gt; remove(item.id)} /&gt;
+          &lt;/View&gt;
+        )}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16, gap: 8 },
+  input: { borderWidth: 1, borderColor: '#999', borderRadius: 6, padding: 10 },
+  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 6 },
+  rowText: { flex: 1, marginRight: 8 },
+  empty: { textAlign: 'center', marginTop: 16 },
+});</code></pre>
+          </div>
+          </details>
+          <p class="text-gray-700 leading-relaxed mb-4"><strong>La preuve.</strong> Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/books/useBookRepository.ts</code>, changez la ligne qui crée le dépôt et son import. Ligne 3, à la place de l'import de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">createSqliteBookRepo</code> :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-ts">import { createMemoryBookRepo } from '@/db/memoryBookRepo';</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Ligne 8, à la place de l'appel à <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">createSqliteBookRepo(db)</code> :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
+            <pre><code class="language-ts">  const [repo] = useState(() =&gt; createMemoryBookRepo());</code></pre>
+          </div>
+          <details class="mb-4">
+            <summary class="cursor-pointer text-sm font-medium text-brand mb-2">Voir le fichier complet à ce stade</summary>
+          <p class="text-sm text-gray-600 mb-2">Fichier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/books/useBookRepository.ts</code> (complet, version mémoire) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier le fichier">Copier</button>
+            <pre><code class="language-ts">import { useSQLiteContext } from 'expo-sqlite';
+import { useState } from 'react';
+import { createMemoryBookRepo } from '@/db/memoryBookRepo';
+import type { BookRepository } from '@/features/books/BookRepository';
+
+export function useBookRepository(): BookRepository {
+  const db = useSQLiteContext();
+  const [repo] = useState(() =&gt; createMemoryBookRepo());
+  return repo;
+}</code></pre>
+          </div>
+          </details>
+          <p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">db</code> reste déclaré sans être utilisé : c'est voulu, pour ne toucher qu'à ces lignes. Enregistrez, puis appuyez sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code> dans le Terminal 1. Les données disparaissent désormais à chaque redémarrage, et l'écran n'a pas changé. Remettez ensuite l'import et l'appel de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">createSqliteBookRepo(db)</code> avant le livrable.</p>
+          </details>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+            Résultat et vérification
+          </h3>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> n'affiche rien avec chacune des deux implémentations.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur le téléphone, avec SQLite : les livres ajoutés avant le défi sont toujours là.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Avec la version mémoire : ajoutez un livre, fermez Expo Go et rouvrez le projet ; la liste est vide, et aucun fichier de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> n'a été modifié pour ce changement.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>De retour à SQLite : les anciens livres réapparaissent.</span></li>
+          </ul>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+            À retenir
+          </h3>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> La frontière du dépôt est ce qui permet de remplacer SQLite par REST ou Firestore : tant qu'une implémentation respecte l'interface, ni le hook ni l'écran ne changent. Les fichiers de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code> importent ici le type <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">BookRepository</code> de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features</code> : c'est une inversion de dépendance, où l'implémentation obéit à un contrat fixé par la couche du dessus. <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">import type</code> disparaît à la compilation, donc aucun code d'exécution ne remonte.</p>
+          </div>
+          <div class="border-l-4 border-rose-500 bg-rose-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-bug text-rose-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-rose-900"><span class="font-medium">Erreurs fréquentes :</span> Créer le dépôt directement dans le corps du hook, sans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">useState</code>, produit un nouvel objet à chaque rendu : l'effet qui dépend de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">repo</code> peut alors se relancer sans fin, et la version mémoire perd ses données. Le React Compiler peut masquer ce défaut : ne comptez pas dessus.</p>
+          </div>
+          </div>
+        </section>
+
+        <!-- Step 14 -->
+        <section id="step-14" class="step-panel" data-title="Checklist d&#x27;évaluation">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-check text-brand" aria-hidden="true"></i>
+            Checklist d'évaluation
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Cochez chaque point sur votre PC et votre téléphone avant de passer au livrable.</p>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>L'application s'ouvre dans Expo Go depuis <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx expo start</code>, lancé dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">npx tsc --noEmit</code> ne signale aucune erreur, sans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">any</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Les dossiers <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/features</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/db</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/lib</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/components</code> existent.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La migration vers la version 1 utilise <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PRAGMA user_version</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Aucun écran de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src/app</code> ne contient de SQL ni d'import depuis <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">@/db</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PROJECT.md</code> est complet et marqué « validé ».</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">DATA-MODEL.md</code> décrit la collection Firestore et le brouillon de règles.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Le README contient le diagramme Mermaid et la sortie d'expo-doctor.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Bonus (défi, facultatif) : l'interface du dépôt existe et le hook en dépend.</span></li>
+          </ul>
+          </div>
+        </section>
+
+        <!-- Step 15 -->
+        <section id="step-15" class="step-panel" data-title="Livrable — lancement du projet">
+          <div class="md-card p-6">
+          <h3 class="text-xl font-medium mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-flag text-brand" aria-hidden="true"></i>
+            Objectif
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">Durée : 10 min.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Publier le lancement du projet : le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code> avec le README, la capture <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">docs/slice.png</code>, un commit et le tag <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project-kickoff</code> poussés sur GitHub. Ce n'est pas la remise finale : le tag <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project-submit</code> sera demandé 10 jours après la séance.</p>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-terminal text-brand" aria-hidden="true"></i>
+            Commandes
+          </h3>
+          <p class="text-gray-700 leading-relaxed mb-4">Vérifiez que <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">project/docs/slice.png</code> existe et que le README est complet. Le Terminal 2 est dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code> : la première ligne revient à la racine du dépôt, la seconde doit répondre <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project/.env</code>.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">cd ..
+git check-ignore project/.env</code></pre>
+          </div>
+          <p class="text-gray-700 leading-relaxed mb-4">Seulement si la commande a affiché <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project/.env</code> : publiez et posez le tag.</p>
+          <p class="text-sm text-gray-600 mb-2">Terminal 2 — Bash et PowerShell (identique) :</p>
+          <div class="code-block-wrapper mb-4">
+            <button class="copy-btn" aria-label="Copier la commande">Copier</button>
+            <pre><code class="language-bash">git add project
+git commit -m "Project kickoff: scaffold, data model, first slice"
+git push
+git tag project-kickoff
+git push origin project-kickoff</code></pre>
+          </div>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand" aria-hidden="true"></i>
+            Résultat et vérification
+          </h3>
+          <ul class="space-y-2 text-gray-700 mb-4">
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur github.com, le dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code> montre <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">src</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">PROJECT.md</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">DATA-MODEL.md</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">README.md</code>, <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> et <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">docs/slice.png</code>, mais ni <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">node_modules</code> ni <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.env</code>.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>La page du dossier <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project</code> affiche le diagramme et la capture prise sur le téléphone.</span></li>
+            <li class="flex items-start gap-2"><i class="fa-regular fa-square text-brand mt-1" aria-hidden="true"></i> <span>Sur github.com, l'onglet des tags montre <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project-kickoff</code>.</span></li>
+          </ul>
+          </div>
+          <div class="md-card p-6 mt-6">
+          <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-brand" aria-hidden="true"></i>
+            À retenir
+          </h3>
+          <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
+            <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
+            <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Le tag <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project-kickoff</code> fige le point de départ validé : vous pouvez toujours comparer votre travail à ce commit, ou y revenir. Pendant les 10 jours qui suivent, ajoutez une exigence à la fois, avec un commit pour chacune, en gardant l'application ouvrable dans Expo Go à tout moment.</p>
+          </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Prism core + autoloader (pinned 1.29.0) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script>
+  Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+</script>
+
+<!-- Navigation JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.step-panel'));
+  var stepIds = panels.map(function (p) { return p.id; });
+  var sidebarLinks = Array.prototype.slice.call(document.querySelectorAll('.step-link'));
+  var titleEl = document.getElementById('current-step-title');
+  var prevBtn = document.getElementById('prev-step');
+  var nextBtn = document.getElementById('next-step');
+  var progressBar = document.getElementById('progress-bar');
+  var sidebar = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebar-overlay');
+  var sidebarToggle = document.getElementById('sidebar-toggle');
+
+  var storageKey = 'codelab-progress:' + window.location.pathname;
+
+  function loadCompleted() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCompleted(list) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(list));
+    } catch (e) {
+      /* localStorage unavailable: navigation still works without persistence */
+    }
+  }
+
+  var completed = loadCompleted();
+
+  function indexOfStep(id) {
+    var idx = stepIds.indexOf(id);
+    return idx === -1 ? 0 : idx;
+  }
+
+  function markCompleted(idx) {
+    var id = stepIds[idx];
+    if (completed.indexOf(id) === -1) {
+      completed.push(id);
+      saveCompleted(completed);
+    }
+  }
+
+  function updateSidebarState(activeId) {
+    sidebarLinks.forEach(function (link) {
+      var id = link.getAttribute('data-step');
+      link.classList.toggle('is-active', id === activeId);
+      link.classList.toggle('is-completed', completed.indexOf(id) !== -1 && id !== activeId);
+    });
+  }
+
+  function closeMobileSidebar() {
+    if (sidebar) sidebar.classList.remove('is-open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('is-open');
+  }
+
+  function showStep(idx, options) {
+    options = options || {};
+    if (idx < 0) idx = 0;
+    if (idx > panels.length - 1) idx = panels.length - 1;
+
+    var id = stepIds[idx];
+
+    panels.forEach(function (panel, i) {
+      panel.classList.toggle('is-active', i === idx);
+    });
+
+    if (titleEl) {
+      titleEl.textContent = panels[idx].getAttribute('data-title') || panels[idx].id;
+    }
+
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.disabled = idx === panels.length - 1;
+
+    if (progressBar) {
+      var pct = ((idx + 1) / panels.length) * 100;
+      progressBar.style.width = pct + '%';
+    }
+
+    if (idx > 0) {
+      for (var i = 0; i < idx; i++) {
+        markCompleted(i);
+      }
+    }
+
+    updateSidebarState(id);
+
+    if (!options.skipHash) {
+      if (history.replaceState) {
+        history.replaceState(null, '', '#' + id);
+      } else {
+        window.location.hash = id;
+      }
+    }
+
+    document.getElementById('content').scrollTop = 0;
+    closeMobileSidebar();
+  }
+
+  function currentIndex() {
+    var hash = window.location.hash.replace('#', '');
+    return indexOfStep(hash);
+  }
+
+  // Sidebar links: native anchor navigation updates location.hash, which
+  // fires 'hashchange'; we just react to that in one place.
+  window.addEventListener('hashchange', function () {
+    showStep(currentIndex(), { skipHash: true });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      showStep(currentIndex() - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      showStep(currentIndex() + 1);
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+    if (e.key === 'ArrowLeft') {
+      showStep(currentIndex() - 1);
+    } else if (e.key === 'ArrowRight') {
+      showStep(currentIndex() + 1);
+    }
+  });
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function () {
+      sidebar.classList.add('is-open');
+      sidebarOverlay.classList.add('is-open');
+    });
+  }
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeMobileSidebar);
+  }
+
+  // Copy-to-clipboard for every code block.
+  Array.prototype.slice.call(document.querySelectorAll('.copy-btn')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var wrapper = btn.closest('.code-block-wrapper');
+      var codeEl = wrapper ? wrapper.querySelector('code') : null;
+      if (!codeEl) return;
+
+      var text = codeEl.textContent;
+      var done = function () {
+        var original = btn.textContent;
+        btn.textContent = 'Copié';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () {
+          fallbackCopy(text);
+          done();
+        });
+      } else {
+        fallbackCopy(text);
+        done();
+      }
+    });
+  });
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    document.body.removeChild(ta);
+  }
+
+  // Initial render.
+  showStep(currentIndex(), { skipHash: true });
+  if (window.location.hash) {
+    // Normalize the hash (e.g. redirect #foo -> #step-1 if invalid).
+    history.replaceState(null, '', '#' + stepIds[currentIndex()]);
+  }
+
+  if (window.Prism) {
+    Prism.highlightAll();
+  }
+})();
+</script>
+
+<!-- Quiz reset buttons - do not modify when authoring a session.
+     Runs before the quiz script, which binds the actual reset to [data-quiz-reset]. -->
+<script>
+(function () {
+  'use strict';
+
+  if (!document.querySelector('.quiz-question')) return;
+
+  var IDLE = 'Réinitialiser les quiz';
+  var ARMED = 'Cliquez encore pour effacer les réponses';
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (score) {
+    var line = score.parentElement;
+    if (!line || !line.parentElement) return;
+
+    var row = document.createElement('div');
+    row.className = 'quiz-score-row';
+    line.parentElement.insertBefore(row, line);
+    row.appendChild(line);
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'quiz-reset-btn';
+    btn.setAttribute('data-quiz-reset', '');
+    btn.innerHTML = '<i class="fa-solid fa-rotate-left" aria-hidden="true"></i> <span aria-live="polite">' + IDLE + '</span>';
+    row.appendChild(btn);
+
+    var label = btn.querySelector('span');
+    var timer = null;
+
+    function disarm() {
+      window.clearTimeout(timer);
+      btn.removeAttribute('data-armed');
+      label.textContent = IDLE;
+    }
+
+    // First click arms the button; the second click reaches the quiz script, which resets.
+    btn.addEventListener('click', function (event) {
+      if (btn.getAttribute('data-armed') === 'true') return;
+      event.stopImmediatePropagation();
+      btn.setAttribute('data-armed', 'true');
+      label.textContent = ARMED;
+      timer = window.setTimeout(disarm, 5000);
+    });
+    btn.addEventListener('blur', disarm);
+  });
+})();
+</script>
+
+<!-- Quiz JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var questions = Array.prototype.slice.call(document.querySelectorAll('.quiz-question'));
+  if (!questions.length) return;
+
+  var storageKey = 'codelab-quiz:' + window.location.pathname;
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(state));
+    } catch (e) {
+      /* localStorage unavailable: the quiz still works without persistence */
+    }
+  }
+
+  var state = loadState();
+
+  function updateScores() {
+    var firstTry = 0;
+    questions.forEach(function (question) {
+      var entry = state[question.id];
+      if (entry && entry.done && entry.tries === 1) firstTry++;
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-quiz-score]')).forEach(function (el) {
+      el.textContent = firstTry + ' / ' + questions.length;
+    });
+  }
+
+  questions.forEach(function (question) {
+    var options = Array.prototype.slice.call(question.querySelectorAll('.quiz-option'));
+    var feedback = question.querySelector('.quiz-feedback');
+    var explain = question.querySelector('.quiz-explain');
+    var answer = question.getAttribute('data-answer');
+
+    function showFeedback(text) {
+      if (!feedback) return;
+      feedback.textContent = text;
+      feedback.hidden = false;
+    }
+
+    function finish() {
+      options.forEach(function (option) {
+        option.disabled = true;
+        if (option.getAttribute('data-option') === answer) {
+          option.classList.add('is-correct');
+        }
+      });
+      if (explain) explain.hidden = false;
+    }
+
+    if (state[question.id] && state[question.id].done) {
+      finish();
+      showFeedback('Bonne réponse.');
+    }
+
+    options.forEach(function (option) {
+      option.addEventListener('click', function () {
+        var entry = state[question.id] || { tries: 0, done: false };
+        if (entry.done) return;
+
+        entry.tries += 1;
+
+        if (option.getAttribute('data-option') === answer) {
+          entry.done = true;
+          showFeedback(entry.tries === 1 ? 'Bonne réponse du premier coup.' : 'Bonne réponse.');
+          finish();
+        } else {
+          option.classList.add('is-wrong');
+          option.disabled = true;
+          showFeedback('Pas encore. Relisez la question et réessayez.');
+        }
+
+        state[question.id] = entry;
+        saveState(state);
+        updateScores();
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('[data-quiz-reset]')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state = {};
+      saveState(state);
+      window.location.reload();
+    });
+  });
+
+  updateScores();
+})();
+</script>
+
+<!-- Theme JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+
+  var root = document.documentElement;
+  var order = ['auto', 'light', 'dark'];
+  var labels = { auto: 'automatique', light: 'clair', dark: 'sombre' };
+  var icons = { auto: 'fa-circle-half-stroke', light: 'fa-sun', dark: 'fa-moon' };
+
+  function current() {
+    var theme = root.getAttribute('data-theme');
+    return theme === 'light' || theme === 'dark' ? theme : 'auto';
+  }
+
+  function apply(theme) {
+    if (theme === 'auto') {
+      root.removeAttribute('data-theme');
+    } else {
+      root.setAttribute('data-theme', theme);
+    }
+    try {
+      if (theme === 'auto') {
+        localStorage.removeItem('codelab-theme');
+      } else {
+        localStorage.setItem('codelab-theme', theme);
+      }
+    } catch (e) {
+      /* storage unavailable: the choice lasts until the page is reloaded */
+    }
+    var next = order[(order.indexOf(theme) + 1) % order.length];
+    btn.querySelector('i').className = 'fa-solid ' + icons[theme];
+    btn.setAttribute('aria-label', 'Thème ' + labels[theme] + '. Passer au thème ' + labels[next]);
+    btn.title = 'Thème : ' + labels[theme];
+  }
+
+  btn.addEventListener('click', function () {
+    apply(order[(order.indexOf(current()) + 1) % order.length]);
+  });
+
+  apply(current());
+})();
+</script>
+
+<!-- Sidebar JavaScript - do not modify when authoring a session -->
+<script>
+(function () {
+  'use strict';
+
+  var btn = document.getElementById('sidebar-collapse');
+  if (!btn) return;
+
+  var root = document.documentElement;
+
+  function apply(collapsed) {
+    root.classList.toggle('sidebar-collapsed', collapsed);
+    var label = collapsed ? 'Afficher le menu des étapes' : 'Masquer le menu des étapes';
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    btn.setAttribute('aria-label', label);
+    btn.title = label;
+  }
+
+  btn.addEventListener('click', function () {
+    var collapsed = !root.classList.contains('sidebar-collapsed');
+    apply(collapsed);
+    try {
+      if (collapsed) {
+        localStorage.setItem('codelab-sidebar', 'collapsed');
+      } else {
+        localStorage.removeItem('codelab-sidebar');
+      }
+    } catch (e) {
+      /* storage unavailable: the choice lasts until the page is reloaded */
+    }
+  });
+
+  apply(root.classList.contains('sidebar-collapsed'));
+})();
+</script>
+
+</body>
+</html>
