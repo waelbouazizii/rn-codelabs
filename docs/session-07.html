@@ -898,7 +898,7 @@
               <ul class="grid grid-cols-2 md:grid-cols-4 gap-2"><li class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700"><span class="block font-medium text-gray-900">SQLite</span>base locale</li><li class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700"><span class="block font-medium text-gray-900">API REST</span>serveur HTTP</li><li class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700"><span class="block font-medium text-gray-900">Firestore</span>base temps réel</li><li class="rounded border border-gray-300 p-2 bg-white text-sm text-gray-700"><span class="block font-medium text-gray-900">Broker MQTT</span>messages</li></ul>
             </div>
           </div>
-          <figcaption class="text-sm text-gray-600 mt-2">Figure 7.1 — Les dépendances descendent, jamais l'inverse : un écran connaît un hook, un hook connaît un dépôt ou un service, et seul celui-ci connaît la source de données.</figcaption>
+          <figcaption class="text-sm text-gray-600 mt-2">Figure 7.1 — Les dépendances descendent, jamais l'inverse : un écran connaît un hook, un hook connaît un dépôt ou un service, et seul celui-ci connaît la source de données. Une seule référence vers le haut est admise : l'import de type (<code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">import type</code>) d'une interface qui appartient à la couche consommatrice, comme <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">BookRepository</code> au défi. C'est une inversion de dépendance : la couche qui utilise le dépôt fixe le contrat, le dépôt s'y conforme, et la couche haute ne dépend plus des détails d'une implémentation.</figcaption>
           </figure>
           </div>
           <div class="md-card p-6 mt-6">
@@ -1610,6 +1610,7 @@ service cloud.firestore {
             <li>Remise 10 jours après la séance, avec le tag <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">project-submit</code>.</li>
             <li>Votre idée est validée individuellement par l'enseignant pendant l'atelier.</li>
           </ul>
+          <p class="text-gray-700 leading-relaxed mb-4">Le projet compte pour 30 % de la note du module (à ajuster selon le règlement de l'établissement).</p>
           <div class="border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded flex gap-3 mb-4">
             <i class="fa-solid fa-lightbulb text-indigo-500 mt-1" aria-hidden="true"></i>
             <p class="text-sm text-indigo-900"><span class="font-medium">Pourquoi ?</span> Chaque exigence correspond à une séance : le projet ne demande aucune notion nouvelle. La difficulté est de choisir une idée où ces six besoins sont naturels, puis de les ranger dans les couches vues aujourd'hui.</p>
@@ -2010,6 +2011,8 @@ Table books : id, title, author, status (todo | reading | done), created_at.
 Collection books : title, author, status, ownerId, createdAt (serverTimestamp).
 
 ## Règles de sécurité (brouillon)
+Règles de sécurité (brouillon) :
+```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -2019,7 +2022,8 @@ service cloud.firestore {
       allow update, delete: if request.auth != null &amp;&amp; resource.data.ownerId == request.auth.uid;
     }
   }
-}</code></pre>
+}
+```</code></pre>
           </div>
           <p class="text-gray-700 leading-relaxed mb-4">Le brouillon de règles est écrit maintenant ; vous le publierez et le testerez plus tard, avec la méthode de la séance 04.</p>
           </div>
@@ -2322,7 +2326,7 @@ Expo SDK 57. Sortie de `npx expo-doctor@latest` : &lt;coller ici&gt;
             Objectif
           </h3>
           <p class="text-sm text-gray-500 mb-3">Durée : 15 min.</p>
-          <p class="text-gray-700 leading-relaxed mb-4">Sans guidage. Extrayez une interface <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">BookRepository</code>, écrivez deux implémentations (SQLite et mémoire), faites dépendre le hook de l'interface, et prouvez l'isolation en changeant une seule ligne, avec son import.</p>
+          <p class="text-gray-700 leading-relaxed mb-4">Sans guidage. Extrayez une interface <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">BookRepository</code>, écrivez deux implémentations (SQLite et mémoire), faites dépendre le hook de l'interface, et prouvez l'isolation en changeant deux lignes seulement dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">useBookRepository.ts</code> : l'import et l'appel.</p>
           </div>
           <div class="md-card p-6 mt-6">
           <h3 class="text-lg font-medium mb-3 flex items-center gap-2">
@@ -2502,7 +2506,7 @@ const styles = StyleSheet.create({
 });</code></pre>
           </div>
           </details>
-          <p class="text-gray-700 leading-relaxed mb-4"><strong>La preuve.</strong> Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/books/useBookRepository.ts</code>, changez la ligne qui crée le dépôt et son import. Ligne 3, à la place de l'import de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">createSqliteBookRepo</code> :</p>
+          <p class="text-gray-700 leading-relaxed mb-4"><strong>La preuve.</strong> Dans <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">src/features/books/useBookRepository.ts</code>, deux lignes changent : l'import et l'appel qui crée le dépôt. Ligne 3, à la place de l'import de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">createSqliteBookRepo</code> :</p>
           <div class="code-block-wrapper mb-4">
             <button class="copy-btn" aria-label="Copier le code TypeScript">Copier</button>
             <pre><code class="language-ts">import { createMemoryBookRepo } from '@/db/memoryBookRepo';</code></pre>
@@ -2529,7 +2533,7 @@ export function useBookRepository(): BookRepository {
 }</code></pre>
           </div>
           </details>
-          <p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">db</code> reste déclaré sans être utilisé : c'est voulu, pour ne toucher qu'à ces lignes. Enregistrez, puis appuyez sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code> dans le Terminal 1. Les données disparaissent désormais à chaque redémarrage, et l'écran n'a pas changé. Remettez ensuite l'import et l'appel de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">createSqliteBookRepo(db)</code> avant le livrable.</p>
+          <p class="text-gray-700 leading-relaxed mb-4"><code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">db</code> reste déclaré sans être utilisé : c'est voulu, pour ne toucher qu'à ces deux lignes. Enregistrez, puis appuyez sur <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">r</code> dans le Terminal 1. Les données disparaissent désormais à chaque redémarrage, et l'écran n'a pas changé. Remettez ensuite l'import et l'appel de <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm break-all">createSqliteBookRepo(db)</code> avant le livrable.</p>
           </details>
           </div>
           <div class="md-card p-6 mt-6">
